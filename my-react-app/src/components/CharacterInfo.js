@@ -1,0 +1,78 @@
+const CharacterInfo = () => {
+	
+	const stats = [
+		{ tag: "LV", value: 21 },
+		{ tag: "MAX HP", value: 100 },
+		{ tag: "ATK", value: 10 },
+		{ tag: "DEF", value: 5 },
+		{ tag: "STR", value: 5 },
+		{ tag: "DEX", value: 5 },
+		{ tag: "LCK", value: 100 },
+	];
+
+	const statList = stats.map((stat, index) => {
+		return (
+			<tr key={index}>
+				<th scope="row">{stat.tag}</th><td className="text-end">{stat.value}</td>
+			</tr>
+		);
+	});
+
+	const equipments = [
+		{ tag: "主手", name: "木劍" },
+		{ tag: "副手", name: "木盾"},
+		{ tag: "頭部", name: "布帽"},
+		{ tag: "身體", name: "布甲" },
+		{ tag: "飾品一", name: "銅戒" },
+		{ tag: "飾品二", name: "銅戒" },
+	];
+
+	const equipmentList = equipments.map((equipment, index) => {
+		return (
+			<tr key={index}>
+				<th scope="row">{equipment.tag}</th><td className="text-end">{equipment.name}</td>
+			</tr>
+		);
+	});
+
+	return (
+		<>
+			<div className="row justify-content-center rounded border border-3 mx-1">
+				<div className="table-responsive">
+					<table className="table">
+						<tbody>
+							<tr>
+								<td>
+									<table className="table table-hover">
+										<thead>
+											<tr>
+												<th colSpan="2">裝備</th>
+											</tr>
+										</thead>
+										<tbody>
+											{equipmentList}
+										</tbody>
+									</table>
+								</td>
+								<td>
+									<table className="table table-hover ">
+										<thead>
+											<tr>
+												<th colSpan="2">能力</th>
+											</tr>
+										</thead>
+										<tbody>
+											{statList}
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</>
+	);
+}
+
+export default CharacterInfo;

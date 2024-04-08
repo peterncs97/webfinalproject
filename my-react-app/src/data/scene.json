@@ -1,0 +1,184 @@
+[
+    {
+        "id": 0,
+        "isSubScene": false,
+        "parentId": 0,
+        "name": "起始之村",
+        "description": "這是一個充滿和平的村莊，村民們都很友善，你可以在這裡找到各種設施。",
+        "imageDescription": "Designed by photographeeasia / Freepik",
+        "image": "images/village2.svg",
+        "option": [
+            {
+                "id": 1,
+                "type": "GOTO",
+                "name": "旅館"
+            },
+            {
+                "id": 2,
+                "type": "GOTO",
+                "name": "市集"
+            },
+            {
+                "id": 3,
+                "type": "GOTO",
+                "name": "銀行"
+            },
+            {
+                "id": 4,
+                "type": "GOTO",
+                "name": "教會"
+            },
+            {
+                "id": 5,
+                "type": "GOTO",
+                "name": "村長家"
+            },
+            {
+                "id": 6,
+                "type": "GOTO",
+                "name": "大草原"
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "parentId": 0,
+        "isSubScene": true,
+        "name": "旅館",
+        "description": "這不就是Apple嗎，今天來要做甚麼？",
+        "imageDescription": "Designed by rawpixel.com / Freepik",
+        "image": "images/inn.svg",
+        "option": [
+            {
+                "id": -1,
+                "type": "REST",
+                "name": "休息"
+            },
+            {
+                "id": 0,
+                "type": "GOTO",
+                "name": "返回"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "parentId": 0,
+        "isSubScene": true,
+        "name": "市集",
+        "description": "這裡有各種武器和防具，你可以在這裡購買或賣出裝備。",
+        "imageDescription": "Designed by designerhrenov Freepik",
+        "image": "images/market.svg",
+        "option": [
+            {
+                "id": -1,
+                "type": "BUY",
+                "name": "購買"
+            },
+            {
+                "id": -1,
+                "type": "SELL",
+                "name": "賣出"
+            },
+            {
+                "id": 0,
+                "type": "GOTO",
+                "name": "返回"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "parentId": 0,
+        "isSubScene": true,
+        "name": "銀行",
+        "description": "這裡可以存錢，你可以在這裡存取金錢。",
+        "imageDescription": "Designed by rawpixel.com / Freepik",
+        "image": "images/bank.svg",
+        "option": [
+            {
+                "id": -1,
+                "type": "DEPOSIT",
+                "name": "存款"
+            },
+            {
+                "id": -1,
+                "type": "WITHDRAW",
+                "name": "取款"
+            },
+            {
+                "id": 0,
+                "type": "GOTO",
+                "name": "返回"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "parentId": 0,
+        "isSubScene": true,
+        "name": "教會",
+        "description": "這裡是一個神聖的地方，你可以在這裡恢復生命值。",
+        "imageDescription": "Designed by rawpixel.com / Freepik",
+        "image": "images/church.svg",
+        "option": [
+            {
+                "id": 0,
+                "type": "GOTO",
+                "name": "返回"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "parentId": 0,
+        "isSubScene": true,
+        "name": "村長家",
+        "description": "這裡是村長的家，你可以在這裡接受任務。",
+        "imageDescription": "Designed by Freepik",
+        "image": "images/elder.svg",
+        "option": [
+            {
+                "id": 0,
+                "type": "GOTO",
+                "name": "返回"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "isSubScene": false,
+        "parentId": 0,
+        "name": "大草原",
+        "description": "這裡是一片廣闊的草原，你可以在這裡找到各種野生動物。",
+        "imageDescription": "Designed by Freepik",
+        "image": "images/plateau.svg",
+        "option": [
+            {
+                "id": -1,
+                "type": "BATTLE",
+                "name": "戰鬥"
+            },
+            {
+                "id": -1,
+                "type": "AUTOBATTLE",
+                "name": "自動戰鬥"
+            },
+            {
+                "id": -1,
+                "type": "ENDBATTLE",
+                "name": "結束戰鬥"
+            },
+            {
+                "id": 7,
+                "type": "GOTO",
+                "name": "森林"
+            },
+            {
+                "id": 0,
+                "type": "GOTO",
+                "name": "返回"
+            }
+        ]
+    }
+]
