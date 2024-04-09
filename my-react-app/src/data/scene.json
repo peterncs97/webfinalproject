@@ -1,7 +1,6 @@
 [
     {
         "id": 0,
-        "isSubScene": false,
         "parentId": 0,
         "name": "起始之村",
         "description": "這是一個充滿和平的村莊，村民們都很友善，你可以在這裡找到各種設施。",
@@ -43,7 +42,6 @@
     {
         "id": 1,
         "parentId": 0,
-        "isSubScene": true,
         "name": "旅館",
         "description": "這不就是Apple嗎，今天來要做甚麼？",
         "imageDescription": "Designed by rawpixel.com / Freepik",
@@ -64,7 +62,6 @@
     {
         "id": 2,
         "parentId": 0,
-        "isSubScene": true,
         "name": "市集",
         "description": "這裡有各種武器和防具，你可以在這裡購買或賣出裝備。",
         "imageDescription": "Designed by designerhrenov Freepik",
@@ -90,7 +87,6 @@
     {
         "id": 3,
         "parentId": 0,
-        "isSubScene": true,
         "name": "銀行",
         "description": "這裡可以存錢，你可以在這裡存取金錢。",
         "imageDescription": "Designed by rawpixel.com / Freepik",
@@ -116,7 +112,6 @@
     {
         "id": 4,
         "parentId": 0,
-        "isSubScene": true,
         "name": "教會",
         "description": "這裡是一個神聖的地方，你可以在這裡恢復生命值。",
         "imageDescription": "Designed by rawpixel.com / Freepik",
@@ -132,7 +127,6 @@
     {
         "id": 5,
         "parentId": 0,
-        "isSubScene": true,
         "name": "村長家",
         "description": "這裡是村長的家，你可以在這裡接受任務。",
         "imageDescription": "Designed by Freepik",
@@ -147,7 +141,6 @@
     },
     {
         "id": 6,
-        "isSubScene": false,
         "parentId": 0,
         "name": "大草原",
         "description": "這裡是一片廣闊的草原，你可以在這裡找到各種野生動物。",
@@ -155,19 +148,14 @@
         "image": "images/plateau.svg",
         "option": [
             {
-                "id": -1,
-                "type": "BATTLE",
-                "name": "戰鬥"
+                "id": 6,
+                "type": "SEARCH",
+                "name": "索敵"
             },
             {
                 "id": -1,
                 "type": "AUTOBATTLE",
-                "name": "自動戰鬥"
-            },
-            {
-                "id": -1,
-                "type": "ENDBATTLE",
-                "name": "結束戰鬥"
+                "name": "自動索敵"
             },
             {
                 "id": 7,
@@ -180,5 +168,36 @@
                 "name": "返回"
             }
         ]
+    },
+    {
+        "id": 99,
+        "parentId": 0,
+        "name": "勝利",
+        "description": "獲得1199G、龍角！",
+        "imageDescription": "Designed by b0red / pixabay",
+        "image": "images/treasure.svg",
+        "option": [
+            {
+                "id": 6,
+                "type": "SEARCH",
+                "name": "繼續索敵"
+            },
+            {
+                "id": 6,
+                "type": "ENDBATTLE",
+                "name": "結束戰鬥"
+            }
+        ]
+    },
+    {
+        "id": 101,
+        "parentId": 6,
+        "name": "上古飛龍",
+        "description": "這是一隻上古飛龍，它的攻擊力和防禦力都很高，要小心！",
+        "imageDescription": "Designed by macrovector / Freepik",
+        "image": "images/dragon.svg",
+        "option": [
+        ]
+
     }
 ]

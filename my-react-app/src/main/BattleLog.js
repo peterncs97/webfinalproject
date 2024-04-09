@@ -1,31 +1,86 @@
-const BattleLog = () => {
+import { useState, useEffect } from 'react';
+
+const BattleLog = ({ setCurrentSceneId }) => {
+	const log = [
+		{
+			subject: 'monster',
+			message: '上古巨龍出現了！',
+			type: 'danger'
+		},
+		{
+			subject : 'player',
+			message: 'Apple使出普通攻撃！上古巨龍受到26點傷害！',
+			type : 'success'
+		},
+		{
+			subject: 'monster',
+			message: '上古巨龍使出普通攻撃！Apple受到40點傷害！',
+			type: 'danger'
+		},
+		{
+			subject: 'player',
+			message: 'Apple使出突刺！上古巨龍受到30點傷害！',
+			type: 'success'
+		},
+		{
+			subject: 'player',
+			message: 'Apple使出普通攻撃！上古巨龍受到20點傷害！',
+			type: 'success'
+		},
+		{
+			subject: 'monster',
+			message: '上古巨龍使出噴火！Apple受到100點傷害！',
+			type: 'danger'
+		},
+		{
+			subject: 'player',
+			message: 'Apple使出會心一擊！上古巨龍受到153點傷害！',
+			type: 'success'
+		},
+		{
+			subject: 'monster',
+			message: '上古巨龍力竭。戰鬥結束。',
+			type: 'danger'
+		},
+		{
+			subject: 'player',
+			message: '戰鬥獲勝！！！！！！',
+			type: 'warning'
+		},
+	];
+
+	const [count, setCount] = useState(0);
+	const [entries, setEntries] = useState([]);
+
+	useEffect(() => {
+		if (count >= log.length) {
+			setCurrentSceneId(99);
+			return;
+		}
+		const interval = setInterval(() => {
+			setEntries((prevList) => [log[count], ...prevList]);
+			setCount((prevcount) => prevcount + 1);
+		}, 700);
+
+		return () => clearInterval(interval);
+	}, [count, setCurrentSceneId]);
+	
+	const entryList = entries.map((entry, index) => {
+		var justify = (entry.subject !== 'player') ? 'end' : 'start'; 
+		return (
+			<div className={`d-flex justify-content-${justify}`}>
+				<div className={`alert alert-${entry.type}`} style={{ display: "inline-block" }}>
+					{entry.message}
+				</div >
+			</div>
+			
+		);
+	}); 
+
 	return (
 		<section>
 			<div className='p-2 overflow-auto' style={{ height: 350 }}>
-				<div className="alert alert-success">
-					<strong>Success!</strong> This alert box could indicate a successful or positive action.
-				</div>
-				<div className="alert alert-info">
-					<strong>Info!</strong> This alert box could indicate a neutral informative change or action.
-				</div>
-				<div className="alert alert-warning">
-					<strong>Warning!</strong> This alert box could indicate a warning that might need attention.
-				</div>
-				<div className="alert alert-danger">
-					<strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
-				</div>
-				<div className="alert alert-primary">
-					<strong>Primary!</strong> Indicates an important action.
-				</div>
-				<div className="alert alert-secondary">
-					<strong>Secondary!</strong> Indicates a slightly less important action.
-				</div>
-				<div className="alert alert-dark">
-					<strong>Dark!</strong> Dark grey alert.
-				</div>
-				<div className="alert alert-light">
-					<strong>Light!</strong> Light grey alert.
-				</div>
+				{entryList}
 			</div>
 		</section>
 	);

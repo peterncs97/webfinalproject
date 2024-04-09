@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import scenes from '../data/scene.json';
-import { Link } from 'react-router-dom';
 
-const Scene = () => {
-  const [currentScene, setCurrentScene] = useState(scenes[0]);
+const Scene = ({ currentSceneId, setCurrentSceneId, setIsBattle }) => {
+  const [currentScene, setCurrentScene] = useState(scenes[currentSceneId]);
 
-  const goto = (event) => {
+  useEffect(() => {
+    setCurrentScene(scenes.find(scene => scene.id === currentSceneId));
+  }, [currentSceneId]);
+
+  const search = (event) => {
     const index = event.target.getAttribute('data');
-    setCurrentScene(scenes.find(scene => scene.id == index));
+    setCurrentScene(scenes.find(scene => scene.parentId === parseInt(index)));
+    setIsBattle(true);
+  }
+
+  const endBattle = (event) => {
+    const index = event.target.getAttribute('data');
+    setCurrentScene(scenes.find(scene => scene.id === parseInt(index)));
+    setIsBattle(false);
   }
 
   if (!currentScene) return null;
@@ -16,20 +26,20 @@ const Scene = () => {
     switch(option.type) {
       case 'GOTO':
         return (
-          <button type="button" key={index} data={option.id} onClick={goto} className="list-group-item">  
+          <button type="button" key={index} data={option.id} onClick={() => setCurrentSceneId(option.id)} className="list-group-item">  
               {option.name}
           </button>
         );
-      case 'BATTLE':
+      case 'SEARCH':
         return (
-          <button type="button" key={index} className="list-group-item">
-            <Link to="/battle">{option.name}</Link>
+          <button type="button" key={index} data={option.id} onClick={search} className="list-group-item">
+            {option.name}
           </button>
         );
       case 'ENDBATTLE':
         return (
-          <button type="button" key={index} className="list-group-item">
-            <Link to="/">{option.name}</Link>
+          <button type="button" key={index} data={option.id} onClick={endBattle} className="list-group-item">
+            {option.name}
           </button>
         );
       default:
