@@ -19,5 +19,5 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.comment = require("../entities/comment/comment.model.js")(sequelize, Sequelize);
-
+db.scene = require("../entities/scene/scene.model.js")(sequelize, Sequelize);
 module.exports = db;

@@ -2,7 +2,7 @@ const HttpStatus = require('../enums/HttpStatus');
 
 class BaseController {
     formatResponse(status, message, data) {
-        return {status: status || HttpStatus.INTERNAL_ERROR, message: message || '', data: data || ''};
+        return { status: status || HttpStatus.INTERNAL_ERROR, message: message || '', data: data || ''};
     }
 
     responseHandler(res, dtos) {

@@ -1,72 +1,57 @@
 import { useEffect, useState } from 'react';
-import scenes from '../data/scene.json';
+import axios from "axios";
+import { api_url } from '../config';
 
-const Scene = ({ currentSceneId, setCurrentSceneId, setIsBattle }) => {
-  const [currentScene, setCurrentScene] = useState(scenes[currentSceneId]);
+import OptionList from '../components/OptionList';
+
+const Scene = ({ currSceneId, setCurrSceneId, prevSceneId, setPrevSceneId, setIsBattle }) => {
+  const [currScene, setCurrentScene] = useState(null);
 
   useEffect(() => {
-    setCurrentScene(scenes.find(scene => scene.id === currentSceneId));
-  }, [currentSceneId]);
+    axios.get(`${api_url}/scene/${currSceneId}`).then((response) => {
+      setCurrentScene(response.data.data);
+    });
+  }, [currSceneId]);
 
-  const search = (event) => {
-    const index = event.target.getAttribute('data');
-    setCurrentScene(scenes.find(scene => scene.parentId === parseInt(index)));
+  const search = () => {
+    var parentId;
+    if (currScene.type === "victory"){
+      parentId = prevSceneId;
+    } else {
+      setPrevSceneId(currSceneId);
+      parentId = currSceneId;
+    }
+    axios.get(`${api_url}/scene/randchild/${parentId}`).then((response) => {
+      setCurrentScene(response.data.data);
+    });
     setIsBattle(true);
   }
 
-  const endBattle = (event) => {
-    const index = event.target.getAttribute('data');
-    setCurrentScene(scenes.find(scene => scene.id === parseInt(index)));
+  const back = () => {
+    setCurrSceneId((currScene.parentId !== 0) ? currScene.parentId : prevSceneId);
     setIsBattle(false);
   }
 
-  if (!currentScene) return null;
-
-  const optionList = currentScene.option.map((option, index) => {
-    switch(option.type) {
-      case 'GOTO':
-        return (
-          <button type="button" key={index} data={option.id} onClick={() => setCurrentSceneId(option.id)} className="list-group-item">  
-              {option.name}
-          </button>
-        );
-      case 'SEARCH':
-        return (
-          <button type="button" key={index} data={option.id} onClick={search} className="list-group-item">
-            {option.name}
-          </button>
-        );
-      case 'ENDBATTLE':
-        return (
-          <button type="button" key={index} data={option.id} onClick={endBattle} className="list-group-item">
-            {option.name}
-          </button>
-        );
-      default:
-        return (
-          <button type="button" key={index} className="list-group-item">{option.name}</button>
-        );
-    }
-  });
+  if (!currScene) return null;
 
   return (
     <section className="bg-light">
       <div className='col-10 mx-auto'>
         <div className='row justify-content-center'>
           <div className='row p-2'>
-            <h3 className='text-center'>{currentScene.name}</h3>
+            <h3 className='text-center'>{currScene.name}</h3>
           </div>
           <div className='row justify-content-center'>
-            <img className="img-fluid home-img" src={currentScene.image} alt={currentScene.name} />
-            <figcaption className="figure-caption text-center"><small>{currentScene.imageDescription}</small></figcaption>
+            <img className="img-fluid home-img" src={currScene.imagePath} alt={currScene.name} />
+            <figcaption className="figure-caption text-center"><small>{currScene.imageDescription}</small></figcaption>
           </div>
 
           <div className='row pt-4'>
-            <p className='lead text-center'><em>{currentScene.description}</em></p>
+            <p className='lead text-center'><em>{currScene.description}</em></p>
           </div>
           <div className='row'>
             <ul className="list-group list-group-horizontal justify-content-center">
-              {optionList}
+              <OptionList currScene={currScene} setCurrSceneId={setCurrSceneId} search={search} back={back} />
             </ul>
           </div>
         </div>

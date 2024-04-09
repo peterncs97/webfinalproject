@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const db = require("./database/db");
 
 const commentRouter = require('./entities/comment/comment.router');
+const sceneRouter = require('./entities/scene/scene.router');
 
 const app = express();
 
@@ -31,6 +32,7 @@ db.sequelize.sync()
 
 // Routes
 app.use('/comment', commentRouter);
+app.use('/scene', sceneRouter);
 
 // Guard routes
 app.use(function (req, res, next) {

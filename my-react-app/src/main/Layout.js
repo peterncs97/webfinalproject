@@ -6,7 +6,8 @@ import SwapArea from "./SwapArea";
 import BattleLog from "./BattleLog";
 
 const Layout = () => {
-  const [currentSceneId, setCurrentSceneId] = useState(0);
+  const [currSceneId, setCurrSceneId] = useState(1);
+  const [prevSceneId, setPrevSceneId] = useState(1);
   const [isBattle, setIsBattle] = useState(false);
 
   return (
@@ -25,8 +26,10 @@ const Layout = () => {
         <div className="container px-4 py-2">
           <div className='row justify-content-center'>
             <div className='col-10 border border-3 py-2'>
-              <Scene currentSceneId={currentSceneId} 
-                setCurrentSceneId={setCurrentSceneId} 
+              <Scene currSceneId={currSceneId}
+                prevSceneId={prevSceneId}
+                setCurrSceneId={setCurrSceneId}
+                setPrevSceneId={setPrevSceneId}
                 setIsBattle={setIsBattle} />
             </div>
           </div>
@@ -39,7 +42,10 @@ const Layout = () => {
             <div className='col-10 border border-3'>
               {isBattle ? 
                 (
-                  <BattleLog setCurrentSceneId={setCurrentSceneId} />
+                  <BattleLog 
+                    prevSceneId={prevSceneId}
+                    setCurrSceneId={setCurrSceneId} 
+                  />
                 )
                 : 
                 (<SwapArea />)

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const BattleLog = ({ setCurrentSceneId }) => {
+const BattleLog = ({ setCurrSceneId }) => {
 	const log = [
 		{
 			subject: 'monster',
@@ -54,7 +54,7 @@ const BattleLog = ({ setCurrentSceneId }) => {
 
 	useEffect(() => {
 		if (count >= log.length) {
-			setCurrentSceneId(99);
+			setCurrSceneId(101); // victory scene
 			return;
 		}
 		const interval = setInterval(() => {
@@ -63,7 +63,7 @@ const BattleLog = ({ setCurrentSceneId }) => {
 		}, 700);
 
 		return () => clearInterval(interval);
-	}, [count, setCurrentSceneId]);
+	}, [count, setCurrSceneId]);
 	
 	const entryList = entries.map((entry, index) => {
 		var justify = (entry.subject !== 'player') ? 'end' : 'start'; 
