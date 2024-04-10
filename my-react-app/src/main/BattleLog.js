@@ -63,7 +63,7 @@ const BattleLog = ({ setCurrSceneId }) => {
 		}, 700);
 
 		return () => clearInterval(interval);
-	}, [count, setCurrSceneId]);
+	}, [count]);
 	
 	const entryList = entries.map((entry, index) => {
 		var justify = (entry.subject !== 'player') ? 'end' : 'start'; 
@@ -79,7 +79,7 @@ const BattleLog = ({ setCurrSceneId }) => {
 
 	return (
 		<section>
-			<div className='p-2 overflow-auto' style={{ height: 300 }}>
+			<div className='p-2 overflow-auto' style={{ height: 350 }}>
 				{entryList}
 			</div>
 		</section>

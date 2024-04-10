@@ -12,15 +12,6 @@ const Layout = () => {
   const [isBattle, setIsBattle] = useState(false);
   const [isTrade, setIsTrade] = useState(false);
 
-  const SubArea = () => {
-    if (isTrade)
-      return <Trade setIsTrade={setIsTrade} />;
-    else if (isBattle)
-      return <BattleLog prevSceneId={prevSceneId} setCurrSceneId={setCurrSceneId} />;
-    else
-      return <Backpack />;
-  }
-
   return (
     <>
       <header className="sticky-top bg-white">
@@ -44,7 +35,13 @@ const Layout = () => {
 
       <section>
         <div className="container px-4 py-2">
-          <SubArea />
+          {
+            isBattle ? 
+            <BattleLog prevSceneId={prevSceneId} setCurrSceneId={setCurrSceneId} /> 
+            :isTrade ?
+            <Trade setIsTrade={setIsTrade} />
+            :<Backpack />
+          }
         </div>
       </section>
     </>
