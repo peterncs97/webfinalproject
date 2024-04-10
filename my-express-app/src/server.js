@@ -6,6 +6,7 @@ const logger = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const db = require("./database/db");
+const fs = require('fs');
 
 const commentRouter = require('./entities/comment/comment.router');
 const sceneRouter = require('./entities/scene/scene.router');
@@ -25,6 +26,11 @@ app.use(helmet());
 db.sequelize.sync()
     .then(() => {
         console.log("Synced db.");
+
+        // Initialize the database
+        // var sql_string = fs.readFileSync('./src/database/scene.sql', 'utf8');
+        // sql_string = sql_string.replace(/\r?\n|\r/g, " ");
+        // db.sequelize.query(sql_string);
     })
     .catch((err) => {
         console.log("Failed to sync db: " + err.message);
