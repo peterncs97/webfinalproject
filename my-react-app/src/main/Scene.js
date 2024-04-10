@@ -4,7 +4,7 @@ import { api_url } from '../config';
 
 import OptionList from '../components/OptionList';
 
-const Scene = ({ currSceneId, setCurrSceneId, prevSceneId, setPrevSceneId, setIsBattle }) => {
+const Scene = ({ currSceneId, setCurrSceneId, prevSceneId, setPrevSceneId, setIsBattle, setIsTrade }) => {
   const [currScene, setCurrentScene] = useState(null);
 
   useEffect(() => {
@@ -32,31 +32,31 @@ const Scene = ({ currSceneId, setCurrSceneId, prevSceneId, setPrevSceneId, setIs
     setIsBattle(false);
   }
 
+  const trade = () => {
+    setIsTrade(true); 
+  }
+
   if (!currScene) return null;
 
   return (
-    <section className="bg-light">
-      <div className='col-10 mx-auto'>
-        <div className='row justify-content-center'>
-          <div className='row p-2'>
-            <h3 className='text-center'>{currScene.name}</h3>
-          </div>
-          <div className='row justify-content-center'>
-            <img className="img-fluid home-img" src={currScene.imagePath} alt={currScene.name} />
-            <figcaption className="figure-caption text-center"><small>{currScene.imageDescription}</small></figcaption>
-          </div>
-
-          <div className='row pt-4'>
-            <p className='lead text-center'><em>{currScene.description}</em></p>
-          </div>
-          <div className='row'>
-            <ul className="list-group list-group-horizontal justify-content-center">
-              <OptionList currScene={currScene} setCurrSceneId={setCurrSceneId} search={search} back={back} />
-            </ul>
-          </div>
-        </div>
+    <div className='row justify-content-center border border-3 py-2 bg-light'>
+      <div className='row p-2'>
+        <h3 className='text-center'>{currScene.name}</h3>
       </div>
-    </section>
+      <div className='row justify-content-center'>
+        <img className="img-fluid home-img" src={currScene.imagePath} alt={currScene.name} />
+        <figcaption className="figure-caption text-center"><small>{currScene.imageDescription}</small></figcaption>
+      </div>
+
+      <div className='row pt-4'>
+        <p className='lead text-center'><em>{currScene.description}</em></p>
+      </div>
+      <div className='row'>
+        <ul className="list-group list-group-horizontal justify-content-center">
+          <OptionList currScene={currScene} setCurrSceneId={setCurrSceneId} search={search} back={back} trade={trade} />
+        </ul>
+      </div>
+    </div>
   )
 };
 

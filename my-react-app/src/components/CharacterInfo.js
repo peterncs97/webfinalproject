@@ -37,7 +37,10 @@ const CharacterInfo = () => {
 
 	return (
 		<>
-			<div className="row justify-content-center rounded border border-3 mx-1">
+			<div className="row justify-content-center p-2">
+				<div className="row h3 mx-2 pb-1 border-bottom">
+					角色
+				</div>
 				<div className="table-responsive">
 					<table className="table">
 						<tbody>

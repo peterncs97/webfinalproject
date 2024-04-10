@@ -79,7 +79,7 @@ const BattleLog = ({ setCurrSceneId }) => {
 
 	return (
 		<section>
-			<div className='p-2 overflow-auto' style={{ height: 350 }}>
+			<div className='p-2 overflow-auto' style={{ height: 300 }}>
 				{entryList}
 			</div>
 		</section>

@@ -28,9 +28,10 @@ db.sequelize.sync()
         console.log("Synced db.");
 
         // Initialize the database
-        // var sql_string = fs.readFileSync('./src/database/scene.sql', 'utf8');
-        // sql_string = sql_string.replace(/\r?\n|\r/g, " ");
-        // db.sequelize.query(sql_string);
+        var sql_string = fs.readFileSync('./src/database/scene.sql', 'utf8');
+        sql_string = sql_string.replace(/\r?\n|\r/g, " ");
+        const queries = sql_string.split(';');
+        queries.filter(query => query).forEach(query => db.sequelize.query(query));
     })
     .catch((err) => {
         console.log("Failed to sync db: " + err.message);

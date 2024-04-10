@@ -1,9 +1,22 @@
-const Item = ({item}) => {
+const ItemDetail = ({ item, type }) => {
 	if (!item)
-		item = { id: 0, name: '/', description: '', type: '/', atk: 0, def: 0, effect: '/', price: 0 };
+		item = { };
 	
+	const options = [
+		{ type: 'equipment', name: '裝備', onClick: () => { } },
+		{ type: 'consumable', name: '使用', onClick: () => { } },
+	].filter(option => option.type === type);
+
+	const optionList = options.map((option, index) => {
+		return (
+			<button key={index} className="btn btn-dark" type="button" onClick={option.onClick}>
+				{option.name}
+			</button>
+		);
+	});
+
 	return (
-		<div className="row justify-content-center rounded border border-3 p-2">
+		<div className="row justify-content-center p-2">
 			<div className="row h3 mb-2 pb-1 border-bottom">
 				{item.name}
 			</div>
@@ -14,7 +27,7 @@ const Item = ({item}) => {
 					</thead>
 					<tbody>
 						<tr>
-							<th scope="row">種類</th><td className="text-end">{item.type}</td>
+							<th scope="row">種類</th><td className="text-end">{item.bodypart}</td>
 						</tr>
 						<tr>
 							<th scope="row">ATK</th><td className="text-end">{item.atk}</td>
@@ -32,11 +45,10 @@ const Item = ({item}) => {
 				</table>
 			</div>
 			<div className="row">
-				<button className="btn btn-dark mb-2" type="button">裝備</button>
-				<button className="btn btn-dark" type="button">使用</button>
+				{optionList}
 			</div>
 		</div>
 	);
 }
 
-export default Item;
+export default ItemDetail;
