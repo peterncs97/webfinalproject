@@ -30,6 +30,7 @@ const Scene = ({ currSceneId, setCurrSceneId, prevSceneId, setPrevSceneId, setIs
   const back = () => {
     setCurrSceneId((currScene.parentId !== 0) ? currScene.parentId : prevSceneId);
     setIsBattle(false);
+    setIsTrade(false);
   }
 
   const trade = () => {
