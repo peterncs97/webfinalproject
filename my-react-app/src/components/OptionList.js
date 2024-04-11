@@ -1,10 +1,18 @@
-const OptionList = ({ currScene, setCurrSceneId, search, back, trade }) => {
+const OptionList = ({ currScene, setCurrSceneId, search, back, trade, event }) => {
   // Basic scene setting options
   const optionList = 
     currScene.options
       ?.filter(option => option.type !== 'monster')
       .map((option, index) => {
-        const onClick = (['location', 'battleground', 'trade'].includes(option.type)) ? () => setCurrSceneId(option.id) : null;
+        var onClick;
+        if (['location', 'battleground', 'trade'].includes(option.type)) 
+          onClick = () => setCurrSceneId(option.id)
+        else if (option.type === 'event')
+          onClick = () => {
+            setCurrSceneId(option.id);
+            event();
+          }
+
         return (
           <button type="button" key={index} onClick={onClick} className="list-group-item">{option.name}</button>
         );
@@ -25,7 +33,7 @@ const OptionList = ({ currScene, setCurrSceneId, search, back, trade }) => {
   });
 
   // Default return option
-  if (currScene.type !== "monster" && currScene.id !== 1)
+  if (currScene.type !== "monster" && currScene.type !== 'event' && currScene.id !== 1)
     optionList.push(
       <button type="button" key={optionList.length} onClick={back} className="list-group-item">
         返回
