@@ -12,7 +12,7 @@ class SceneRouter extends BaseRouter {
         this.router.get('/', (req, res, next) => this.#controller.listScene(req, res, next));
         this.router.get('/:id', (req, res, next) => this.#controller.getSceneById(req, res, next));
         this.router.post('/create', (req, res, next) => this.#controller.createScene(req, res, next));
-        this.router.get('/randchild/:id', (req, res, next) => this.#controller.getRandomChildSceneById(req, res, next));
+        this.router.get('/randchild/:id', (req, res, next) => this.#controller.getRandomChildMonsterSceneById(req, res, next));
     }
 }
 

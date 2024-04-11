@@ -24,8 +24,8 @@ class SceneService {
         return dto;
     }
 
-    async getRandomOneSceneByParentId(req) {
-        const dto = await this.#sceneRepository.findRandomOneSceneByParentId(req.params.id);
+    async getRandomMonsterSceneByParentId(req) {
+        const dto = await this.#sceneRepository.findRandomMonsterSceneByParentId(req.params.id);
         return dto;
     }
 

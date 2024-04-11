@@ -22,10 +22,11 @@ class SceneRepository{
         });
     }
 
-    async findRandomOneSceneByParentId(parentId){
+    async findRandomMonsterSceneByParentId(parentId){
         return await Scene.findOne({
             where: {
-                parentId: parentId
+                parentId: parentId,
+                type: "monster"
             },
             order: db.Sequelize.literal('rand()'),
             limit : 1

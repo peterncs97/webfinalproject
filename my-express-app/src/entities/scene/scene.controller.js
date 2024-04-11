@@ -14,8 +14,8 @@ class SceneController extends BaseController{
         this.responseHandler(res, dtos);
     }
 
-    async getRandomChildSceneById(req, res){
-        const dtos = await this.#sceneService.getRandomOneSceneByParentId(req);
+    async getRandomChildMonsterSceneById(req, res){
+        const dtos = await this.#sceneService.getRandomMonsterSceneByParentId(req);
         this.responseHandler(res, dtos);
     }
 
