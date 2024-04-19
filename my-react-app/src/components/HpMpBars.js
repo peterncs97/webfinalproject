@@ -1,6 +1,6 @@
 const HpMpBars = ({ hp, mp }) => {
   return (
-    <div className='row justify-content-center border-bottom border-3 py-2'>
+    <div className='row justify-content-center py-2'>
       <div className="row justify-content-center align-items-center pb-1">
         <span className="col-2 badge rounded-pill bg-danger">HP</span>
         <div className="col-9">
