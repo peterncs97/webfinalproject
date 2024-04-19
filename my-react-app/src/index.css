@@ -21,7 +21,7 @@
     flex-direction: column-reverse;
 }
 
-.hide {
+.hide-fadeout {
     animation: fadeout 0.5s linear forwards;
 }
 
@@ -39,7 +39,7 @@
     }
 }
 
-.show {
+.show-fadein {
     animation: fadein 0.5s linear forwards;
 }
 

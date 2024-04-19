@@ -51,7 +51,7 @@ const Scene = ({ currSceneId, setCurrSceneId, prevSceneId, setPrevSceneId, setIs
   if (!currScene) return null;
 
   return (
-    <div className={opacity ? "show" : "hide"}>
+    <div className={opacity ? "show-fadein" : "hide-fadeout"}>
       <div className='row justify-content-center py-2 border border-3 bg-light'>
         <div className='row p-2'>
           <h3 className='text-center'>{currScene.name}</h3>
