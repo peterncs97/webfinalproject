@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import ItemDetail from '../components/Item/ItemDetail';
 import ItemContainer from '../components/Item/ItemContainer';
 
 import items from '../data/item.json';
+import { StateContext } from './Layout';
 
-const Trade = ({ setIsTrade }) => {
+const Trade = () => {
+	const { setState } = useContext(StateContext);
 	const [currentItem, setCurrentItem] = useState(null);
 	const [npcItemList, setNpcItemList] = useState([]);
 	const [playerItemList, setPlayerItemList] = useState([]);
@@ -40,7 +42,7 @@ const Trade = ({ setIsTrade }) => {
 
 	const settle = () => {
 		//TODO: settlement request to backend
-		setIsTrade(false);
+		setState('default');
 	}
 
 	return (

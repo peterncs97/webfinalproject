@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from "axios";
 import { api_url } from '../config';
 
 import OptionList from '../components/OptionList';
+import { CurrSceneContext } from './Layout';
 
-const Scene = ({ currSceneId, setCurrSceneId, prevSceneId, setPrevSceneId, setIsBattle, setIsTrade, setIsDialogue }) => {
+const Scene = () => {
+  const { currSceneId } = useContext(CurrSceneContext);
   const [currScene, setCurrentScene] = useState(null);
   const [opacity, setOpacity] = useState(false);
 
@@ -18,35 +20,6 @@ const Scene = ({ currSceneId, setCurrSceneId, prevSceneId, setPrevSceneId, setIs
       return () => clearTimeout(timeout);
     });
   }, [currSceneId]);
-
-  const search = () => {
-    var parentId;
-    if (currScene.type === "victory"){
-      parentId = prevSceneId;
-    } else {
-      setPrevSceneId(currSceneId);
-      parentId = currSceneId;
-    }
-    axios.get(`${api_url}/scene/randchild/${parentId}`).then((response) => {
-      setCurrentScene(response.data.data);
-    });
-    setIsBattle(true);
-  }
-
-  const back = () => {
-    setCurrSceneId((currScene.parentId !== 0) ? currScene.parentId : prevSceneId);
-    setIsBattle(false);
-    setIsTrade(false);
-  }
-
-  const trade = () => {
-    setIsTrade(true); 
-  }
-
-  const event = () => {
-    setPrevSceneId(currSceneId);
-    setIsDialogue(true);
-  }
 
   if (!currScene) return null;
 
@@ -66,7 +39,7 @@ const Scene = ({ currSceneId, setCurrSceneId, prevSceneId, setPrevSceneId, setIs
         </div>
         <div className='row'>
           <ul className="list-group list-group-horizontal justify-content-center">
-            <OptionList currScene={currScene} setCurrSceneId={setCurrSceneId} search={search} back={back} trade={trade} event={event} />
+            <OptionList currScene={currScene} setCurrentScene={setCurrentScene}/>
           </ul>
         </div>
       </div>
