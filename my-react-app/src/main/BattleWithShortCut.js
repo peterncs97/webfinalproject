@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+
 import BattleCountDown from '../components/BattleCountDown';
 import HpMpBars from '../components/HpMpBars';
 import SkillBar from '../components/SkillBar';
@@ -35,7 +36,7 @@ const BattleWithShortCut = ({  }) => {
 		}
 	];
 
-	const countDown = 2;
+	const countDown = 10;
 
 	const [currSkillId, setCurrSkillId] = useState(null);
 	const [isCountDown, setIsCountDown] = useState(false);
@@ -90,11 +91,10 @@ const BattleWithShortCut = ({  }) => {
 				<BattleLog battleLog={battleLog} />
 				<AlwaysScrollToBottom />
 			</div>
-
 			{isCountDown ?
 				<>
 					<BattleCountDown count={currCountDown} />
-					<Typer spell={spell}/>
+					<Typer spell={spell} setCurrCountDown={setCurrCountDown} />
 				</>
 				: <SkillBar skills={skills} setCurrSkillId={setCurrSkillId} isCountDown={isCountDown} />
 			}
