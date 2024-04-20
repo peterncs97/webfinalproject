@@ -10,6 +10,8 @@ const fs = require('fs');
 
 const commentRouter = require('./entities/comment/comment.router');
 const sceneRouter = require('./entities/scene/scene.router');
+const characterRouter = require('./entities/creature/character/character.router');
+const monsterRouter = require('./entities/creature/monster/monster.router');
 
 const app = express();
 
@@ -40,6 +42,8 @@ db.sequelize.sync()
 // Routes
 app.use('/comment', commentRouter);
 app.use('/scene', sceneRouter);
+app.use('/character', characterRouter);
+app.use('/monster', monsterRouter);
 
 // Guard routes
 app.use(function (req, res, next) {

@@ -1,5 +1,5 @@
 const dbConfig = require("./db.config.js");
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
@@ -18,7 +18,12 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.comment = require("../entities/comment/comment.model.js")(sequelize, Sequelize);
+//db.comment = require("../entities/comment/comment.model.js")(sequelize, Sequelize);
 db.scene = require("../entities/scene/scene.model.js")(sequelize, Sequelize);
+
+const { Character, Monster, Attribute} = require("../entities/creature/creature.model.js")(sequelize, Sequelize);
+db.character = Character;
+db.monster = Monster;
+db.attribute = Attribute;
 
 module.exports = db;
