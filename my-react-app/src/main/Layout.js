@@ -4,7 +4,6 @@ import CharacterModal from "../components/CharacterModal";
 import Scene from "./Scene";
 import Backpack from "./Backpack";
 import Battle from "./Battle";
-import BattleWithShortCut from "./BattleWithShortCut";
 import Trade from "./Trade";
 import Dialogue from "./Dialogue";
 
@@ -42,7 +41,7 @@ const Layout = () => {
         <div className="container px-4 py-2 show-slow">
           {
             isBattle ? 
-              <BattleWithShortCut prevSceneId={prevSceneId} setCurrSceneId={setCurrSceneId} /> 
+              <Battle prevSceneId={prevSceneId} setCurrSceneId={setCurrSceneId} /> 
             : isTrade ?
             <Trade setIsTrade={setIsTrade} />
             : isDialogue ?

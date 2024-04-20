@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import CharacterInfo from "../components/CharacterInfo";
-import ItemDetail from '../components/ItemDetail';
-import ItemContainer from '../components/ItemContainer';
+import ItemDetail from '../components/Item/ItemDetail';
+import ItemContainer from '../components/Item/ItemContainer';
 
 import items from '../data/item.json';
 
