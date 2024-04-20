@@ -1,0 +1,22 @@
+[
+  {
+			"id": 0,
+			"name": "火球",
+			"spell": "Fire Ballllllllll"
+  },
+  {
+			"id": 1,
+			"name": "冰錐",
+			"spell": "Ice Coneeeeeeeeee"
+  },
+  {
+			"id": 2,
+			"name": "落雷",
+			"spell": "Thuder Storm"
+  },
+  {
+			"id": 3,
+			"name": "狂風",
+			"spell": "Wind Storm"
+  }
+]

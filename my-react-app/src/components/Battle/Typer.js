@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const Typer = ({ spell, setCurrCountDown }) => {
+const Typer = ({ spell, setCountDown }) => {
   const [text, setText] = useState('');
   
   useEffect(() => {
@@ -14,12 +14,12 @@ const Typer = ({ spell, setCurrCountDown }) => {
 
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, []);
+  }, [spell]);
 
   useEffect(() => {
     if (text.length === spell.length && spell.localeCompare(text) === 0)
-      setCurrCountDown(0);
-  }, [text]);
+      setCountDown(0);
+  }, [text, spell, setCountDown]);
 
   const completedText = spell.slice(0, text.length).split('').map((char, index) => {
     if (char === text[index])
