@@ -4,8 +4,8 @@ module.exports = (sequelize, Sequelize) => {
   
   class Attribute extends Model {
     getAttributeTable(options) {
-      if (!this.attributeTableType) return Promise.resolve(null);
-      const mixinMethodName = `get${uppercaseFirst(this.attributeTableType)}`;
+      if (!this.attributeableType) return Promise.resolve(null);
+      const mixinMethodName = `get${uppercaseFirst(this.attributeableType)}`;
       return this[mixinMethodName](options);
     }
   }
@@ -19,8 +19,8 @@ module.exports = (sequelize, Sequelize) => {
       attack: Sequelize.INTEGER,
       defence: Sequelize.INTEGER,
       skillSet: Sequelize.STRING,
-      attributeTableId: Sequelize.INTEGER,
-      attributeTableType: Sequelize.STRING,
+      attributeableId: Sequelize.INTEGER,
+      attributeableType: Sequelize.STRING,
     },
     { sequelize, modelName: 'attribute' },
   );

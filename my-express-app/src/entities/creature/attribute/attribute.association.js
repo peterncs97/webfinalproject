@@ -1,29 +1,29 @@
 module.exports = (Character, Monster, Attribute) => {
   Character.hasOne(Attribute, {
-    foreignKey: 'attributeTableId',
+    foreignKey: 'attributeableId',
     constraints: false,
     scope: {
-      attributeTableType: 'character',
+      attributeableType: 'character',
     },
   });
-  Attribute.belongsTo(Character, { foreignKey: 'attributeTableId', constraints: false });
+  Attribute.belongsTo(Character, { foreignKey: 'attributeableId', constraints: false });
 
   Monster.hasOne(Attribute, {
-    foreignKey: 'attributeTableId',
+    foreignKey: 'attributeableId',
     constraints: false,
     scope: {
-      attributeTableType: 'monster',
+      attributeableType: 'monster',
     },
   });
-  Attribute.belongsTo(Monster, { foreignKey: 'attributeTableId', constraints: false });
+  Attribute.belongsTo(Monster, { foreignKey: 'attributeableId', constraints: false });
 
   Attribute.addHook('afterFind', findResult => {
     if (!Array.isArray(findResult)) findResult = [findResult];
     for (const instance of findResult) {
-      if (instance.attributeTableType === 'character' && instance.character !== undefined) {
-        instance.attributeTable = instance.character;
-      } else if (instance.attributeTableType === 'monster' && instance.monster !== undefined) {
-        instance.attributeTable = instance.monster;
+      if (instance.attributeableType === 'character' && instance.character !== undefined) {
+        instance.attributeable = instance.character;
+      } else if (instance.attributeableType === 'monster' && instance.monster !== undefined) {
+        instance.attributeable = instance.monster;
       }
       // To prevent mistakes:
       delete instance.character;
