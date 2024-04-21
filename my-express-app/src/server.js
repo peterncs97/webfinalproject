@@ -44,6 +44,7 @@ db.sequelize.sync()
 // Use Router
 app.use('/comment', commentRouter);
 app.use('/scene', sceneRouter);
+app.use('/battle', battleRouter);
 
 // Guard routes
 app.use(function (req, res, next) {
