@@ -11,6 +11,8 @@ module.exports = (sequelize, Sequelize) => {
   }
   Attribute.init(
     {
+      currhp: Sequelize.INTEGER,
+      currmp: Sequelize.INTEGER,
       maxhp: Sequelize.INTEGER,
       maxmp: Sequelize.INTEGER,
       power: Sequelize.INTEGER,

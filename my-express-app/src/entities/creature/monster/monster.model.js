@@ -6,7 +6,10 @@ module.exports = (sequelize, Sequelize) => {
     {
       name: Sequelize.STRING,
       rarity: Sequelize.STRING,
-      dropItem: Sequelize.STRING,
+      experience: Sequelize.INTEGER,
+      money: Sequelize.INTEGER,
+      imagePath: Sequelize.STRING,
+      imageDescription: Sequelize.STRING,
     },
     { sequelize, modelName: 'monster' },
   );

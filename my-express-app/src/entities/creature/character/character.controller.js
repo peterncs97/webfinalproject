@@ -5,14 +5,37 @@ class CharacterController extends BaseController{
     #characterService = new CharacterService();
     
     async getCharacterById(req, res){
-        const dtos = await this.#characterService.getCharacterById(req);
+        const dtos = await this.#characterService.getCharacterById(req.params.id);
         this.responseHandler(res, dtos);
     }
 
     async createCharacter(req, res){
-        const dtos = await this.#characterService.createCharacter(req);
+        const dtos = await this.#characterService.createCharacter(req.body.name, req.body.profession);
         this.responseHandler(res, dtos);
     }
+
+    async grantCharacterItems(req, res){
+        const dtos = await this.#characterService.grantCharacterItems(
+            req.body.characterId,
+            req.body.items);
+        this.responseHandler(res, dtos);
+    }
+
+    async removeCharacterItems(req, res){
+        const dtos = await this.#characterService.removeCharacterItems(
+            req.body.characterId,
+            req.body.items);
+        this.responseHandler(res, dtos);
+    }
+
+    async setCharacterItems(req, res){
+        const dtos = await this.#characterService.setCharacterItems(
+            req.body.characterId,
+            req.body.items);
+        this.responseHandler(res, dtos);
+    }
+
+
 }
 
 module.exports = CharacterController;

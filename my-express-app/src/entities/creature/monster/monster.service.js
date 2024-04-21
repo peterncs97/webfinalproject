@@ -1,28 +1,33 @@
 const MonsterRepository = require('./monster.repository');
+const ItemService = require('../../item/item.service');
 
 class MonsterService {
     #monsterRepository = new MonsterRepository();
+    #itemService = new ItemService();
 
-    async getMonsterById(req) {
-        const dtos = await this.#monsterRepository.findMonsterById(req.params.id);
-        return dtos;
+    async getMonsterById(id) {
+        const monster = await this.#monsterRepository.findMonsterById(id);
+        return monster;
     }
 
-    async createMonster(req) {
-        const dto = await this.#monsterRepository.createMonster(
-            req.body.name,
-            req.body.rarity,
-            req.body.dropItem,
-            req.body.maxhp,
-            req.body.maxmp,
-            req.body.power,
-            req.body.agile,
-            req.body.luck,
-            req.body.attack,
-            req.body.defence,
-            req.body.skillSet
+    async createMonster(
+        name, rarity, experience, money, imagePath ,imageDescription, 
+        maxhp, maxmp, power, agile, luck, attack, defence, skillSet
+    ) {
+        const monster = await this.#monsterRepository.createMonster(
+            name, rarity, experience, money, imagePath, imageDescription, 
+            maxhp, maxmp, power, agile, luck, attack, defence, skillSet
         );
-        return dto;
+        return monster;
+    }
+
+    async setMonsterItems(id, itemIds) {
+        itemIds.sort((a, b) => a - b);
+        const itemModels = await this.#itemService.getItemsByIds(itemIds);
+
+        const monster = await this.getMonsterById(id);
+        await monster.setItems(itemModels);
+        return monster;
     }
 }
 

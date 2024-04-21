@@ -11,7 +11,6 @@ module.exports = (sequelize, Sequelize) => {
       money: Sequelize.INTEGER,
       equipmentWeaponId: Sequelize.INTEGER,
       equipmentBodyId: Sequelize.INTEGER,
-      items: Sequelize.STRING,
     },
     { sequelize, modelName: 'character' },
   );

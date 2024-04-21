@@ -1,14 +1,43 @@
 const db = require("../../../database/db");
 const Op = db.Sequelize.Op;
 const Character = db.character;
+const Attribute = db.attribute;
+const Item = db.item;
 
 class CharacterRepository{
     async findCharacterById(id){
-        return await Character.findByPk(id, { include: 'attribute' });
+        return await Character.findByPk(id, { 
+            include: [
+                Attribute, 
+                {
+                    model: Item,
+                    order: [['id', 'ASC']],
+                    through: {
+                        attributes: ['quantity'],
+                    },
+                }
+            ] 
+        });
+    }
+
+    async findCharacterWithAttributeById(id) {
+        return await Character.findByPk(id, { include: Attribute });
+    }
+
+    async findCharacterWithItemsById(id) {
+        return await Character.findByPk(id, {
+            include: {
+                model: Item,
+                order: [['id', 'ASC']],
+                through: {
+                    attributes: ['quantity'],
+                },
+            }
+        });
     }
 
     async createCharacter(name, profession){
-        return await Character.create(
+        const character = await Character.create(
             {
                 name: name,
                 profession: profession,
@@ -17,9 +46,10 @@ class CharacterRepository{
                 money: 0,
                 equipmentWeaponId: 1,
                 equipmentBodyId: 2,
-                items: '[1,2]',
 
                 attribute: {
+                    currhp: 100,
+                    currmp: 20,
                     maxhp: 100,
                     maxmp: 20,
                     power: 10,
@@ -31,9 +61,10 @@ class CharacterRepository{
                 }
             },
             {
-                include: 'attribute',
+                include: Attribute,
             }
         );
+        return character;
     }
 }
 
