@@ -21,9 +21,10 @@ db.sequelize = sequelize;
 //db.comment = require("../entities/comment/comment.model.js")(sequelize, Sequelize);
 db.scene = require("../entities/scene/scene.model.js")(sequelize, Sequelize);
 
-const { Character, Monster, Attribute} = require("../entities/creature/creature.model.js")(sequelize, Sequelize);
-db.character = Character;
-db.monster = Monster;
-db.attribute = Attribute;
+// creature
+db.character = require("../entities/creature/character/character.model.js")(sequelize, Sequelize);
+db.monster = require("../entities/creature/monster/monster.model.js")(sequelize, Sequelize);
+db.attribute = require("../entities/creature/attribute/attribute.model.js")(sequelize, Sequelize);
+require("../entities/creature/attribute/attribute.association.js")(db.character, db.monster, db.attribute);
 
 module.exports = db;
