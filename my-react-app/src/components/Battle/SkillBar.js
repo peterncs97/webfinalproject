@@ -1,19 +1,19 @@
 import { useEffect } from 'react';
 
-const SkillBar = ({ skills, setCurrSkillId, isCountDown }) => {
+const SkillBar = ({ skills, handleSkillUse, isCountDown }) => {
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (isCountDown) return;
 
       switch (event.key) {
         case 'q':
-          setCurrSkillId(0); break;
+          handleSkillUse(0); break;
         case 'w':
-          setCurrSkillId(1); break;
+          handleSkillUse(1); break;
         case 'e':
-          setCurrSkillId(2); break;
+          handleSkillUse(2); break;
         case 'r':
-          setCurrSkillId(3); break;
+          handleSkillUse(3); break;
         default:
           break;
       }
@@ -21,13 +21,13 @@ const SkillBar = ({ skills, setCurrSkillId, isCountDown }) => {
 
     window.addEventListener('keypress', handleKeyPress);
     return () => window.removeEventListener('keypress', handleKeyPress);
-  }, []);
+  }, [handleSkillUse, isCountDown]);
   
 
   const skillShortcuts = ['q', 'w', 'e', 'r'];
   const skillButtons = skills.map((skill, index) => {
     return (
-      <button key={index} type="button" className="btn btn-outline-primary btn-lg" onClick={() => setCurrSkillId(index)}>
+      <button key={index} type="button" className="btn btn-outline-primary btn-lg" onClick={() => handleSkillUse(index)}>
         {skill.name} <span className="badge bg-primary">{skillShortcuts[index].toUpperCase()}</span>
       </button>
     );

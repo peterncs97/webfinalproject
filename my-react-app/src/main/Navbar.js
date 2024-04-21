@@ -31,7 +31,9 @@ const Navbar = () => {
 
 					<div className="flex-grow-1">
 						<div className="d-flex justify-content-end">
-							<img className="img-fluid icon mx-2" data-bs-toggle="modal" data-bs-target="#CharacterModal" src="images/equipment.svg" alt="setting" />
+							<img className="img-fluid icon mx-2" 
+								// data-bs-toggle="modal" data-bs-target="#CharacterModal" 
+								src="images/equipment.svg" alt="setting" />
 							<img className="img-fluid icon mx-2" src="images/book.svg" alt="setting" />
 							<img className="img-fluid icon mx-2" src="images/about.svg" alt="setting" />
 							<img className="img-fluid icon mx-2" src="images/achievement.svg" alt="setting" />
