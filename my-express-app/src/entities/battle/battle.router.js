@@ -1,7 +1,7 @@
 const BattleController=require("./battle.controller")
 const BaseRouter = require('../../base/BaseRouter');
 
-class SceneRouter extends BaseRouter {
+class BattleRouter extends BaseRouter {
     #controller = new BattleController();
     
     constructor(){
@@ -33,7 +33,7 @@ class SceneRouter extends BaseRouter {
             2. init the data in Battling Table(all to zero)
         ** output: charactor and monster status 
         ***/
-       this.router.post('/start-battle', (req, res, next) => this.#controller.startBattle(req, res, next));
+       this.router.post('/create-battle', (req, res, next) => this.#controller.createBattle(req, res, next));
         
 
         // --------------------------------------------/* Put: update backend*/-----------------------------------------------------------------------
@@ -73,6 +73,6 @@ class SceneRouter extends BaseRouter {
     }
 }
 
-const sceneRouter = new SceneRouter();
+const battleRouter = new BattleRouter();
 
-module.exports = sceneRouter.router;
+module.exports = battleRouter.router;
