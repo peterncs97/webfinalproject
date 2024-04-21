@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
   const uppercaseFirst = str => `${str[0].toUpperCase()}${str.substr(1)}`;
   
   class Attribute extends Model {
-    getAttributeTable(options) {
+    getAttributeable(options) {
       if (!this.attributeableType) return Promise.resolve(null);
       const mixinMethodName = `get${uppercaseFirst(this.attributeableType)}`;
       return this[mixinMethodName](options);
