@@ -74,7 +74,8 @@ const Trade = () => {
 				<div className='col-5 trade-info' style={{height: '200px'}}>
 					<BeforeTrading currentItem={selectedItem} belongto={belongto} gold={gold} currentItemNumber={currentItemNumber} setGold={setGold} setCurrentItemNumber={setCurrentItemNumber} />
 				</div>
-				<div className='col-2 border-start border-end border-3'>
+				<div className='col-2 border-start border-end border-3 d-flex justify-content-center align-items-center'>
+					<img className="img-fluid icon mx-2" src="images/swap.svg" style={{width: '75px', height: '75px'}}/>
 				</div>
 				<div className='col-5 trade-info' style={{height: '200px'}}>
 					<AfterTrading coinsAfterTrade={gold} itemsAfterTrade={currentItemNumber}/>

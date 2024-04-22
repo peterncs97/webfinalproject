@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 const BeforeTrading = ({ currentItem,belongto,gold,currentItemNumber,setGold,setCurrentItemNumber}) => {
     const [quantity, setQuantity] = useState(1);
     const [currentgold, setcurrentGold] = useState(gold);
+    const [transactionType, setTransactionType] = useState('賣出');
     const onTransaction = (amount) => {
         if (belongto === 'player'){
+            setTransactionType('賣出');
             setCurrentItemNumber(Number(currentItem.hodings) - Number(amount));
             setGold(currentgold + currentItem.price*amount);
         }
         if (belongto === 'npc'){
+            setTransactionType('買入');
             setCurrentItemNumber(Number(currentItem.hodings) + Number(amount));
             setGold(currentgold - currentItem.price*amount);
         }
@@ -67,7 +70,7 @@ const BeforeTrading = ({ currentItem,belongto,gold,currentItemNumber,setGold,set
                     type="button"
                     onClick={handleClick}
                 >
-                    結算
+                    {transactionType}
                 </button>
 			</div>
         </div>
