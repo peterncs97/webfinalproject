@@ -6,21 +6,23 @@ const BeforeTrading = ({ currentItem,belongto,gold,currentItemNumber,setGold,set
     const onTransaction = (amount) => {
         if (belongto === 'player'){
             setCurrentItemNumber(Number(currentItem.hodings) - Number(amount));
-            setGold(gold + currentItem.price * amount);
+            setGold(currentgold + currentItem.price*amount);
         }
         if (belongto === 'npc'){
             setCurrentItemNumber(Number(currentItem.hodings) + Number(amount));
-            setGold(gold - currentItem.price * amount);
+            setGold(currentgold - currentItem.price*amount);
         }
       };
 
     const handleQuantityChange = (event) => {
         setQuantity(event.target.value);
+        onTransaction(event.target.value);
     }
 
     const handleClick = () => {
-        handleBuy();
         updatecurrentGold();
+        handleBuy();
+        setQuantity(0);
       };
     
     const updatecurrentGold = () => {
