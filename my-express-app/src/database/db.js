@@ -4,7 +4,17 @@ const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
-    
+    dialectOptions: {
+        dateStrings: true,
+        typeCast: function (field, next) { // for reading from database
+            if (field.type === 'DATETIME') {
+                return field.string()
+            }
+            return next()
+        },
+    },
+    timezone: "+08:00",
+    logging: dbConfig.logging,
     pool: {
         max: dbConfig.pool.max,
         min: dbConfig.pool.min,
