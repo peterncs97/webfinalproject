@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "frontend": "cd my-react-app && npm start",
+    "frontend-install-start": "cd my-react-app && npm install && npm start",
+    "backend": "cd my-express-app && npm start",
+    "backend-install-start": "cd my-express-app && npm install && npm start",
+    "install-start": "concurrently -n \"BACKEND,FRONTEND\" \"npm run backend-install-start\" \"npm run frontend-install-start\"",
+    "start": "concurrently -n \"BACKEND,FRONTEND\" \"npm run backend\" \"npm run frontend\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

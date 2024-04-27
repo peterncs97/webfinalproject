@@ -13,6 +13,7 @@ const commentRouter = require('./entities/comment/comment.router');
 const sceneRouter = require('./entities/scene/scene.router');
 const characterRouter = require('./entities/creature/character/character.router');
 const monsterRouter = require('./entities/creature/monster/monster.router');
+const itemRouter = require('./entities/item/item.router');
 const battleRouter = require('./entities/battle/battle.router');
 
 const app = express();
@@ -27,7 +28,7 @@ app.use(cors());
 app.use(helmet());
 
 // DB Connection
-db.sequelize.sync()
+db.sequelize.sync({ alter: true })
     .then(() => {
         console.log("Synced db.");
         
@@ -44,6 +45,9 @@ db.sequelize.sync()
 // Use Router
 app.use('/comment', commentRouter);
 app.use('/scene', sceneRouter);
+app.use('/character', characterRouter);
+app.use('/monster', monsterRouter);
+app.use('/item', itemRouter);
 app.use('/battle', battleRouter);
 
 // Guard routes

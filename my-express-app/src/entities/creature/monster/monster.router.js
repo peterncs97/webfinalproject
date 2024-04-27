@@ -11,6 +11,7 @@ class MonsterRouter extends BaseRouter {
     registerRoute(){
         this.router.get('/:id', (req, res, next) => this.#controller.getMonsterById(req, res, next));
         this.router.post('/create', (req, res, next) => this.#controller.createMonster(req, res, next));
+        this.router.post('/setitems', (req, res, next) => this.#controller.setMonsterItems(req, res, next));
     }
 }
 
