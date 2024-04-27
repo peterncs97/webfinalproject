@@ -44,21 +44,56 @@ const Battle = () => {
 
 	return (
 		<div className='row justify-content-center border border-3'>
+			{
+			/* Section1: character state */}
 			<div className='row border-bottom border-3'>
 				<HpMpBars />
 			</div>
+
+			{/* Section2: battle log  */}
 			<div className='row justify-content-center overflow-auto py-2 border-bottom border-3' style={{ height: 150 }}>
 				<BattleLog battleLog={battleLog} />
 				<AlwaysScrollToBottom />
 			</div>
-			{isCountDown ?
+
+			{/* Section3: user interaction; logic: ternary condition for timeout of user skill input */}
+			{ isCountDown ?
+				// Action state: user need to type something in a period of time  
 				<>
 					<BattleCountDown count={countDown} />
 					<Typer spell={skills[skillId].spell} setCountDown={setCountDown} />
 				</>
-				: <SkillBar skills={skills} handleSkillUse={handleSkillUse} isCountDown={isCountDown} />
+				: 
+				// Decision state: user can choose to do something, e.g. attack, escape, uses spells... 
+				<>
+				<SkillBar skills={skills} handleSkillUse={handleSkillUse} isCountDown={isCountDown} />
+				</>
 			}
 		</div>
+			// TODO: Battle Sib Modules
+			// Design Monster Actions 
+			// Design Character's Status UI
+			// Design End of Battle UI
+
+			// TODO: in Section1
+			// 1. show the HP, MP digit value
+			// Advance: animation for HP, MP changes  
+			
+			// TODO: in Section2
+			// 1. Deal with Monster Action 
+			
+			// TODO: in Section3
+			// 1. enhance readibility: use a function or a class to deal with the conditionals
+				// TODO: in Section3, BattleCountDown: deal with the time limit of the mechanism 
+				// 1. Early stop: Enter
+				// 2. Send result to backend
+				 
+				// TODO: in Section3, Type: major battle mechanism
+				// 1. modify the skill Typing UI: use hint with user input log instead of following the fix prompt
+				// 2. keypressHandling: Enter
+				// 3. Send result to backend and update the UI 
+				// TODO: in Section3, SkillBar: for showing the Actions user can interact with 
+				// 1. keypressHandling: A, D, -, =
 	);
 }
 
