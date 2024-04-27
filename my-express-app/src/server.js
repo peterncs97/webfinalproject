@@ -13,7 +13,7 @@ const commentRouter = require('./entities/comment/comment.router');
 const sceneRouter = require('./entities/scene/scene.router');
 const characterRouter = require('./entities/creature/character/character.router');
 const monsterRouter = require('./entities/creature/monster/monster.router');
-const battleRouter = require('./entities/scene/battle.router');
+const battleRouter = require('./entities/battle/battle.router');
 
 const app = express();
 
