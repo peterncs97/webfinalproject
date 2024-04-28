@@ -28,9 +28,8 @@ app.use(helmet());
 db.sequelize.sync({ alter: true })
     .then(() => {
         console.log("Synced db.");
-        
         // Initialize the database
-        var sql_string = fs.readFileSync('./src/database/scene.sql', 'utf8');
+        var sql_string = fs.readFileSync('./src/database/init.sql', 'utf8');
         sql_string = sql_string.replace(/\r?\n|\r/g, " ");
         const queries = sql_string.split(';');
         queries.filter(query => query).forEach(query => db.sequelize.query(query));

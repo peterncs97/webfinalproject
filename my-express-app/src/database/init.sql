@@ -22,3 +22,17 @@ ON DUPLICATE KEY UPDATE
   `updatedAt` = VALUES(`updatedAt`),
   `createdAt` = VALUES(`createdAt`)
 ;
+
+INSERT INTO
+  `items` (`id`,`name`,`type`,`price`,`description`,`createdAt`,`updatedAt`)
+VALUES
+  (1, '生命藥水', 'consumable', 50, '回復生命', NOW(), NOW()),
+  (2, '魔力藥水', 'consumable', 50, '回復魔力', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `name` = VALUES(`name`),
+  `type` = VALUES(`type`),
+  `price` = VALUES(`price`),
+  `description` = VALUES(`description`),
+  `updatedAt` = VALUES(`updatedAt`),
+  `createdAt` = VALUES(`createdAt`)
+;

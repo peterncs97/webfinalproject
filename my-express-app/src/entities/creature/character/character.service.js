@@ -18,17 +18,23 @@ class CharacterService {
     }
 
     async createCharacter(name, profession) {
-        return await this.#characterRepository.createCharacter(name, profession);
+        const character = await this.#characterRepository.createCharacter(name, profession);
+        
+        const items = await this.#itemService.getItemsByIds([1, 2]);
+        items.forEach((item) => { item.item_ownership = { quantity: 10 }; });
+        await this.#characterRepository.addOrUpdateCharacterItems(character, items);
+
+        return await this.getCharacterById(character.id);
     }
 
     async grantCharacterItems(characterId, items) {
+        const character = await this.getCharacterWithItemsById(characterId);
+        const characterItems = character.items;
+        
         items.sort((a, b) => a.id - b.id);
         const itemIds = items.map(item => item.id);
         const itemModels = await this.#itemService.getItemsByIds(itemIds);
-
-        const character = await this.getCharacterWithItemsById(characterId);
-        const characterItems = character.items;
-
+  
         items.forEach((item, index) => {
             var newQuantity = item.quantity;
             const characterItem = characterItems.find(characterItem => characterItem.id === item.id);
@@ -37,8 +43,9 @@ class CharacterService {
             
             itemModels[index].item_ownership = {  quantity: newQuantity };
         });
-        await character.addItems(itemModels)
-        return character;
+        
+        await this.#characterRepository.addOrUpdateCharacterItems(character, itemModels);
+        return await this.getCharacterWithItemsById(characterId);
     }
 
     async removeCharacterItems(characterId, items) {
@@ -51,31 +58,34 @@ class CharacterService {
             if (characterItem){
                 const newQuantity = characterItem.item_ownership.quantity - item.quantity;
                 if (newQuantity <= 0)
-                    character.removeItem(characterItem);
+                    this.#characterRepository.removeCharacterItem(character, characterItem);
                 else {
                     characterItem.item_ownership = { quantity: newQuantity };
                     itemModels.push(characterItem);
                 }
             }
         });
-        await character.addItems(itemModels)
-        return character;
+
+        await this.#characterRepository.addOrUpdateCharacterItems(character, itemModels);
+        return await this.getCharacterWithItemsById(characterId);
     }
 
-    async setCharacterItems(characterId, items) {
+    async tradeCharacterItems(characterId, items, money) {
+        const character = await this.getCharacterWithItemsById(characterId);
+        await character.increment('money', { by: money })
+
         items.sort((a, b) => a.id - b.id);
         const itemIds = items.map(item => item.id);
         const itemModels = await this.#itemService.getItemsByIds(itemIds);
-
-        const character = await this.getCharacterWithItemsById(characterId);
 
         items.forEach((item, index) => {
             itemModels[index].item_ownership = {
                 quantity: item.quantity
             };
         });
-        await character.setItems(itemModels)
-        return character;
+
+        await this.#characterRepository.addOrUpdateCharacterItems(character, itemModels);
+        return await this.getCharacterWithItemsById(characterId);
     }
 }
 

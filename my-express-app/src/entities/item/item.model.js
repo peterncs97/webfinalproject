@@ -9,7 +9,11 @@ module.exports = (sequelize, Sequelize) => {
       price: Sequelize.INTEGER,
       description: Sequelize.STRING,
     },
-    { sequelize, modelName: 'item' },
+    { 
+      defaultScope: {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      },
+      sequelize, modelName: 'item' },
   );
 
   return Item;

@@ -16,17 +16,23 @@ class CharacterRepository{
                 {
                     model: Item,
                     order: [['id', 'ASC']],
-                    attributes: { exclude: ['createdAt', 'updatedAt']},
                     through: {
                         attributes: ['quantity'],
-                    },
+                    }
                 }
             ] 
         });
     }
 
     async findCharacterWithCombatAttributeById(id) {
-        return await Character.findByPk(id, { include: CombatAttribute });
+        return await Character.findByPk(id, { 
+            include: [
+                {
+                    model: CombatAttribute,
+                    attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'creatureId', 'creatureType'] }
+                }
+            ] 
+        });
     }
 
     async findCharacterWithItemsById(id) {
@@ -48,10 +54,9 @@ class CharacterRepository{
                 profession: profession,
                 level: 1,
                 experience: 0,
-                money: 0,
+                money: 500,
                 equipmentWeaponId: 1,
                 equipmentBodyId: 2,
-
                 combat_attribute: {
                     currhp: 100,
                     currmp: 20,
@@ -63,13 +68,25 @@ class CharacterRepository{
                     attack: 10,
                     defence: 10,
                     skillSet: '[1,2]'
-                }
+                },
             },
             {
-                include: CombatAttribute,
+                include: CombatAttribute
             }
         );
         return character;
+    }
+
+    async addOrUpdateCharacterItems(character, itemModels){
+        return await character.addItems(itemModels);
+    }
+
+    async removeCharacterItem(character, itemModel){
+        return await character.removeItem(itemModel);
+    }
+
+    async setCharacterItems(character, itemModels){
+        return await character.setItems(itemModels);
     }
 }
 
