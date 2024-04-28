@@ -1,14 +1,14 @@
 const db = require("../../../database/db");
 const Op = db.Sequelize.Op;
 const Monster = db.monster;
-const Attribute = db.attribute;
+const CombatAttribute = db.combatAttribute;
 const Item = db.item;
 
 class MonsterRepository{
     async findMonsterById(id){
         return await Monster.findByPk(id, {
             include: [
-                Attribute,
+                CombatAttribute,
                 {
                     model: Item,
                     order: [['id', 'ASC']],
@@ -33,7 +33,7 @@ class MonsterRepository{
                 imagePath: imagePath,
                 imageDescription: imageDescription,
                 
-                attribute: {
+                combat_attribute: {
                     currhp: maxhp,
                     currmp: maxmp,
                     maxhp: maxhp,
@@ -47,7 +47,7 @@ class MonsterRepository{
                 }
             },
             {
-                include: 'attribute',
+                include: CombatAttribute,
             }
         );
     }
