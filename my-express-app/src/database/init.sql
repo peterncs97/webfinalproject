@@ -36,3 +36,29 @@ ON DUPLICATE KEY UPDATE
   `updatedAt` = VALUES(`updatedAt`),
   `createdAt` = VALUES(`createdAt`)
 ;
+
+INSERT INTO
+  `merchants` (`id`,`name`, `sceneId`, `createdAt`,`updatedAt`)
+VALUES
+  (1, '雜貨店主', 3, NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `name` = VALUES(`name`),
+  `sceneId` = VALUES(`sceneId`),
+  `updatedAt` = VALUES(`updatedAt`),
+  `createdAt` = VALUES(`createdAt`)
+;
+
+INSERT INTO
+  `item_ownerships` (`id`,`itemId`, `ownerId`, `ownerType`, `quantity`, `createdAt`,`updatedAt`)
+VALUES
+  (1, 1, 1, 'merchant', 0, NOW(), NOW()),
+  (2, 2, 1, 'merchant', 0, NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `id` = VALUES(`id`),
+  `itemId` = VALUES(`itemId`),
+  `ownerId` = VALUES(`ownerId`),
+  `ownerType` = VALUES(`ownerType`),
+  `quantity` = VALUES(`quantity`),
+  `updatedAt` = VALUES(`updatedAt`),
+  `createdAt` = VALUES(`createdAt`)
+;

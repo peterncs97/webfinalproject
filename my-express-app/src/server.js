@@ -12,6 +12,7 @@ const sceneRouter = require('./entities/scene/scene.router');
 const characterRouter = require('./entities/creature/character/character.router');
 const monsterRouter = require('./entities/creature/monster/monster.router');
 const itemRouter = require('./entities/item/item.router');
+const merchantRouter = require('./entities/merchant/merchant.router');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/scene', sceneRouter);
 app.use('/character', characterRouter);
 app.use('/monster', monsterRouter);
 app.use('/item', itemRouter);
+app.use('/merchant', merchantRouter);
 
 // Guard routes
 app.use(function (req, res, next) {

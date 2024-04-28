@@ -36,6 +36,9 @@ db.monster = require("../entities/creature/monster/monster.model.js")(sequelize,
 db.combatAttribute = require("../entities/creature/combatAttribute/combatAttribute.model.js")(sequelize, Sequelize);
 require("../entities/creature/combatAttribute/combatAttribute.association.js")(db.character, db.monster, db.combatAttribute);
 
+db.merchant = require("../entities/merchant/merchant.model.js")(sequelize, Sequelize);
+require("../entities/merchant/merchant.association.js")(db.scene, db.merchant);
+
 db.item = require("../entities/item/item.model.js")(sequelize, Sequelize);
 require("../entities/item/item.association.js")(db);
 

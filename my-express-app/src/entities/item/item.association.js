@@ -5,6 +5,7 @@ module.exports = (db) => {
   const Item = db.item;
   const Character = db.character;
   const Monster = db.monster;
+  const Merchant = db.merchant;
 
   class ItemOwnership extends Model { }
   ItemOwnership.init(
@@ -67,6 +68,26 @@ module.exports = (db) => {
     constraints: false,
   });
   Item.belongsToMany(Monster, {
+    through: {
+      model: ItemOwnership,
+      unique: false,
+    },
+    foreignKey: 'itemId',
+    constraints: false,
+  });
+
+  Merchant.belongsToMany(Item, {
+    through: {
+      model: ItemOwnership,
+      unique: false,
+      scope: {
+        ownerType: 'merchant',
+      },
+    },
+    foreignKey: 'ownerId',
+    constraints: false,
+  });
+  Item.belongsToMany(Merchant, {
     through: {
       model: ItemOwnership,
       unique: false,
