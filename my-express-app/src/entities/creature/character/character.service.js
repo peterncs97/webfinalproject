@@ -33,9 +33,9 @@ class CharacterService {
             var newQuantity = item.quantity;
             const characterItem = characterItems.find(characterItem => characterItem.id === item.id);
             if (characterItem)
-                newQuantity += characterItem.item_itemable.quantity;
+                newQuantity += characterItem.item_ownership.quantity;
             
-            itemModels[index].item_itemable = {  quantity: newQuantity };
+            itemModels[index].item_ownership = {  quantity: newQuantity };
         });
         await character.addItems(itemModels)
         return character;
@@ -49,11 +49,11 @@ class CharacterService {
         items.forEach((item) => {
             const characterItem = characterItems.find(characterItem => characterItem.id === item.id);
             if (characterItem){
-                const newQuantity = characterItem.item_itemable.quantity - item.quantity;
+                const newQuantity = characterItem.item_ownership.quantity - item.quantity;
                 if (newQuantity <= 0)
                     character.removeItem(characterItem);
                 else {
-                    characterItem.item_itemable = { quantity: newQuantity };
+                    characterItem.item_ownership = { quantity: newQuantity };
                     itemModels.push(characterItem);
                 }
             }
@@ -70,7 +70,7 @@ class CharacterService {
         const character = await this.getCharacterWithItemsById(characterId);
 
         items.forEach((item, index) => {
-            itemModels[index].item_itemable = {
+            itemModels[index].item_ownership = {
                 quantity: item.quantity
             };
         });

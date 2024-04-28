@@ -6,8 +6,8 @@ module.exports = (db) => {
   const Character = db.character;
   const Monster = db.monster;
 
-  class Item_Itemable extends Model { }
-  Item_Itemable.init(
+  class ItemOwnership extends Model { }
+  ItemOwnership.init(
     {
       id: {
         type: Sequelize.INTEGER,
@@ -19,12 +19,12 @@ module.exports = (db) => {
         type: Sequelize.INTEGER,
         unique: 'ii_unique_constraint',
       },
-      itemableId: {
+      ownerId: {
         type: Sequelize.INTEGER,
         unique: 'ii_unique_constraint',
         references: null,
       },
-      itemableType: {
+      ownerType: {
         type: Sequelize.STRING,
         unique: 'ii_unique_constraint',
       },
@@ -32,23 +32,23 @@ module.exports = (db) => {
         type: Sequelize.INTEGER
       }
     },
-    { sequelize, modelName: 'item_itemable' },
+    { sequelize, modelName: 'item_ownership' },
   );
 
   Character.belongsToMany(Item, {
     through: {
-      model: Item_Itemable,
+      model: ItemOwnership,
       unique: false,
       scope: {
-        itemableType: 'character',
+        ownerType: 'character',
       },
     },
-    foreignKey: 'itemableId',
+    foreignKey: 'ownerId',
     constraints: false,
   });
   Item.belongsToMany(Character, {
     through: {
-      model: Item_Itemable,
+      model: ItemOwnership,
       unique: false,
     },
     foreignKey: 'itemId',
@@ -57,18 +57,18 @@ module.exports = (db) => {
 
   Monster.belongsToMany(Item, {
     through: {
-      model: Item_Itemable,
+      model: ItemOwnership,
       unique: false,
       scope: {
-        itemableType: 'monster',
+        ownerType: 'monster',
       },
     },
-    foreignKey: 'itemableId',
+    foreignKey: 'ownerId',
     constraints: false,
   });
   Item.belongsToMany(Monster, {
     through: {
-      model: Item_Itemable,
+      model: ItemOwnership,
       unique: false,
     },
     foreignKey: 'itemId',

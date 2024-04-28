@@ -2,14 +2,14 @@ module.exports = (sequelize, Sequelize) => {
   const Model = Sequelize.Model;
   const uppercaseFirst = str => `${str[0].toUpperCase()}${str.substr(1)}`;
   
-  class Attribute extends Model {
-    getAttributeable(options) {
-      if (!this.attributeableType) return Promise.resolve(null);
-      const mixinMethodName = `get${uppercaseFirst(this.attributeableType)}`;
+  class CombatAttribute extends Model {
+    getCreature(options) {
+      if (!this.creatureType) return Promise.resolve(null);
+      const mixinMethodName = `get${uppercaseFirst(this.creatureType)}`;
       return this[mixinMethodName](options);
     }
   }
-  Attribute.init(
+  CombatAttribute.init(
     {
       currhp: Sequelize.INTEGER,
       currmp: Sequelize.INTEGER,
@@ -21,11 +21,11 @@ module.exports = (sequelize, Sequelize) => {
       attack: Sequelize.INTEGER,
       defence: Sequelize.INTEGER,
       skillSet: Sequelize.STRING,
-      attributeableId: Sequelize.INTEGER,
-      attributeableType: Sequelize.STRING,
+      creatureId: Sequelize.INTEGER,
+      creatureType: Sequelize.STRING,
     },
-    { sequelize, modelName: 'attribute' },
+    { sequelize, modelName: 'combat_attribute' },
   );
 
-  return Attribute;
+  return CombatAttribute;
 }

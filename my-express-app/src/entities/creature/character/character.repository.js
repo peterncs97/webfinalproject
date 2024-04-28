@@ -1,17 +1,22 @@
 const db = require("../../../database/db");
 const Op = db.Sequelize.Op;
 const Character = db.character;
-const Attribute = db.attribute;
+const CombatAttribute = db.combatAttribute;
 const Item = db.item;
 
 class CharacterRepository{
     async findCharacterById(id){
         return await Character.findByPk(id, { 
             include: [
-                Attribute, 
+                {
+                    model: CombatAttribute,
+                    attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'creatureId', 'creatureType']}
+
+                },
                 {
                     model: Item,
                     order: [['id', 'ASC']],
+                    attributes: { exclude: ['createdAt', 'updatedAt']},
                     through: {
                         attributes: ['quantity'],
                     },
@@ -20,8 +25,8 @@ class CharacterRepository{
         });
     }
 
-    async findCharacterWithAttributeById(id) {
-        return await Character.findByPk(id, { include: Attribute });
+    async findCharacterWithCombatAttributeById(id) {
+        return await Character.findByPk(id, { include: CombatAttribute });
     }
 
     async findCharacterWithItemsById(id) {
@@ -47,7 +52,7 @@ class CharacterRepository{
                 equipmentWeaponId: 1,
                 equipmentBodyId: 2,
 
-                attribute: {
+                combat_attribute: {
                     currhp: 100,
                     currmp: 20,
                     maxhp: 100,
@@ -61,7 +66,7 @@ class CharacterRepository{
                 }
             },
             {
-                include: Attribute,
+                include: CombatAttribute,
             }
         );
         return character;
