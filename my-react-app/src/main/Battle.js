@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-
+// 	to call api
+import axios from "axios";
+import { api_url } from '../config';
+// components
 import BattleCountDown from '../components/Battle/BattleCountDown';
 import HpMpBars from '../components/Battle/HpMpBars';
 import SkillBar from '../components/Battle/SkillBar';
@@ -70,7 +73,7 @@ const Battle = () => {
 				</>
 			}
 		</div>
-			// TODO: Battle Sib Modules
+			// TODO: Battle Sub Modules
 			// Design Monster Actions 
 			// Design Character's Status UI
 			// Design End of Battle UI

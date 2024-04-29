@@ -11,14 +11,14 @@ class BattleRouter extends BaseRouter {
     registerRoute(){
         // --------------------------------------------/* GET: send to frontend*/-----------------------------------------------------------------------
         // get available user skill list(from Charactor Table), backpack item list(from Backpack Table), information of item(from Item Table) 
-        this.router.get('/get-skill-set', (req, res, next) => this.#controller.getSkill(req, res, next));
-        this.router.get('/get-backpack', (req, res, next) => this.#controller.getBackpack(req, res, next));
-        this.router.get('/get-item-info', (req, res, next) => this.#controller.getItemInfo(req, res, next));
+        this.router.get('/get-skill-set', (req, res, next) => this.#controller.getSkillById(req, res, next));
+        this.router.get('/get-backpack', (req, res, next) => this.#controller.getBackpackById(req, res, next));
+        this.router.get('/get-item-info', (req, res, next) => this.#controller.getItemInfoByIds(req, res, next));
         
         // get the status information of Creature Table (id)
-        this.router.get('/get-hp', (req, res, next) => this.#controller.getHP(req, res, next));
-        this.router.get('/get-mp', (req, res, next) => this.#controller.getMP(req, res, next));
-        this.router.get('/get-status', (req, res, next) => this.#controller.getStatus(req, res, next));
+        this.router.get('/get-hp', (req, res, next) => this.#controller.getHpById(req, res, next));
+        this.router.get('/get-mp', (req, res, next) => this.#controller.getMpById(req, res, next));
+        this.router.get('/get-status', (req, res, next) => this.#controller.getStatusById(req, res, next));
         
         // get skill information from SkillBook Table
         this.router.get('/get-skill-info', (req, res, next) => this.#controller.getSkillCode(req, res, next));
@@ -33,9 +33,8 @@ class BattleRouter extends BaseRouter {
             2. init the data in Battling Table(all to zero)
         ** output: charactor and monster status 
         ***/
-       this.router.post('/create-battle', (req, res, next) => this.#controller.createBattle(req, res, next));
-        
-
+        this.router.post('/create-battle', (req, res, next) => this.#controller.createBattle(req, res, next)); 
+       
         // --------------------------------------------/* Put: update backend*/-----------------------------------------------------------------------
         // calculate the effectness of skill by the correctness of user input string and reaction time
         /***
