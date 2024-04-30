@@ -1,4 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
+import axios from "axios";
+import { api_url } from "../config";
+
 import ItemDetail from '../components/Item/ItemDetail';
 import ItemContainer from '../components/Item/ItemContainer';
 import BeforeTrading from '../components/Trade/BeforeTrading';
@@ -6,24 +9,34 @@ import AfterTrading from '../components/Trade/AfterTrading';
 
 import items from '../data/item.json';
 import { StateContext } from './Layout';
-
+import { CurrSceneContext } from './Layout';
+import { CharacterContext } from './Layout';
 
 const Trade = () => {
 	const { setState } = useContext(StateContext);
+	const { currSceneId } = useContext(CurrSceneContext);
+	const { character, setCharacter } = useContext(CharacterContext);
+
 	const [currentItem, setCurrentItem] = useState(null);
 	const [selectedItem, setSelectedItem] = useState(null);
 	const [npcItemList, setNpcItemList] = useState([]);
 	const [playerItemList, setPlayerItemList] = useState([]);
 	const [belongto, setBelongto] = useState(null);
 	const [gold, setGold] = useState(500);
-    const [currentItemNumber, setCurrentItemNumber] = useState(null);
+  	const [currentItemNumber, setCurrentItemNumber] = useState(null);
 
 
 	useEffect(() => {
 		setCurrentItem(items[0])
 		setSelectedItem(items[0])
-		setPlayerItemList(items.slice(0, items.length / 2));
-		setNpcItemList(items.slice(items.length / 2));
+		setPlayerItemList(character.items);
+		console.log("player item list", character.items);
+		axios
+		.get(`${api_url}/merchant/getBySceneId/${currSceneId}`)
+		.then((response) => {
+			setNpcItemList(response.data.data.items);
+					console.log("npc item list", response.data.data.items);
+		});
 	}, []);
 
 	const showItemInfo = (event) => {
@@ -53,7 +66,25 @@ const Trade = () => {
 	}
 
 	const settle = () => {
-		//TODO: settlement request to backend
+		const finalitemlist = [
+			{
+				id: 2,
+				quantity: 100,
+			},
+			{
+				id: 1,
+				quantity: 100,
+			}
+		];
+		const moneyAdjust = 500;
+		axios.post(`${api_url}/character/trade`, {
+			characterId: character.id,
+			items: finalitemlist,
+			money: moneyAdjust,
+			}).then((response) => {
+					setCharacter(response.data.data);
+		});
+		alert(`Player items: ${JSON.stringify(playerItemList)}\nNPC items: ${JSON.stringify(npcItemList)}`);
 		setState('default');
 	}
 
@@ -80,6 +111,11 @@ const Trade = () => {
 				<div className='col-5 trade-info' style={{height: '200px'}}>
 					<AfterTrading coinsAfterTrade={gold} itemsAfterTrade={currentItemNumber}/>
 				</div>
+			</div>
+			<div className="d-grid gap-2">
+				<button className="btn btn-dark mt-2" type="button" onClick={settle}>
+					結算
+				</button>
 			</div>
 		</>
 	);
