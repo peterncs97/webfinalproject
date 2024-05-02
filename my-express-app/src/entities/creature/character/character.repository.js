@@ -97,6 +97,10 @@ class CharacterRepository{
     async setCharacterItems(character, itemModels){
         return await character.setItems(itemModels);
     }
+
+    async adjustCharacterMoney(character, moneyAdjustment){
+        return await character.increment('money', { by: moneyAdjustment });
+    }
 }
 
 module.exports = CharacterRepository;

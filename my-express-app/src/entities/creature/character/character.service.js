@@ -77,7 +77,7 @@ class CharacterService {
         var moneyAdjustment = itemModel.price * item.quantity;
         if (tradeAction === 'buy') 
             moneyAdjustment = - moneyAdjustment;
-        await character.increment('money', { by: moneyAdjustment })
+        await this.#characterRepository.adjustCharacterMoney(character, moneyAdjustment);
    
         const characterItem = character.items.find(characterItem => characterItem.id === item.id);
         if (characterItem)
