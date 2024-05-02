@@ -6,7 +6,6 @@ const ItemContainer = ({ title, items, money, belongto, onMouseEnter, setSplitMo
 
   const itemList = items.map((item, index) => {
     // Display item quantity if the item belongs to the character
-    const text = (belongto === 'character') ? `${item.name} x ${item.item_ownership.quantity}` : item.name;
     return (
       <Button key={index} variant="outline-dark m-1"
         index={index} belongto={belongto}

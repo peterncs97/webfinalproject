@@ -32,7 +32,7 @@ const Trade = () => {
 		.then((response) => {
 			setMerchantItemList(response.data.data.items);
 		});
-	}, []);
+	}, [character.items, currSceneId]);
 
 	// When mouse hovers on an item, set up current item and show its detail
 	const showItemInfo = (event) => {
