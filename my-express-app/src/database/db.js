@@ -40,6 +40,6 @@ db.merchant = require("../entities/merchant/merchant.model.js")(sequelize, Seque
 require("../entities/merchant/merchant.association.js")(db.scene, db.merchant);
 
 db.item = require("../entities/item/item.model.js")(sequelize, Sequelize);
-require("../entities/item/item.association.js")(db);
+db.itemOwnership = require("../entities/item/item.association.js")(db);
 
 module.exports = db;

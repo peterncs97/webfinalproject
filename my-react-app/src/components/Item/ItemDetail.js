@@ -27,7 +27,7 @@ const ItemDetail = ({ item, type }) => {
 					</thead>
 					<tbody>
 						<tr>
-							<th scope="row">種類</th><td className="text-end">{item.bodypart}</td>
+							<th scope="row">種類</th><td className="text-end">{(item.type === 'equipment') ? '裝備' : '消耗品'}</td>
 						</tr>
 						<tr>
 							<th scope="row">ATK</th><td className="text-end">{item.atk}</td>
@@ -36,7 +36,7 @@ const ItemDetail = ({ item, type }) => {
 							<th scope="row">DEF</th><td className="text-end">{item.def}</td>
 						</tr>
 						<tr>
-							<th scope="row">效果</th><td className="text-end">{item.effect}</td>
+							<th scope="row">效果</th><td className="text-end">{item.description}</td>
 						</tr>
 						<tr>
 							<th scope="row">價格</th><td className="text-end">{item.price}</td>

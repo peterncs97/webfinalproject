@@ -28,11 +28,11 @@ class CharacterController extends BaseController{
         this.responseHandler(res, dtos);
     }
 
-    async tradeCharacterItems(req, res){
-        const dtos = await this.#characterService.tradeCharacterItems(
+    async tradeCharacterItem(req, res){
+        const dtos = await this.#characterService.tradeCharacterItem(
             req.body.characterId,
-            req.body.items,
-            req.body.money);
+            req.body.item,
+            req.body.tradeAction);
         this.responseHandler(res, dtos);
     }
 }

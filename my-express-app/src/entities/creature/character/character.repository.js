@@ -3,7 +3,7 @@ const Op = db.Sequelize.Op;
 const Character = db.character;
 const CombatAttribute = db.combatAttribute;
 const Item = db.item;
-
+const ItemOwnership = db.itemOwnership;
 class CharacterRepository{
     async findCharacterById(id){
         return await Character.findByPk(id, { 
@@ -82,7 +82,16 @@ class CharacterRepository{
     }
 
     async removeCharacterItem(character, itemModel){
-        return await character.removeItem(itemModel);
+        return await ItemOwnership.destroy({
+            where: {
+                ownerId: character.id,
+                itemId: itemModel.id,
+                ownerType: 'character'
+            }
+        });
+        
+        // Below mixin method is not working as it deletes ownerships of other scopes e.g. merchant
+        // await character.removeItem(itemModel); 
     }
 
     async setCharacterItems(character, itemModels){

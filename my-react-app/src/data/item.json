@@ -9,7 +9,10 @@
 		"def": -999,
 		"effect": "STR+999",
 		"price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     },
     {
         "id": 10,
@@ -18,7 +21,10 @@
         "type": "consumable",
         "effect": "HP+100",
         "price": 100,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 10
+        }
     },
     {
         "id": 1,
@@ -30,7 +36,10 @@
         "def": 100,
         "effect": "DEF+999",
         "price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     },
     {
         "id": 2,
@@ -42,7 +51,10 @@
         "def": -999,
         "effect": "SPD+999",
         "price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     },
     {
         "id": 3,
@@ -54,7 +66,10 @@
         "def": -999,
         "effect": "INT+999",
         "price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     },
     {
         "id": 4,
@@ -66,7 +81,10 @@
         "def": 100,
         "effect": "DEF+999",
         "price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     },
     {
         "id": 5,
@@ -78,7 +96,10 @@
         "def": 100,
         "effect": "DEF+999",
         "price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     },
     {
         "id": 6,
@@ -90,7 +111,10 @@
         "def": -999,
         "effect": "SPD+999",
         "price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     },
     {
         "id": 7,
@@ -102,7 +126,10 @@
         "def": -999,
         "effect": "INT+999",
         "price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     },
     {
         "id": 8,
@@ -114,7 +141,10 @@
         "def": -999,
         "effect": "INT+999",
         "price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     },
     {
         "id": 9,
@@ -126,6 +156,9 @@
         "def": -999,
         "effect": "INT+999",
         "price": 1000,
-        "hodings": 50
+        "hodings": 50,
+        "item_ownership": {
+            "quantity": 1
+        }
     }
 ]

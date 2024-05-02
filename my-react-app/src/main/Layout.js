@@ -46,7 +46,7 @@ const Layout = () => {
             <section>
               <div className="container px-4 py-2 show-slow">
                 {state === "default" ? (
-                  <Backpack />
+                  <Backpack character={character}/>
                 ) : state === "battle" ? (
                   <Battle />
                 ) : state === "trade" ? (

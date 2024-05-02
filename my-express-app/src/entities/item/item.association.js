@@ -95,4 +95,6 @@ module.exports = (db) => {
     foreignKey: 'itemId',
     constraints: false,
   });
+
+  return ItemOwnership;
 }

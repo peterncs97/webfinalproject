@@ -49,10 +49,49 @@ ON DUPLICATE KEY UPDATE
 ;
 
 INSERT INTO
-  `item_ownerships` (`id`,`itemId`, `ownerId`, `ownerType`, `quantity`, `createdAt`,`updatedAt`)
+  `characters` (`id`, `name`, `profession`, `level`, `experience`, `money`, `equipmentWeaponId`, `equipmentBodyId`, `createdAt`, `updatedAt`) 
+VALUES 
+  (1, 'Apple', 'mage', 1, 0, 1000, 1, 2, NOW(), NOW())
+ON DUPLICATE KEY UPDATE 
+  `name` = VALUES(`name`),
+  `profession` = VALUES(`profession`),
+  `level` = VALUES(`level`),
+  `experience` = VALUES(`experience`),
+  `money` = VALUES(`money`),
+  `equipmentWeaponId` = VALUES(`equipmentWeaponId`),
+  `equipmentBodyId` = VALUES(`equipmentBodyId`),
+  `updatedAt` = VALUES(`updatedAt`),
+  `createdAt` = VALUES(`createdAt`)
+;
+
+INSERT INTO `combat_attributes`
+  (`id`, `currhp`, `currmp`, `maxhp`, `maxmp`, `power`, `agile`, `luck`, `attack`, `defence`, `skillSet`, `creatureId`, `creatureType`, `createdAt`, `updatedAt`) 
+VALUES
+  (1, 100, 20, 100, 20, 10, 10, 10, 10, 10, '[1,2]', 1, 'character', NOW(), NOW())
+ON DUPLICATE KEY UPDATE 
+  `currhp` = VALUES(`currhp`),
+  `currmp` = VALUES(`currmp`),
+  `maxhp` = VALUES(`maxhp`),
+  `maxmp` = VALUES(`maxmp`),
+  `power` = VALUES(`power`),
+  `agile` = VALUES(`agile`),
+  `luck` = VALUES(`luck`),
+  `attack` = VALUES(`attack`),
+  `defence` = VALUES(`defence`),
+  `skillSet` = VALUES(`skillSet`),
+  `creatureId` = VALUES(`creatureId`),
+  `creatureType` = VALUES(`creatureType`),
+  `updatedAt` = VALUES(`updatedAt`),
+  `createdAt` = VALUES(`createdAt`)
+;
+
+INSERT INTO `item_ownerships`
+  (`id`,`itemId`, `ownerId`, `ownerType`, `quantity`, `createdAt`,`updatedAt`)
 VALUES
   (1, 1, 1, 'merchant', 0, NOW(), NOW()),
-  (2, 2, 1, 'merchant', 0, NOW(), NOW())
+  (2, 2, 1, 'merchant', 0, NOW(), NOW()),
+  (3, 1, 1, 'character', '10', NOW(), NOW()),
+  (4, 2, 1, 'character', '10', NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `id` = VALUES(`id`),
   `itemId` = VALUES(`itemId`),
