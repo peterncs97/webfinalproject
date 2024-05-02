@@ -27,6 +27,11 @@ class CharacterService {
         return await this.getCharacterById(character.id);
     }
 
+    async restCharacter(id) {
+        // TODO: Restore character's HP and MP to full and decrease money
+        // call setCharacterHpMp, adjustCharacterMoney from characterRepository
+    }
+
     async grantCharacterItems(characterId, items) {
         const character = await this.getCharacterWithItemsById(characterId);
         const characterItems = character.items;

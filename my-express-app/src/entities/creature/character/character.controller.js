@@ -14,6 +14,10 @@ class CharacterController extends BaseController{
         this.responseHandler(res, dtos);
     }
 
+    async restCharacter(req, res){
+        // TODO: Destrurcture req.body to get characterId and call service method
+    }
+
     async grantCharacterItems(req, res){
         const dtos = await this.#characterService.grantCharacterItems(
             req.body.characterId,

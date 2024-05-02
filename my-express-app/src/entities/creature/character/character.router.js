@@ -14,6 +14,7 @@ class CharacterRouter extends BaseRouter {
         this.router.post('/grantitems', (req, res, next) => this.#controller.grantCharacterItems(req, res, next));
         this.router.post('/removeitems', (req, res, next) => this.#controller.removeCharacterItems(req, res, next));
         this.router.post('/trade', (req, res, next) => this.#controller.tradeCharacterItem(req, res, next));
+        // TODO add rest route
     }
 }
 

@@ -101,6 +101,10 @@ class CharacterRepository{
     async adjustCharacterMoney(character, moneyAdjustment){
         return await character.increment('money', { by: moneyAdjustment });
     }
+
+    async setCharacterHpMp(character, hp, mp){
+        return await character.combat_attribute.update({ currhp: hp, currmp: mp });
+    }
 }
 
 module.exports = CharacterRepository;
