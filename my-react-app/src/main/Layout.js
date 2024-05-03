@@ -33,7 +33,7 @@ const Layout = () => {
           <CharacterContext.Provider value={{ character, setCharacter }}>
             <header className="sticky-top bg-white">
               <div className="container p-3">
-                <Navbar />
+                <Navbar character={character}/>
               </div>
             </header>
 

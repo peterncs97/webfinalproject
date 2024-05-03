@@ -29,7 +29,7 @@ const Backpack = ({ character }) => {
 				</div>
 
 				<div className='col-4'>
-					<CharacterInfo />
+					<CharacterInfo character={character}/>
 				</div>
 			</div>
 		</>
