@@ -101,3 +101,23 @@ ON DUPLICATE KEY UPDATE
   `updatedAt` = VALUES(`updatedAt`),
   `createdAt` = VALUES(`createdAt`)
 ;
+INSERT INTO `skillbooks`
+  (`id`,`name`, `type`, `description`, `skillCode`, `specialCode`,`duration`,`ATK`,`DEF`,`Power`,`Luck`,`Agile`, `createdAt`,`updatedAt`)
+VALUES
+  (1, "normal attack", "attack", 'kick, puch and slap!', "kick", "combine",  0,10,0,0,0,0, NOW(), NOW()),
+  (2, "normal defense", "defense", 'protect yourself!', "defense", "repeat", 3,0,10,0,0,-10, NOW(), NOW()),
+  (3, "fire ball",  "magic", 'what else should i explain?', "fireBall","none", 1,15,0,0,10,0, NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `name` = VALUES(`name`),
+  `type` = VALUES(`type`),
+  `description` = VALUES(`description`),
+  `skillCode` = VALUES(`skillCode`),
+  `specialCode` = VALUES(`specialCode`),
+  `duration` = VALUES(`duration`),
+  `ATK` = VALUES(`ATK`),
+  `DEF` = VALUES(`DEF`),
+  `Power` = VALUES(`Power`),
+  `Luck` = VALUES(`Luck`),
+  `Agile` = VALUES(`Agile`),
+  `updatedAt` = VALUES(`updatedAt`)
+;

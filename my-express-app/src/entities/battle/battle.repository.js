@@ -1,10 +1,14 @@
 const db = require("../../database/db");
 const Op = db.Sequelize.Op;
 const Battle = db.battle;
+const SkillBook=db.skillBook;
 
 class BattleRepository{
     async findBattleById(id){
         return await Battle.findByPk(id);
+    }
+    async findSkillById(id){
+        return await SkillBook.findByPk(id);
     }
 
     async createBattle(charactorId, monsterId){

@@ -9,6 +9,7 @@ import SkillBar from '../components/Battle/SkillBar';
 import Typer from '../components/Battle/Typer';
 import BattleLog from '../components/Battle/BattleLog';
 
+// TODO: this is temparay, need to be change to api-call format 
 import skills from '../data/skill';
 
 const AlwaysScrollToBottom = () => {
