@@ -1,27 +1,38 @@
 const db = require("../../../database/db");
 const Op = db.Sequelize.Op;
 const Character = db.character;
-const Attribute = db.attribute;
+const CombatAttribute = db.combatAttribute;
 const Item = db.item;
-
+const ItemOwnership = db.itemOwnership;
 class CharacterRepository{
     async findCharacterById(id){
         return await Character.findByPk(id, { 
             include: [
-                Attribute, 
+                {
+                    model: CombatAttribute,
+                    attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'creatureId', 'creatureType']}
+
+                },
                 {
                     model: Item,
                     order: [['id', 'ASC']],
                     through: {
                         attributes: ['quantity'],
-                    },
+                    }
                 }
             ] 
         });
     }
 
-    async findCharacterWithAttributeById(id) {
-        return await Character.findByPk(id, { include: Attribute });
+    async findCharacterWithCombatAttributeById(id) {
+        return await Character.findByPk(id, { 
+            include: [
+                {
+                    model: CombatAttribute,
+                    attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'creatureId', 'creatureType'] }
+                }
+            ] 
+        });
     }
 
     async findCharacterWithItemsById(id) {
@@ -43,11 +54,10 @@ class CharacterRepository{
                 profession: profession,
                 level: 1,
                 experience: 0,
-                money: 0,
+                money: 500,
                 equipmentWeaponId: 1,
                 equipmentBodyId: 2,
-
-                attribute: {
+                combat_attribute: {
                     currhp: 100,
                     currmp: 20,
                     maxhp: 100,
@@ -58,13 +68,42 @@ class CharacterRepository{
                     attack: 10,
                     defence: 10,
                     skillSet: '[1,2]'
-                }
+                },
             },
             {
-                include: Attribute,
+                include: CombatAttribute
             }
         );
         return character;
+    }
+
+    async addOrUpdateCharacterItems(character, itemModels){
+        return await character.addItems(itemModels);
+    }
+
+    async removeCharacterItem(character, itemModel){
+        return await ItemOwnership.destroy({
+            where: {
+                ownerId: character.id,
+                itemId: itemModel.id,
+                ownerType: 'character'
+            }
+        });
+        
+        // Below mixin method is not working as it deletes ownerships of other scopes e.g. merchant
+        // await character.removeItem(itemModel); 
+    }
+
+    async setCharacterItems(character, itemModels){
+        return await character.setItems(itemModels);
+    }
+
+    async adjustCharacterMoney(character, moneyAdjustment){
+        return await character.increment('money', { by: moneyAdjustment });
+    }
+
+    async setCharacterHpMp(character, hp, mp){
+        return await character.combat_attribute.update({ currhp: hp, currmp: mp });
     }
 }
 

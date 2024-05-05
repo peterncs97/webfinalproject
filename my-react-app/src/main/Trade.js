@@ -1,86 +1,94 @@
+// Import Packages
 import { useState, useEffect, useContext } from 'react';
+import axios from "axios";
+import { api_url } from "../config";
+
+// Import Custom Components
 import ItemDetail from '../components/Item/ItemDetail';
 import ItemContainer from '../components/Item/ItemContainer';
-import BeforeTrading from '../components/Trade/BeforeTrading';
-import AfterTrading from '../components/Trade/AfterTrading';
+import SplitModal from '../components/Trade/SplitModal';
 
-import items from '../data/item.json';
-import { StateContext } from './Layout';
-
+// Import Contexts set up in Layout.js
+import { CurrSceneContext } from './Layout';
+import { CharacterContext } from './Layout';
 
 const Trade = () => {
-	const { setState } = useContext(StateContext);
-	const [currentItem, setCurrentItem] = useState(null);
-	const [selectedItem, setSelectedItem] = useState(null);
-	const [npcItemList, setNpcItemList] = useState([]);
-	const [playerItemList, setPlayerItemList] = useState([]);
-	const [belongto, setBelongto] = useState(null);
-	const [gold, setGold] = useState(500);
-    const [currentItemNumber, setCurrentItemNumber] = useState(null);
+	const { currSceneId } = useContext(CurrSceneContext);
+	const { character, setCharacter } = useContext(CharacterContext);
 
+	const [merchantItemList, setMerchantItemList] = useState([]); // Item list to be displayed at the merchant box
+	const [characterItemList, setCharacterItemList] = useState([]); // Item list to be displayed at the backpack box
 
+	const [currentItem, setCurrentItem] = useState(null); // Current item to be displayed in the item detail box when mouse hovers on an item
+	const [currentItemBelongTo, setCurrentItemBelongTo] = useState(null); // Current item belong to character or merchant
+	const [splitModalShow, setSplitModalShow] = useState(false); // Show or hide the quantity splitting modal
+
+	// Set the current item to the first item in the character's inventory
+	// Set up item list of the character and the merchant respectively
 	useEffect(() => {
-		setCurrentItem(items[0])
-		setSelectedItem(items[0])
-		setPlayerItemList(items.slice(0, items.length / 2));
-		setNpcItemList(items.slice(items.length / 2));
-	}, []);
+		setCurrentItem(character.items[0])
+		setCharacterItemList(character.items);
+		axios.get(`${api_url}/merchant/getBySceneId/${currSceneId}`)
+		.then((response) => {
+			setMerchantItemList(response.data.data.items);
+		});
+	}, [character.items, currSceneId]);
 
+	// When mouse hovers on an item, set up current item and show its detail
 	const showItemInfo = (event) => {
+		// index and belongto are set up in ItemContainer.js when rendering both item lists
 		const index = parseInt(event.target.getAttribute('index'));
-		const temp = event.target.getAttribute('belongto');
-		if (temp === 'player'){
-			setCurrentItem(playerItemList[index]);
-			setBelongto('player');
-		}
-		else if (temp === 'npc'){
-			setCurrentItem(npcItemList[index]);
-			setBelongto('npc');
-		}
-	}
-
-	const swapItem = (event) => {
-		const index = parseInt(event.target.getAttribute('index'));
-		const temp = event.target.getAttribute('belongto');
-		if (temp === 'player'){
-			setSelectedItem(playerItemList[index]);
-			setBelongto('player');
-		}
-		else if (temp === 'npc'){
-			setSelectedItem(npcItemList[index]);
-			setBelongto('npc');
-		}
-	}
-
-	const settle = () => {
-		//TODO: settlement request to backend
-		setState('default');
+		const belongto = event.target.getAttribute('belongto');
+		if (belongto === 'character')
+			setCurrentItem(characterItemList[index]);
+		else if (belongto === 'merchant')
+			setCurrentItem(merchantItemList[index]);
+		setCurrentItemBelongTo(belongto);
 	}
 
 	return (
 		<>
 			<div className="row border border-3">
+				{/* Display the character's inventory */}
 				<div className='col-4'>
-					<ItemContainer title={"背包"} items={playerItemList} belongto={"player"} onMouseEnter={showItemInfo} onClick={swapItem} />
+					<ItemContainer 
+						title={"背包"} 
+						items={characterItemList}
+						money={character.money}
+						belongto={"character"}
+						onMouseEnter={showItemInfo} 
+						setSplitModalShow={setSplitModalShow}
+					/>
 				</div>
+
+				{/* Display detail of the current item hovered on by mouse */}
 				<div className='col-4 border-start border-end	 border-3'>
 					<ItemDetail item={currentItem} type={"trade"} />
 				</div>
+				
+				{/* Display the merchant's inventory */}
 				<div className='col-4'>
-					<ItemContainer title={"商人"} items={npcItemList} belongto={"npc"} onMouseEnter={showItemInfo} onClick={swapItem} />
+					<ItemContainer 
+						title={"商人"} 
+						items={merchantItemList} 
+						belongto={"merchant"} 
+						onMouseEnter={showItemInfo} 
+						setSplitModalShow={setSplitModalShow} 
+					/>
 				</div>
 			</div>
-			<div className="row border border-3">
-				<div className='col-5 trade-info' style={{height: '200px'}}>
-					<BeforeTrading currentItem={selectedItem} belongto={belongto} gold={gold} currentItemNumber={currentItemNumber} setGold={setGold} setCurrentItemNumber={setCurrentItemNumber} />
-				</div>
-				<div className='col-2 border-start border-end border-3 d-flex justify-content-center align-items-center'>
-					<img className="img-fluid icon mx-2" src="images/swap.svg" style={{width: '75px', height: '75px'}}/>
-				</div>
-				<div className='col-5 trade-info' style={{height: '200px'}}>
-					<AfterTrading coinsAfterTrade={gold} itemsAfterTrade={currentItemNumber}/>
-				</div>
-			</div>
+
+			{/* Quantity splitting modal */}
+			<SplitModal 
+				show={splitModalShow} 
+				onHide={() => setSplitModalShow(false)} 
+				item={currentItem} 
+				belongto={currentItemBelongTo}
+				characterid={character.id}
+				charactermoney={character.money} 
+				setCharacter={setCharacter}
+				setCharacterItemList={setCharacterItemList}
+			/>
 		</>
 	);
 }

@@ -14,6 +14,7 @@ const sceneRouter = require('./entities/scene/scene.router');
 const characterRouter = require('./entities/creature/character/character.router');
 const monsterRouter = require('./entities/creature/monster/monster.router');
 const itemRouter = require('./entities/item/item.router');
+const merchantRouter = require('./entities/merchant/merchant.router');
 const battleRouter = require('./entities/battle/battle.router');
 
 const app = express();
@@ -31,9 +32,8 @@ app.use(helmet());
 db.sequelize.sync({ alter: true })
     .then(() => {
         console.log("Synced db.");
-        
         // Initialize the database
-        var sql_string = fs.readFileSync('./src/database/scene.sql', 'utf8');
+        var sql_string = fs.readFileSync('./src/database/init.sql', 'utf8');
         sql_string = sql_string.replace(/\r?\n|\r/g, " ");
         const queries = sql_string.split(';');
         queries.filter(query => query).forEach(query => db.sequelize.query(query));
@@ -48,6 +48,7 @@ app.use('/scene', sceneRouter);
 app.use('/character', characterRouter);
 app.use('/monster', monsterRouter);
 app.use('/item', itemRouter);
+app.use('/merchant', merchantRouter);
 app.use('/battle', battleRouter);
 
 // Guard routes

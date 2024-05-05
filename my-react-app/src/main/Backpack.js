@@ -3,16 +3,14 @@ import CharacterInfo from "../components/CharacterInfo";
 import ItemDetail from '../components/Item/ItemDetail';
 import ItemContainer from '../components/Item/ItemContainer';
 
-import items from '../data/item.json';
-
-const Backpack = () => {
+const Backpack = ({ character }) => {
 	const [currentItem, setCurrentItem] = useState(null);
 	const [playerItemList, setPlayerItemList] = useState([]);
 
 	useEffect(() => {
-		setCurrentItem(items[0])
-		setPlayerItemList(items);
-	}, []);
+		setCurrentItem(character?.items[0])
+		setPlayerItemList(character?.items);
+	}, [character]);
 
 	const showItemInfo = (event) => {
 		const index = event.target.getAttribute('index');
@@ -23,7 +21,7 @@ const Backpack = () => {
 		<>
 			<div className='row border border-3'>
 				<div className='col-4'>
-					<ItemContainer title={"背包"} items={playerItemList} onMouseEnter={showItemInfo}/>
+					<ItemContainer title={"背包"} items={playerItemList} money={character?.money} belongto={"character"} onMouseEnter={showItemInfo}/>
 				</div>
 
 				<div className='col-4 border-start border-end border-3'>
@@ -31,7 +29,7 @@ const Backpack = () => {
 				</div>
 
 				<div className='col-4'>
-					<CharacterInfo />
+					<CharacterInfo character={character}/>
 				</div>
 			</div>
 		</>

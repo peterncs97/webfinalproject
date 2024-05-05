@@ -1,13 +1,15 @@
-const CharacterInfo = () => {
-	
+const CharacterInfo = ({ character }) => {
+	if (!character) return null;
+	const attrs = character.combat_attribute;
 	const stats = [
-		{ tag: "LV", value: 21 },
-		{ tag: "MAX HP", value: 100 },
-		{ tag: "ATK", value: 10 },
-		{ tag: "DEF", value: 5 },
-		{ tag: "STR", value: 5 },
-		{ tag: "DEX", value: 5 },
-		{ tag: "LCK", value: 100 },
+		{ tag: "LV", value: character.level },
+		{ tag: "MAX HP", value: attrs.maxhp },
+		{ tag: "MAX MP", value: attrs.maxmp },
+		{ tag: "ATK", value: attrs.attack },
+		{ tag: "DEF", value: attrs.defence },
+		{ tag: "PWR", value: attrs.power },
+		{ tag: "AGI", value: attrs.agile },
+		{ tag: "LCK", value: attrs.luck },
 	];
 
 	const statList = stats.map((stat, index) => {

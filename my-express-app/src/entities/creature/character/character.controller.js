@@ -14,6 +14,10 @@ class CharacterController extends BaseController{
         this.responseHandler(res, dtos);
     }
 
+    async restCharacter(req, res){
+        // TODO: Destrurcture req.body to get characterId and call service method
+    }
+
     async grantCharacterItems(req, res){
         const dtos = await this.#characterService.grantCharacterItems(
             req.body.characterId,
@@ -28,14 +32,13 @@ class CharacterController extends BaseController{
         this.responseHandler(res, dtos);
     }
 
-    async setCharacterItems(req, res){
-        const dtos = await this.#characterService.setCharacterItems(
+    async tradeCharacterItem(req, res){
+        const dtos = await this.#characterService.tradeCharacterItem(
             req.body.characterId,
-            req.body.items);
+            req.body.item,
+            req.body.tradeAction);
         this.responseHandler(res, dtos);
     }
-
-
 }
 
 module.exports = CharacterController;
