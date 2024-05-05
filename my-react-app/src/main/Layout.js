@@ -21,7 +21,7 @@ export const CharacterContext = createContext(null);
 const Layout = () => {
   // Conditionally rendering components based on states
   // states: default, battle, trade, dialogue
-  const [state, setState] = useState("default");
+  const [action, setAction] = useState("default");
   const [prevSceneId, setPrevSceneId] = useState(1); // Previous scene ID
   const [currSceneId, setCurrSceneId] = useState(1); // Current scene ID
   const [character, setCharacter] = useState(null); // Character data
@@ -32,9 +32,25 @@ const Layout = () => {
       setCharacter(response.data.data);
     });
   }, []);
-
+  
+  function SubDisplay(props){
+    const action=props.action;
+    const character=props.character;
+    switch(action){
+      case "default":
+        return <Backpack character={character}/> ;
+      case "battle":
+        return <Battle />;
+      case "trade":
+        return <Trade />; 
+      case "dialogue":
+        return <Dialogue />;
+      default: 
+        return null;
+    };
+  }
   return (
-    <StateContext.Provider value={{ state, setState }}>
+    <StateContext.Provider value={{ action, setAction }}>
       <PrevSceneContext.Provider value={{ prevSceneId, setPrevSceneId }}>
         <CurrSceneContext.Provider value={{ currSceneId, setCurrSceneId }}>
           <CharacterContext.Provider value={{ character, setCharacter }}>
@@ -55,15 +71,7 @@ const Layout = () => {
             {/* Sub Display Area, for Backpack, Battle, Trade or Dialogue*/}
             <section>
               <div className="container px-4 py-2 show-slow">
-                {state === "default" ? (
-                  <Backpack character={character}/>
-                ) : state === "battle" ? (
-                  <Battle />
-                ) : state === "trade" ? (
-                  <Trade />
-                ) : state === "dialogue" ? (
-                  <Dialogue />
-                ) : null}
+                <SubDisplay action={action} character={character}/>
               </div>
             </section>
           </CharacterContext.Provider>

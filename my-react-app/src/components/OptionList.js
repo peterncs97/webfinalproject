@@ -10,7 +10,7 @@ import { StateContext, CurrSceneContext, PrevSceneContext } from '../main/Layout
 // Construct option list based on current scene
 // Include basic travel option, special scene options and return option
 const OptionList = ({ currScene, setCurrentScene, setOptionModalShow }) => {
-  const { setState } = useContext(StateContext); // For controll state of the game
+  const { setAction } = useContext(StateContext); // For controll state of the game
   const { currSceneId, setCurrSceneId } = useContext(CurrSceneContext); // For updating current scene id
   const { prevSceneId, setPrevSceneId } = useContext(PrevSceneContext); // For updating previous scene id
 
@@ -27,7 +27,7 @@ const OptionList = ({ currScene, setCurrentScene, setOptionModalShow }) => {
       return () => {
         setPrevSceneId(currSceneId);
         setCurrSceneId(option.id);
-        setState('dialogue');
+        setAction('dialogue');
       }
   }
 
@@ -48,7 +48,7 @@ const OptionList = ({ currScene, setCurrentScene, setOptionModalShow }) => {
   const search = () => {
     axios.get(`${api_url}/scene/randchild/${currSceneId}`).then((response) => {
       setCurrentScene(response.data.data);
-      setState('battle')
+      setAction('battle')
     });
   }
 
@@ -60,7 +60,7 @@ const OptionList = ({ currScene, setCurrentScene, setOptionModalShow }) => {
   const extraOptions = [
     { types: ['rest'], name: '休息', onClick: rest },
     { types: ['battleground', 'victory'], name: '索敵', onClick: search },
-    { types: ['trade'], name: '交易', onClick: () => setState('trade') },
+    { types: ['trade'], name: '交易', onClick: () => setAction('trade') },
   ];
 
   // Push special options to optionList
@@ -76,7 +76,7 @@ const OptionList = ({ currScene, setCurrentScene, setOptionModalShow }) => {
   if (currScene.type !== "monster" && currScene.type !== 'event' && currScene.id !== 1)
     optionList.push(
       <button type="button" key={optionList.length} className="list-group-item"
-        onClick={() => { setState('default'); setCurrSceneId((currScene.parentId !== 0) ? currScene.parentId : prevSceneId); }} >
+        onClick={() => { setAction('default'); setCurrSceneId((currScene.parentId !== 0) ? currScene.parentId : prevSceneId); }} >
         返回
       </button>);
 
