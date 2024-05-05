@@ -28,18 +28,18 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.scene = require("../entities/scene/scene.model.js")(sequelize, Sequelize);
+db.scene = require("./scene.model.js")(sequelize, Sequelize);
 
 // creature
-db.character = require("../entities/creature/character/character.model.js")(sequelize, Sequelize);
-db.monster = require("../entities/creature/monster/monster.model.js")(sequelize, Sequelize);
-db.combatAttribute = require("../entities/creature/combatAttribute/combatAttribute.model.js")(sequelize, Sequelize);
-require("../entities/creature/combatAttribute/combatAttribute.association.js")(db.character, db.monster, db.combatAttribute);
+db.character = require("./character.model.js")(sequelize, Sequelize);
+db.monster = require("./monster.model.js")(sequelize, Sequelize);
+db.combatAttribute = require("./combatAttribute.model.js")(sequelize, Sequelize);
+require("./combatAttribute.association.js")(db.character, db.monster, db.combatAttribute);
 
-db.merchant = require("../entities/merchant/merchant.model.js")(sequelize, Sequelize);
-require("../entities/merchant/merchant.association.js")(db.scene, db.merchant);
+db.merchant = require("./merchant.model.js")(sequelize, Sequelize);
+require("./merchant.association.js")(db.scene, db.merchant);
 
-db.item = require("../entities/item/item.model.js")(sequelize, Sequelize);
-db.itemOwnership = require("../entities/item/item.association.js")(db);
+db.item = require("./item.model.js")(sequelize, Sequelize);
+db.itemOwnership = require("./item.association.js")(db);
 
 module.exports = db;
