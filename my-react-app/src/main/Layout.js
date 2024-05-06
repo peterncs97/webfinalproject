@@ -19,7 +19,7 @@ export const PrevSceneContext = createContext(null);
 export const CharacterContext = createContext(null);
 
 const Layout = () => {
-  const { user } = useContext(AuthContext);
+  const { setIsAuthenticated, setUser } = useContext(AuthContext);
 
   // Conditionally rendering components based on states
   // states: default, battle, trade, dialogue
@@ -28,15 +28,23 @@ const Layout = () => {
   const [currSceneId, setCurrSceneId] = useState(1); // Current scene ID
   const [character, setCharacter] = useState(null); // Character data
 
-  // Fetch character data on initial render
+  // Persist user data on refresh and fetch character data on initial render
   useEffect(() => {
-    axios.get(`/character/${user.character.id}`)
-    .then((response) => {
-      setCharacter(response.data.data);
-    }).catch((error) => {
-      console.error('Error fetching character data: ', error);
-    });
-  }, [user]);
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      setIsAuthenticated(true);
+      const user = JSON.parse(localStorage.getItem("user"));
+      setUser(user);
+      axios.get(`/character/${user.character.id}`)
+        .then((response) => {
+          setCharacter(response.data.data);
+        }).catch((error) => {
+          console.error('Error fetching character data: ', error);
+        });
+    }
+  }, []);
+
+ 
 
   return (
     <StateContext.Provider value={{ state, setState }}>

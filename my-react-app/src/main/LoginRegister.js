@@ -61,7 +61,7 @@ const LoginRegister = () => {
           <div className="row align-items-center">
             <div className="col-6 px-5">
               <div className="row">
-                <h1 className="display-5 fw-bold" style={{ "font-family": "'Brush Script MT', cursive" }}>MyRPG</h1>
+                <h1 className="display-5 fw-bold" style={{ "fontFamily": "'Brush Script MT', cursive" }}>MyRPG</h1>
               </div>
               <div className="row justify-content-center">
                 <img className="img-fluid home-img fade-in" src="/images/village2.svg" alt="village" />
@@ -144,7 +144,7 @@ const LoginRegister = () => {
             </div>
             <div className="modal-footer">
               
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
             </div>
           </div>
         </div>
