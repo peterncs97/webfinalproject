@@ -8,8 +8,11 @@ const Backpack = ({ character }) => {
 	const [playerItemList, setPlayerItemList] = useState([]);
 
 	useEffect(() => {
-		setCurrentItem(character?.items[0])
-		setPlayerItemList(character?.items);
+		setCurrentItem(null)
+		setPlayerItemList(
+			// Hide equipped items with quantity 1
+			character?.items.filter(item => !(item.item_ownership.equipped && item.item_ownership.quantity === 1))
+		);
 	}, [character]);
 
 	const showItemInfo = (event) => {
@@ -25,11 +28,11 @@ const Backpack = ({ character }) => {
 				</div>
 
 				<div className='col-4 border-start border-end border-3'>
-					<ItemDetail item={currentItem} type={currentItem?.type} />
+					<ItemDetail item={currentItem}/>
 				</div>
 
 				<div className='col-4'>
-					<CharacterInfo character={character}/>
+					<CharacterInfo character={character} setCurrentItem={setCurrentItem} />
 				</div>
 			</div>
 		</>

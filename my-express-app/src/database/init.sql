@@ -27,12 +27,38 @@ INSERT INTO
   `items` (`id`,`name`,`type`,`price`,`description`,`createdAt`,`updatedAt`)
 VALUES
   (1, '生命藥水', 'consumable', 50, '回復生命', NOW(), NOW()),
-  (2, '魔力藥水', 'consumable', 50, '回復魔力', NOW(), NOW())
+  (2, '魔力藥水', 'consumable', 50, '回復魔力', NOW(), NOW()),
+  (3, '銅劍', 'equipment', 100, '攻擊力+10', NOW(), NOW()),
+  (4, '鐵劍', 'equipment', 200, '攻擊力+20', NOW(), NOW()),
+  (5, '皮甲', 'equipment', 100, '防禦力+10', NOW(), NOW()),
+  (6, '鐵甲', 'equipment', 200, '防禦力+20', NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `name` = VALUES(`name`),
   `type` = VALUES(`type`),
   `price` = VALUES(`price`),
   `description` = VALUES(`description`),
+  `updatedAt` = VALUES(`updatedAt`),
+  `createdAt` = VALUES(`createdAt`)
+;
+
+INSERT INTO
+  `equipment_attributes` (`id`, `itemId`, `bodypart`, `maxhp`, `maxmp`,`power`,`agile`,`luck`,`attack`,`defence`,`createdAt`,`updatedAt`)
+VALUES
+  (1, 3, 'weapon', 0, 0, 0, 0, 0, 10, 0, NOW(), NOW()),
+  (2, 4, 'weapon', 0, 0, 0, 0, 0, 20, 0, NOW(), NOW()),
+  (3, 5, 'body', 50, 0, 0, 0, 0, 0, 10, NOW(), NOW()),
+  (4, 6, 'body', 100, 0, 0, 0, 0, 0, 20, NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `id` = VALUES(`id`),
+  `itemId` = VALUES(`itemId`),
+  `bodypart` = VALUES(`bodypart`),
+  `maxhp` = VALUES(`maxhp`),
+  `maxmp` = VALUES(`maxmp`),
+  `power` = VALUES(`power`),
+  `agile` = VALUES(`agile`),
+  `luck` = VALUES(`luck`),
+  `attack` = VALUES(`attack`),
+  `defence` = VALUES(`defence`),
   `updatedAt` = VALUES(`updatedAt`),
   `createdAt` = VALUES(`createdAt`)
 ;
@@ -86,18 +112,26 @@ ON DUPLICATE KEY UPDATE
 ;
 
 INSERT INTO `item_ownerships`
-  (`id`,`itemId`, `ownerId`, `ownerType`, `quantity`, `createdAt`,`updatedAt`)
+  (`id`,`itemId`, `ownerId`, `ownerType`, `quantity`, `equipped`, `createdAt`,`updatedAt`)
 VALUES
-  (1, 1, 1, 'merchant', 0, NOW(), NOW()),
-  (2, 2, 1, 'merchant', 0, NOW(), NOW()),
-  (3, 1, 1, 'character', '10', NOW(), NOW()),
-  (4, 2, 1, 'character', '10', NOW(), NOW())
+  (1, 1, 1, 'merchant', 0, false, NOW(), NOW()),
+  (2, 2, 1, 'merchant', 0, false, NOW(), NOW()),
+  (3, 3, 1, 'merchant', 0, false, NOW(), NOW()),
+  (4, 4, 1, 'merchant', 0, false, NOW(), NOW()),
+  (5, 5, 1, 'merchant', 0, false, NOW(), NOW()),
+  (6, 6, 1, 'merchant', 0, false, NOW(), NOW()),
+  (7, 1, 1, 'character', '10', false, NOW(), NOW()),
+  (8, 2, 1, 'character', '10', false, NOW(), NOW()),
+  (9, 3, 1, 'character', '1', true, NOW(), NOW()),
+  (10, 5, 1, 'character', '1', true, NOW(), NOW()),
+  (11, 4, 1, 'character', '1', false, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `id` = VALUES(`id`),
   `itemId` = VALUES(`itemId`),
   `ownerId` = VALUES(`ownerId`),
   `ownerType` = VALUES(`ownerType`),
   `quantity` = VALUES(`quantity`),
+  `equipped` = VALUES(`equipped`),
   `updatedAt` = VALUES(`updatedAt`),
   `createdAt` = VALUES(`createdAt`)
 ;

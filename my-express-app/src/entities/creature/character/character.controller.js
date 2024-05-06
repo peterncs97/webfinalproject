@@ -39,6 +39,22 @@ class CharacterController extends BaseController{
             req.body.tradeAction);
         this.responseHandler(res, dtos);
     }
+
+    async equipCharacterItem(req, res){
+        const dtos = await this.#characterService.equipCharacterItem(
+            req.body.characterId,
+            req.body.itemId
+        );
+        this.responseHandler(res, dtos);
+    }
+
+    async unequipCharacterItem(req, res){
+        const dtos = await this.#characterService.unequipCharacterItem(
+            req.body.characterId,
+            req.body.itemId
+        );
+        this.responseHandler(res, dtos);
+    }
 }
 
 module.exports = CharacterController;

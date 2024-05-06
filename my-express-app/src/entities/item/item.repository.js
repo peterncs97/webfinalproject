@@ -1,11 +1,19 @@
 const db = require("../../database/db");
 const Op = db.Sequelize.Op;
 const Item = db.item;
-
+const EquipmentAttribute = db.equipmentAttribute;
 
 class ItemRepository{
     async findItemById(id){
-        return await Item.findByPk(id);
+        return await Item.findByPk(id, {
+            include: [
+                {
+                    model: EquipmentAttribute,
+                    as: 'equipment_attribute',
+                    attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'itemId'] }
+                },
+            ],
+        });
     }
 
     async findAllByIds(ids){

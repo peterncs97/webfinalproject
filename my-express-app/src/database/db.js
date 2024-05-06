@@ -41,5 +41,6 @@ require("./merchant.association.js")(db.scene, db.merchant);
 
 db.item = require("./item.model.js")(sequelize, Sequelize);
 db.itemOwnership = require("./item.association.js")(db);
+db.equipmentAttribute = require("./equipmentAttribute.model.js")(db);
 
 module.exports = db;

@@ -31,6 +31,10 @@ module.exports = (db) => {
       },
       quantity: {
         type: Sequelize.INTEGER
+      },
+      equipped: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       }
     },
     { sequelize, modelName: 'item_ownership' },

@@ -52,7 +52,14 @@ const SplitModal = (props) => {
   if (!item) return null;
   // If item belongs to character, the max quantity (for selling) is the quantity of character's item,
   // otherwise, the max quantity (for buying) is the character's money divided by the item's price
-  const maxQuantity = (belongto === 'character') ? item.item_ownership.quantity : charactermoney / item.price;
+  var maxQuantity = 0;
+  if (belongto === 'character') {
+    maxQuantity = item.item_ownership.quantity;
+    if (item.item_ownership.equipped)
+      maxQuantity--;
+  } else {
+    maxQuantity = charactermoney / item.price;
+  }
 
   return (
     <Modal show={show} onHide={onHide} centered aria-labelledby="contained-modal-title-vcenter">

@@ -26,8 +26,11 @@ const Trade = () => {
 	// Set the current item to the first item in the character's inventory
 	// Set up item list of the character and the merchant respectively
 	useEffect(() => {
-		setCurrentItem(character.items[0])
-		setCharacterItemList(character.items);
+		setCurrentItem(null)
+		setCharacterItemList(
+			// Hide equipped items with quantity 1
+			character?.items.filter(item => !(item.item_ownership.equipped && item.item_ownership.quantity === 1))
+		);
 		axios.get(`${api_url}/merchant/getBySceneId/${currSceneId}`)
 		.then((response) => {
 			setMerchantItemList(response.data.data.items);
