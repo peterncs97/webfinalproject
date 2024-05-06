@@ -6,10 +6,10 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
 // Import api url from config.js
-import { api_url } from '../config';
+import { api_url } from '../../config';
 
 // Import contexts from Layout.js
-import { CharacterContext } from '../main/Layout';
+import { CharacterContext } from '../../main/Layout';
 
 const OptionModal = (props) => {
   const { character, setCharacter } = useContext(CharacterContext);
