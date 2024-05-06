@@ -75,10 +75,24 @@ ON DUPLICATE KEY UPDATE
 ;
 
 INSERT INTO
-  `characters` (`id`, `name`, `profession`, `level`, `experience`, `money`, `equipmentWeaponId`, `equipmentBodyId`, `createdAt`, `updatedAt`) 
+  `users` (`id`, `username`, `password`, `createdAt`, `updatedAt`)
+VALUES
+  (1, 'apple', '$2b$10$FYgdGe7hgBxSa5283mdRq.EKSStAgNjVvP/ZSyyP50lZ9/XoDvn.y', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `id` = VALUES(`id`),
+  `username` = VALUES(`username`),
+  `password` = VALUES(`password`),
+  `updatedAt` = VALUES(`updatedAt`),
+  `createdAt` = VALUES(`createdAt`)
+;
+
+INSERT INTO
+  `characters` (`id`, `userId`, `name`, `profession`, `level`, `experience`, `money`, `equipmentWeaponId`, `equipmentBodyId`, `createdAt`, `updatedAt`) 
 VALUES 
-  (1, 'Apple', 'mage', 1, 0, 1000, 1, 2, NOW(), NOW())
+  (1, 1, 'Apple', 'mage', 1, 0, 1000, 1, 2, NOW(), NOW())
 ON DUPLICATE KEY UPDATE 
+  `id` = VALUES(`id`),
+  `userId` = VALUES(`userId`),
   `name` = VALUES(`name`),
   `profession` = VALUES(`profession`),
   `level` = VALUES(`level`),

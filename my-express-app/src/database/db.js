@@ -43,4 +43,6 @@ db.item = require("./item.model.js")(sequelize, Sequelize);
 db.itemOwnership = require("./item.association.js")(db);
 db.equipmentAttribute = require("./equipmentAttribute.model.js")(db);
 
+db.user = require("./user.model.js")(sequelize, Sequelize, db.character);
+
 module.exports = db;
