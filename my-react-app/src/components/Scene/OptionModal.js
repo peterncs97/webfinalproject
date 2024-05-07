@@ -17,6 +17,20 @@ const OptionModal = (props) => {
   const { show, onHide } = props; 
   
   const handleConfirm = () => {
+    if (character.money < 300) {
+      setDisableConfirmButton(true)
+      alert('金幣不足！');
+      return;
+    }
+    else {
+      setDisableConfirmButton(false);
+      axios.post(`${api_url}/character/restoreHP`, {
+        characterId: character.id,
+        hp: 50
+      }).then((response) => {
+        setCharacter(response.data.data);
+      });
+    }
     closeModal();
   }
 
@@ -29,13 +43,15 @@ const OptionModal = (props) => {
       {/* Option Name */}
       <Modal.Header style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <Modal.Title id="contained-modal-title-vcenter" >
-        
+        要休息嗎？
         </Modal.Title>
       </Modal.Header>
 
       {/* Option Description */}
-      <Modal.Body>
-        
+      <Modal.Body style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        花費金幣補充體力，繼續冒險！ <br/>
+        300金幣可提昇50HP <br/>
+        您目前擁有：{character.money}金幣
       </Modal.Body>
 
       {/* Cancal and Confirm Button*/}
