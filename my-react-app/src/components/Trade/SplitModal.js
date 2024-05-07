@@ -58,7 +58,7 @@ const SplitModal = (props) => {
     if (item.item_ownership.equipped)
       maxQuantity--;
   } else {
-    maxQuantity = charactermoney / item.price;
+    maxQuantity = Math.floor(charactermoney / item.price);
   }
 
   return (

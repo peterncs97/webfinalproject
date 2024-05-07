@@ -12,8 +12,7 @@ class CharacterRepository{
             include: [
                 {
                     model: CombatAttribute,
-                    attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'creatureId', 'creatureType']}
-
+                    attributes: { exclude: ['createdAt', 'updatedAt', 'creatureId', 'creatureType']}
                 },
                 {
                     model: Item,

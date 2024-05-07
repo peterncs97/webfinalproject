@@ -21,9 +21,11 @@ function App() {
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, user, setUser }}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginRegister />}>
+          {/* <Route path="/" element={<LoginRegister />}>
           </Route>
           <Route path="/main" element={<Layout />}>
+          </Route> */}
+          <Route path="/" element={<Layout />}>
           </Route>
         </Routes>
       </BrowserRouter>

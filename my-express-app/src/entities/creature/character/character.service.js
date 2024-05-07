@@ -29,17 +29,12 @@ class CharacterService {
     }
 
     async restCharacter(id) {
-        // TODO: Restore character's HP and MP to full and decrease money
-        // call setCharacterHpMp, adjustCharacterMoney from characterRepository
         const character = await this.getCharacterById(id);
-        const moneyAdjustment = -300;
-        const HPAdjustment = 50;
-        await this.#characterRepository.adjustCharacterMoney(character, moneyAdjustment);
-        const characterHP = character.characterHP + HPAdjustment;
-        
-        if (characterHP > character.maxHP) characterHP = character.maxHP;
-        await this.#characterRepository.setCharacterHpMp(character, characterHP, character.combat_attribute.max_mp);
-        return await this.getCharacterById(characterId);
+        await this.#characterRepository.adjustCharacterMoney(character, -100);
+        const attr = await character.getCombat_attribute();
+
+        await this.#characterRepository.setCharacterHpMp(character, attr.maxhp, attr.maxmp);
+        return await this.getCharacterById(id);
     }
 
     async grantCharacterItems(characterId, items) {
