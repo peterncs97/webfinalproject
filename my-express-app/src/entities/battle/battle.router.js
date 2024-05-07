@@ -52,18 +52,19 @@ class BattleRouter extends BaseRouter {
         this.router.post('/calculate-skill', (req, res, next) => this.#controller.calculateSkill(req, res, next)); 
         this.router.post('/calculate-exp', (req, res, next) => this.#controller.calculateExp(req, res, next)); 
         
-        // for testing
-        this.router.post('/set-battle', (req, res, next) => this.#controller.setBattle(req, res, next)); 
-        
         // moster attack user: get the monster info and then radomly use skill
         /***
          ** input: battle id
          ** 
          ** output: 1. updated charactor and monster status of this turn/ 2. end of battle: monster info
-        ***/
-       
+         ***/
+        this.router.post('/monster-attack', (req, res, next) => this.#controller.monsterAttack(req, res, next)); 
         
-        // 
+        // for testing
+        this.router.post('/set-battle', (req, res, next) => this.#controller.setBattle(req, res, next)); 
+        
+        
+        // TODO
         /***
         ** input: battle id, item id
         ** manipulation: 
@@ -73,23 +74,6 @@ class BattleRouter extends BaseRouter {
         ** output: updated charactor and monster status of this turn
         ***/
         this.router.post('/use-item', (req, res, next) => this.#controller.useItem(req, res, next)); 
-        
-        
-        
-        // input: the relative difference of status 
-        // manipulation: 
-            // 1. retrive the data from 
-                // Character Table or Monster Table 
-                // Battling Table  
-            // 2. manipulate and check the data: 
-                // whether HPis zero
-                // whether MP is zero
-                // status duration counts
-            // 3. if 
-        // output: current HP, MP, status
-        // this.router.post('/update-HP', (req, res, next) => this.#controller.updateHP(req, res, next)); 
-        // this.router.post('/update-MP', (req, res, next) => this.#controller.updateMP(req, res, next));
-        // this.router.post('/update-Status', (req, res, next) => this.#controller.updateStatus(req, res, next));
         
         // ----------------------------------------------------/* Delete */---------------------------------------------------------------
         // used for: escape, endBattle

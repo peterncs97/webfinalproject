@@ -1,6 +1,10 @@
 
 class algo {
     constructor() { };
+
+    getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }    
     correctnessOfOne(input, target) {
         var result = 0;
         for (let i = 0; i < target.length & i < input.length; i++) {

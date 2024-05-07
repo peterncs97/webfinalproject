@@ -31,7 +31,7 @@ class BattleController extends BaseController{
         const dtos = await this.#battleService.getSkillInfoById(id);
         this.responseHandler(res, dtos);    
     }
-    
+
     // for testing
     async getBattleById(req, res){
         const bid = req.body.id;
@@ -59,6 +59,11 @@ class BattleController extends BaseController{
         const input = req.body.input;
         const rt = req.body.rt;
         const dtos = await this.#battleService.calculateSkill(bid, skillid, input, rt);
+        this.responseHandler(res, dtos);
+    }
+    async monsterAttack(req, res){
+        const bid = req.body.id;
+        const dtos = await this.#battleService.monsterAttack(bid);
         this.responseHandler(res, dtos);
     }
     // TODO 

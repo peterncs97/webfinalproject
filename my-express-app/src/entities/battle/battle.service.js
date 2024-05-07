@@ -49,30 +49,70 @@ class BattleService {
         console.log("battle");
         const parsedCodes = skill.dataValues.skillCode.split(';');
         const bonus = (this.#algo.correctness(input, parsedCodes) * this.#algo.timeBonus(rt, skill.timer,0.0005)*0.001);
-        
+        var value=0
         // 3. use the correctness and the reaction time to calculate the effect of the skill 
         switch (skill.dataValues.type) {
             case "attack":
-                // end of battle
-                console.log(battle.dataValues.MonsterHP, skill.dataValues.ATK, bonus,skill.dataValues.ATK * bonus);
-                if (battle.dataValues.MonsterHP < skill.dataValues.ATK * bonus) {
-                    // clear battle log and return the possible reward of monster
-                    return await this.#monsterRepository.findMonsterById(battle.dataValues.monsterId);
-                }
-                battle.dataValues.MonsterHP -= skill.dataValues.ATK * bonus;
-                case "magic":
-                    // end of battle
-                    if (battle.dataValues.MonsterHP < skill.dataValues.ATK * bonus) {
-                        return await this.#monsterRepository.findMonsterById(battle.dataValues.monsterId);
-                }
-                battle.dataValues.MonsterHP -= skill.dataValues.ATK * bonus;
-                case "defense":
-                    battle.dataValues.CharactorDEF += skill.dataValues.DEF * bonus;
-                    // not yet finish the mechenism of skill duration
-                    battle.dataValues.CharacterStatusDuration=skill.dataValues.duration;
+                value=(skill.dataValues.ATK * bonus) - battle.dataValues.MonsterDEF;
+                value=value < 1 ? 0:value;
+                battle.dataValues.MonsterHP -= value;
+                break;
+            case "magic":
+                value=(skill.dataValues.ATK * bonus) - battle.dataValues.MonsterDEF*0.8;
+                value=value < 1 ? 0:value;
+                battle.dataValues.MonsterHP -= value;
+                break;
+            case "defense":
+                value=skill.dataValues.DEF * bonus;
+                battle.dataValues.CharactorDEF += value;
+                // TODO: not yet finish the mechenism of skill duration
+                battle.dataValues.CharacterStatusDuration=skill.dataValues.duration;
+                break;
         }
-        
+
+        if(battle.dataValues.MonsterHP<=0){
+            const dto = await this.#monsterRepository.findMonsterById(battle.dataValues.monsterId);
+            return "You won!";
+        }
         const dto = await this.#battleRepository.setBattle(battle.dataValues);
+        dto.dataValues.message=`${skill.dataValues.name},${value}`;
+        return dto;
+    }
+    async monsterAttack(bid) {
+        // 1. get battle info 
+        // 2. get monster info
+        const battle = await this.#battleRepository.getBattleById(bid);
+        var message=""
+        var value=0;
+        // const monster = await this.#monsterRepository.findMonsterById(battle.dataValues.MonsterID);
+        
+        // 3. randomly use atk or def or magic
+        const choice=this.#algo.getRandomInt(3);
+        switch(choice){
+            case 0: 
+                value=battle.dataValues.MonsterATK - battle.dataValues.CharactorDEF;
+                battle.dataValues.CharactorHP -= value;
+                message="attack";
+                break;
+            case 1: 
+                value=battle.dataValues.MonsterATK*1.2 - battle.dataValues.CharactorDEF;
+                battle.dataValues.CharactorHP -= value;
+                message="magic";
+                break;
+            case 2:
+                value= 3 
+                battle.dataValues.MonsterDEF+= value;
+                message="defense";
+                break;
+        }
+        // 4. result 
+            // updated battle result
+            // or end of battle(character loss)
+        if(battle.dataValues.CharactorHP<=0){
+            return "you loss";
+        }
+        const dto = await this.#battleRepository.setBattle(battle.dataValues);
+        dto.dataValues.message=`${message}:${value}`;
         return dto;
     }
     async calculateExp(req) {
