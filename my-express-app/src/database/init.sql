@@ -102,11 +102,11 @@ ON DUPLICATE KEY UPDATE
   `createdAt` = VALUES(`createdAt`)
 ;
 INSERT INTO `skillbooks`
-  (`id`,`name`, `type`, `description`, `skillCode`, `specialCode`,`duration`,`ATK`,`DEF`,`Power`,`Luck`,`Agile`, `createdAt`,`updatedAt`)
+  (`id`,`name`, `type`, `description`, `skillCode`, `specialCode`,`timer`,`duration`,`ATK`,`DEF`,`Power`,`Luck`,`Agile`, `createdAt`,`updatedAt`)
 VALUES
-  (1, "normal attack", "attack", 'kick, puch and slap!', "kick", "combine",  0,10,0,0,0,0, NOW(), NOW()),
-  (2, "normal defense", "defense", 'protect yourself!', "defense", "repeat", 3,0,10,0,0,-10, NOW(), NOW()),
-  (3, "fire ball",  "magic", 'what else should i explain?', "fireBall","none", 1,15,0,0,10,0, NOW(), NOW())
+  (1, "normal attack", "attack", 'kick, puch and slap!', "kick" ,"combine",5000,  0,10,0,0,0,0, NOW(), NOW()),
+  (2, "normal defense", "defense", 'protect yourself!', "defense", "repeat",5000, 3,0,10,0,0,-10, NOW(), NOW()),
+  (3, "fire ball",  "magic", 'what else should i explain?', "fireBall","none",3000, 1,15,0,0,10,0, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `name` = VALUES(`name`),
   `type` = VALUES(`type`),
@@ -119,5 +119,6 @@ ON DUPLICATE KEY UPDATE
   `Power` = VALUES(`Power`),
   `Luck` = VALUES(`Luck`),
   `Agile` = VALUES(`Agile`),
+  `timer` = VALUES(`timer`),
   `updatedAt` = VALUES(`updatedAt`)
 ;
