@@ -4,6 +4,8 @@ const Character = db.character;
 const CombatAttribute = db.combatAttribute;
 const Item = db.item;
 const ItemOwnership = db.itemOwnership;
+const EquipmentAttribute = db.equipmentAttribute;
+
 class CharacterRepository{
     async findCharacterById(id){
         return await Character.findByPk(id, { 
@@ -17,8 +19,15 @@ class CharacterRepository{
                     model: Item,
                     order: [['id', 'ASC']],
                     through: {
-                        attributes: ['quantity'],
-                    }
+                        attributes: ['quantity', 'equipped'],
+                    },
+                    include: [
+                        {
+                            model: EquipmentAttribute,
+                            as: 'equipment_attribute',
+                            attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'itemId'] }
+                        },
+                    ]
                 }
             ] 
         });

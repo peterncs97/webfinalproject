@@ -3,8 +3,8 @@ import { useEffect, useState, useContext } from 'react';
 import axios from "axios";
 import { api_url } from '../config';
 // Import custom components
-import OptionList from '../components/OptionList';
-import OptionModal from '../components/OptionModal';
+import OptionList from '../components/Scene/OptionList';
+import OptionModal from '../components/Scene/OptionModal';
 // Import current scene id context from Layout.js
 import { CurrSceneContext } from './Layout';
 

@@ -15,7 +15,8 @@ class CharacterController extends BaseController{
     }
 
     async restCharacter(req, res){
-        // TODO: Destrurcture req.body to get characterId and call service method
+        const dtos = await this.#characterService.restCharacter(req.body.characterId);
+        this.responseHandler(res, dtos);
     }
 
     async grantCharacterItems(req, res){
@@ -37,6 +38,22 @@ class CharacterController extends BaseController{
             req.body.characterId,
             req.body.item,
             req.body.tradeAction);
+        this.responseHandler(res, dtos);
+    }
+
+    async equipCharacterItem(req, res){
+        const dtos = await this.#characterService.equipCharacterItem(
+            req.body.characterId,
+            req.body.itemId
+        );
+        this.responseHandler(res, dtos);
+    }
+
+    async unequipCharacterItem(req, res){
+        const dtos = await this.#characterService.unequipCharacterItem(
+            req.body.characterId,
+            req.body.itemId
+        );
         this.responseHandler(res, dtos);
     }
 }

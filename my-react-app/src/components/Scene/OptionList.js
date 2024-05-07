@@ -2,10 +2,10 @@
 import { useContext } from 'react';
 import axios from "axios";
 // Import api url from config.js
-import { api_url } from '../config';
+import { api_url } from '../../config';
 
 // Import contexts from Layout.js
-import { StateContext, CurrSceneContext, PrevSceneContext } from '../main/Layout';
+import { StateContext, CurrSceneContext, PrevSceneContext } from '../../main/Layout';
 
 // Construct option list based on current scene
 // Include basic travel option, special scene options and return option

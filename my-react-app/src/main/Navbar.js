@@ -1,4 +1,28 @@
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../App';
+import { useNavigate } from "react-router-dom";
+
 const Navbar = ({character}) => {
+	const navigate = useNavigate();
+
+	const { setIsAuthenticated, setUser } = useContext(AuthContext);
+
+	useEffect(() => {
+		const token = localStorage.getItem("Authorization");
+		if (!token) {
+			navigate("/");
+		}
+	}, [navigate]);
+
+
+	const logout = () => {
+		setIsAuthenticated(false);
+		setUser(null);
+		localStorage.removeItem("Authorization");
+		localStorage.removeItem("user");
+		navigate("/");
+	}
+
 	if (!character) return null;
 	const currhp = character.combat_attribute.currhp;
 	const currmp = character.combat_attribute.currmp;
@@ -55,7 +79,9 @@ const Navbar = ({character}) => {
 			{/* Setting Icon */}
 			<div className="col-4 ">
 				<div className="d-flex justify-content-end">
-					<img className="img-fluid icon mx-2" src="images/setting.svg" alt="setting" />
+					<button className="btn btn-outline-dark me-2" onClick={logout}>
+						登出 
+					</button>
 				</div>
 			</div>
 		</div>

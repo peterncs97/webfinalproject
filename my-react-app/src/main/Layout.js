@@ -1,8 +1,7 @@
 // Import packages
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, useContext, createContext } from "react";
 import axios from "axios";
-// Import api url from config.js
-import { api_url } from "../config";
+
 // Import custom components
 import Navbar from "./Navbar";
 import Scene from "./Scene";
@@ -10,6 +9,7 @@ import Backpack from "./Backpack";
 import Battle from "./Battle";
 import Trade from "./Trade";
 import Dialogue from "./Dialogue";
+import { AuthContext } from "../App";
 
 // Create contexts for states, current scene, previous scene, and character data
 // These contexts will be used to pass and alter data between components
@@ -19,6 +19,8 @@ export const PrevSceneContext = createContext(null);
 export const CharacterContext = createContext(null);
 
 const Layout = () => {
+  const { setIsAuthenticated, setUser } = useContext(AuthContext);
+
   // Conditionally rendering components based on states
   // states: default, battle, trade, dialogue
   const [action, setAction] = useState("default");
@@ -26,11 +28,20 @@ const Layout = () => {
   const [currSceneId, setCurrSceneId] = useState(1); // Current scene ID
   const [character, setCharacter] = useState(null); // Character data
 
-  // Fetch character data on initial render
+  // Persist user data on refresh and fetch character data on initial render
   useEffect(() => {
-    axios.get(`${api_url}/character/1`).then((response) => {
-      setCharacter(response.data.data);
-    });
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      setIsAuthenticated(true);
+      const user = JSON.parse(localStorage.getItem("user"));
+      setUser(user);
+      axios.get(`/character/${user.character.id}`)
+        .then((response) => {
+          setCharacter(response.data.data);
+        }).catch((error) => {
+          console.error('Error fetching character data: ', error);
+        });
+    }
   }, []);
   
   function SubDisplay(props){

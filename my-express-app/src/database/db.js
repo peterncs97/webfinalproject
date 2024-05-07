@@ -40,6 +40,9 @@ db.merchant = require("./merchant.model.js")(sequelize, Sequelize);
 require("./merchant.association.js")(db.scene, db.merchant);
 db.item = require("./item.model.js")(sequelize, Sequelize);
 db.itemOwnership = require("./item.association.js")(db);
+db.equipmentAttribute = require("./equipmentAttribute.model.js")(db);
+
+db.user = require("./user.model.js")(sequelize, Sequelize, db.character);
 
 // battle
 db.battle = require("./battle.model.js")(sequelize, Sequelize);

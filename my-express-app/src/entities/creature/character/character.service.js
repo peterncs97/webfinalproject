@@ -1,5 +1,6 @@
 const CharacterRepository = require('./character.repository');
 const ItemService = require('../../item/item.service');
+const { item } = require('../../../database/db');
 
 class CharacterService {
     #characterRepository = new CharacterRepository();
@@ -30,6 +31,15 @@ class CharacterService {
     async restCharacter(id) {
         // TODO: Restore character's HP and MP to full and decrease money
         // call setCharacterHpMp, adjustCharacterMoney from characterRepository
+        const character = await this.getCharacterById(id);
+        const moneyAdjustment = -300;
+        const HPAdjustment = 50;
+        await this.#characterRepository.adjustCharacterMoney(character, moneyAdjustment);
+        const characterHP = character.characterHP + HPAdjustment;
+        
+        if (characterHP > character.maxHP) characterHP = character.maxHP;
+        await this.#characterRepository.setCharacterHpMp(character, characterHP, character.combat_attribute.max_mp);
+        return await this.getCharacterById(characterId);
     }
 
     async grantCharacterItems(characterId, items) {
@@ -78,26 +88,65 @@ class CharacterService {
     async tradeCharacterItem(characterId, item, tradeAction) {
         const character = await this.getCharacterWithItemsById(characterId);
         const itemModel = await this.#itemService.getItemById(item.id);
-
+        // Calculate the money adjustment based on the trade action
         var moneyAdjustment = itemModel.price * item.quantity;
         if (tradeAction === 'buy') 
             moneyAdjustment = - moneyAdjustment;
+        // Adjust the character's money
         await this.#characterRepository.adjustCharacterMoney(character, moneyAdjustment);
    
+        // Find the item in the character's inventory
         const characterItem = character.items.find(characterItem => characterItem.id === item.id);
+        
+        // If the character already has the item, adjust the quantity based on the trade action
         if (characterItem)
             if (tradeAction === 'buy')
                 item.quantity += characterItem.item_ownership.quantity;
             else 
                 item.quantity = characterItem.item_ownership.quantity - item.quantity;
 
+        // If character sell all of the item, remove the item from the character's inventory
         if (tradeAction === 'sell' && item.quantity <= 0)
             await this.#characterRepository.removeCharacterItem(character, characterItem);
+        // Otherwise, add or update the item quantity in the character's inventory
         else {
             itemModel.item_ownership = { quantity: item.quantity };
             await this.#characterRepository.addOrUpdateCharacterItems(character, [itemModel]);
         }
 
+        return await this.getCharacterById(characterId);
+    }
+
+    async equipCharacterItem(characterId, itemId) {
+        const character = await this.getCharacterById(characterId);
+        
+        // Find the item to equip and the bodypart it should be equipped on
+        const itemToEquip = character.items.find(characterItem => characterItem.id === itemId);
+        const bodypart = itemToEquip.equipment_attribute.bodypart;
+
+        // Find the item that is already equipped on the same bodypart
+        const itemToUnequip = character.items.find(characterItem => characterItem.item_ownership.equipped && characterItem.equipment_attribute.bodypart === bodypart);
+        
+        // If the item is already equipped, return the character
+        if (itemToUnequip && itemToEquip.id === itemToUnequip.id)
+            return await this.getCharacterById(characterId);
+
+        // Equip the new item
+        itemToEquip.item_ownership = { quantity: itemToEquip.quantity, equipped: true };
+        // Unequip the old item if it exists
+        if (itemToUnequip)
+            itemToUnequip.item_ownership = { quantity: itemToUnequip.quantity, equipped: false };
+        
+        // Update the character's items
+        await this.#characterRepository.addOrUpdateCharacterItems(character, (itemToUnequip) ? [itemToEquip, itemToUnequip] : [itemToEquip]);
+        return await this.getCharacterById(characterId);
+    }
+
+    async unequipCharacterItem(characterId, itemId) {
+        const character = await this.getCharacterById(characterId);
+        const itemToUnequip = character.items.find(characterItem => characterItem.id === itemId);
+        itemToUnequip.item_ownership = { quantity: itemToUnequip.quantity, equipped: false };
+        await this.#characterRepository.addOrUpdateCharacterItems(character, [itemToUnequip]);
         return await this.getCharacterById(characterId);
     }
 }

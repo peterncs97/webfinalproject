@@ -4,6 +4,24 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:3001";
+axios.interceptors.request.use(request => {
+  const token = localStorage.getItem("Authorization");
+  if (token)
+    request.headers['Authorization'] = token;
+  return request;
+}, error => {
+  return Promise.reject(error);
+});
+
+axios.interceptors.response.use(response => {
+  return response;
+}, error => {
+  return Promise.reject(error);
+});
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
