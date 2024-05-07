@@ -16,6 +16,7 @@ const LoginRegister = () => {
   const [registerCharacterName, setRegisterCharacterName] = useState("");
   const [alertSuccessDisplay, setAlertSuccessDisplay] = useState("none");
   const [alertFailDisplay, setAlertFailDisplay] = useState("none");
+  const [alertLoginFailDisplay, setAlertLoginFailDisplay] = useState("none");
 
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
@@ -33,6 +34,7 @@ const LoginRegister = () => {
         setIsAuthenticated(true);
         navigate("/main");
       }).catch((error) => {
+        setAlertLoginFailDisplay("block")
         console.log(error);
       });
   }
@@ -47,9 +49,11 @@ const LoginRegister = () => {
       }
     )
       .then((response) => {
-        setAlertSuccessDisplay("block")
+        setAlertSuccessDisplay("block");
+        setAlertFailDisplay("none");
       }).catch((error) => {
-        setAlertFailDisplay("block")
+        setAlertFailDisplay("block");
+        setAlertSuccessDisplay("none");
         console.log(error);
       });
   }
@@ -73,7 +77,7 @@ const LoginRegister = () => {
             <div className="col-6 px-5">
               <div className="card text-dark">
                 <div className="card-body p-5 text-center">
-                  <div className="pb-4 mb-4 border-bottom ">
+                  <div className="pb-2 mb-4 border-bottom ">
                     <h2 className="fw-bold mb-3">登入</h2>
                     <div className="form-outline mb-4">
                       <label className="form-label" htmlFor="username">帳號</label>
@@ -87,8 +91,12 @@ const LoginRegister = () => {
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
-                    <div className="d-grid gap-2">
+                    <div className="d-grid gap-2 mb-2">
                       <button className="btn btn-dark btn-lg px-5" type="submit" onClick={handleLogin}>登入</button>
+                    </div>
+                    <div className="alert alert-danger alert-dismissible fade show" style={{ "display": alertLoginFailDisplay }}>
+                      <button type="button" className="btn-close" onClick={() => setAlertLoginFailDisplay("none")}></button>
+                      <strong>帳號或密碼不正確</strong>
                     </div>
                   </div>
                   <button className="btn btn-outline-dark btn-lg px-5" data-bs-toggle="modal" data-bs-target="#registerModal">
@@ -132,11 +140,11 @@ const LoginRegister = () => {
                   <button type="submit" className="btn btn-dark btn-lg mb-3" onClick={handleRegister}>註冊</button>
                 </div>
                 <div className="alert alert-success alert-dismissible fade show" style={{ "display": alertSuccessDisplay }}>
-                  <button type="button" className="btn-close" data-bs-dismiss="alert"></button>
+                  <button type="button" className="btn-close" onClick={() => setAlertSuccessDisplay("none")}></button>
                   <strong>註冊成功！</strong>
                 </div>
                 <div className="alert alert-danger alert-dismissible fade show" style={{ "display": alertFailDisplay }}>
-                  <button type="button" className="btn-close" data-bs-dismiss="alert"></button>
+                  <button type="button" className="btn-close" onClick={() => setAlertFailDisplay("none")}></button>
                   <strong>註冊失敗，請重試。</strong>
                 </div>
          

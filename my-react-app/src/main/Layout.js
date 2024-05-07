@@ -30,20 +30,19 @@ const Layout = () => {
 
   // Persist user data on refresh and fetch character data on initial render
   useEffect(() => {
-    // const token = localStorage.getItem("Authorization");
-    // if (token) {
-    //   setIsAuthenticated(true);
-    //   const user = JSON.parse(localStorage.getItem("user"));
-    //   setUser(user);
-    // axios.get(`/character/${user.character.id}`)
-      axios.get(`/character/1`)
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      setIsAuthenticated(true);
+      const user = JSON.parse(localStorage.getItem("user"));
+      setUser(user);
+      axios.get(`/character/${user.character.id}`)
         .then((response) => {
           setCharacter(response.data.data);
         }).catch((error) => {
           console.error('Error fetching character data: ', error);
         });
-    // }
-  }, []);
+    }
+  }, [setIsAuthenticated, setUser]);
 
  
 
