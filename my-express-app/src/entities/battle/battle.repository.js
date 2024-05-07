@@ -14,8 +14,8 @@ class BattleRepository{
     #characterRepository = new CharacterRepository();
     #monsterRepository= new MonsterRepository();
     
-    async getBattleById(id){
-        return await Battle.findByPk(id);
+    async getBattleById(bid){
+        return await Battle.findByPk(bid);
     }
     async setBattle(battle){
         console.log(battle);

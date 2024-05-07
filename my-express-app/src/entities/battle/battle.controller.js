@@ -35,7 +35,7 @@ class BattleController extends BaseController{
     // for testing
     async getBattleById(req, res){
         const bid = req.body.id;
-        const dtos = await this.#battleService.getBattleById(req);
+        const dtos = await this.#battleService.getBattleById(bid);
         this.responseHandler(res, dtos);    
     }
 

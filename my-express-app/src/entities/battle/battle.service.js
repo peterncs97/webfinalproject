@@ -91,12 +91,14 @@ class BattleService {
         switch(choice){
             case 0: 
                 value=battle.dataValues.MonsterATK - battle.dataValues.CharactorDEF;
-                battle.dataValues.CharactorHP -= value;
+                value=value < 1 ? 0:value;
+                battle.dataValues.CharacterDEF -= value;
                 message="attack";
                 break;
             case 1: 
                 value=battle.dataValues.MonsterATK*1.2 - battle.dataValues.CharactorDEF;
-                battle.dataValues.CharactorHP -= value;
+                value=value < 1 ? 0:value;
+                battle.dataValues.CharacterDEF -= value;
                 message="magic";
                 break;
             case 2:
@@ -108,9 +110,10 @@ class BattleService {
         // 4. result 
             // updated battle result
             // or end of battle(character loss)
-        if(battle.dataValues.CharactorHP<=0){
+        if(battle.dataValues.CharacterDEF<=0){
             return "you loss";
         }
+        console.log(battle.dataValues.MonsterATK,battle.dataValues.CharacterDEF,value);
         const dto = await this.#battleRepository.setBattle(battle.dataValues);
         dto.dataValues.message=`${message}:${value}`;
         return dto;
