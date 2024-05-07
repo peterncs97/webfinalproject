@@ -41,9 +41,16 @@ const Battle = () => {
 	}, [countDown, skillId]);
 
 	const handleSkillUse = (id) => {
-		setSkillId(id);
-		setIsCountDown(true);
-		setCountDown(defaultCountDown);
+		axios.post(`${api_url}/battle/get-skill-info`, {
+			skillid:id
+		}).then((response) => {
+			setSkillId(id);
+			setIsCountDown(true);
+			setCountDown(response.data.timer);
+			})
+		  .catch(error => {
+			return `Error: Skill handling failed QQ`;
+		  });
 	};
 
 	return (
@@ -70,7 +77,7 @@ const Battle = () => {
 				: 
 				// Decision state: user can choose to do something, e.g. attack, escape, uses spells... 
 				<>
-				<SkillBar skills={skills} handleSkillUse={handleSkillUse} isCountDown={isCountDown} />
+					<SkillBar skills={skills} handleSkillUse={handleSkillUse} isCountDown={isCountDown} />
 				</>
 			}
 		</div>
