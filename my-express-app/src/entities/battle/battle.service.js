@@ -82,6 +82,7 @@ class BattleService {
         // 1. get battle info 
         // 2. get monster info
         const battle = await this.#battleRepository.getBattleById(bid);
+        console.log(battle);
         var message=""
         var value=0;
         // const monster = await this.#monsterRepository.findMonsterById(battle.dataValues.MonsterID);
@@ -90,14 +91,14 @@ class BattleService {
         const choice=this.#algo.getRandomInt(3);
         switch(choice){
             case 0: 
-                value=battle.dataValues.MonsterATK - battle.dataValues.CharactorDEF;
-                value=value < 1 ? 0:value;
+                value=battle.dataValues.MonsterATK - battle.dataValues.CharacterDEF;
+                value=value < 0 ? 1:value;
                 battle.dataValues.CharacterDEF -= value;
                 message="attack";
                 break;
             case 1: 
-                value=battle.dataValues.MonsterATK*1.2 - battle.dataValues.CharactorDEF;
-                value=value < 1 ? 0:value;
+                value=battle.dataValues.MonsterATK*1.2 - battle.dataValues.CharacterDEF;
+                value=value < 0 ? 1:value;
                 battle.dataValues.CharacterDEF -= value;
                 message="magic";
                 break;
@@ -113,7 +114,7 @@ class BattleService {
         if(battle.dataValues.CharacterDEF<=0){
             return "you loss";
         }
-        console.log(battle.dataValues.MonsterATK,battle.dataValues.CharacterDEF,value);
+        console.log(battle.dataValues.MonsterATK, battle.dataValues.CharacterDEF,value);
         const dto = await this.#battleRepository.setBattle(battle.dataValues);
         dto.dataValues.message=`${message}:${value}`;
         return dto;
