@@ -1,8 +1,7 @@
 // Import packages
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
 // Import api url from config.js
@@ -16,21 +15,17 @@ const OptionModal = (props) => {
   const [disableConfirmButton, setDisableConfirmButton] = useState(false);
   const { show, onHide } = props; 
   
+  useEffect(() => {
+    const attr = character?.combat_attribute;
+    setDisableConfirmButton(character?.money < 100 || (attr?.currhp === attr?.maxhp && attr?.currmp === attr?.maxmp));
+  }, [character]);
+
   const handleConfirm = () => {
-    if (character.money < 300) {
-      setDisableConfirmButton(true)
-      alert('金幣不足！');
-      return;
-    }
-    else {
-      setDisableConfirmButton(false);
-      axios.post(`${api_url}/character/restoreHP`, {
-        characterId: character.id,
-        hp: 50
-      }).then((response) => {
-        setCharacter(response.data.data);
-      });
-    }
+    axios.post(`${api_url}/character/rest`, {
+      characterId: character.id,
+    }).then((response) => {
+      setCharacter(response.data.data);
+    });
     closeModal();
   }
 
@@ -50,7 +45,7 @@ const OptionModal = (props) => {
       {/* Option Description */}
       <Modal.Body style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         花費金幣補充體力，繼續冒險！ <br/>
-        300金幣可提昇50HP <br/>
+        100金幣可回復所有HP及MP <br/>
         您目前擁有：{character.money}金幣
       </Modal.Body>
 
