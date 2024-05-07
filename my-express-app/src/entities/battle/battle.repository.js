@@ -32,8 +32,17 @@ class BattleRepository{
     async getSkillInfoById(id){
         return await SkillBook.findByPk(id);
     }
-
-
+    async updateCharacterHP(charactorId,HP){
+        await CombatAttribute.update(
+            {currhp:HP},
+            {
+                where:
+                {
+                    id:charactorId
+                }
+            }
+        );
+    }
     async createBattle(charactorId, monsterId){
         // get the charactor data and monster data repectively 
         const charactorInfo=await this.#characterRepository.findCharacterById(charactorId);
@@ -71,6 +80,7 @@ class BattleRepository{
             }
         );
     }
+
 }
 
 module.exports = BattleRepository;

@@ -50,7 +50,7 @@ app.use('/character', characterRouter);
 app.use('/monster', monsterRouter);
 app.use('/item', itemRouter);
 app.use('/merchant', merchantRouter);
-
+app.use('/battle',battleRouter);
 // Guard routes
 app.use(function (req, res, next) {
     next(createError(404));

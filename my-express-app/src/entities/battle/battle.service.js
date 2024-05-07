@@ -2,12 +2,15 @@ const { PASSWORD } = require('../../database/db.config');
 const algo = require('./algo');
 const BattleRepository = require('./battle.repository');
 const MonsterRepository = require('../creature/monster/monster.repository');
-const { battle } = require('../../database/db');
+const CharacterRepository = require('../creature/character/character.repository');
+const { battle, character } = require('../../database/db');
 
 class BattleService {
     #battleRepository = new BattleRepository();
     #monsterRepository = new MonsterRepository();
+    #characterRepository= new CharacterRepository();
     #algo=new algo();
+
     async getSkillInfoById(id) {
         const dto = await this.#battleRepository.getSkillInfoById(id);
         return dto;
@@ -72,6 +75,7 @@ class BattleService {
 
         if(battle.dataValues.MonsterHP<=0){
             const dto = await this.#monsterRepository.findMonsterById(battle.dataValues.monsterId);
+            await this.#battleRepository.updateCharacterHP(battle.dataValues.CharacterID,battle.dataValues.CharacterHP)
             return "You won!";
         }
         const dto = await this.#battleRepository.setBattle(battle.dataValues);
@@ -93,13 +97,13 @@ class BattleService {
             case 0: 
                 value=battle.dataValues.MonsterATK - battle.dataValues.CharacterDEF;
                 value=value < 0 ? 1:value;
-                battle.dataValues.CharacterDEF -= value;
+                battle.dataValues.CharacterHP -= value;
                 message="attack";
                 break;
             case 1: 
                 value=battle.dataValues.MonsterATK*1.2 - battle.dataValues.CharacterDEF;
                 value=value < 0 ? 1:value;
-                battle.dataValues.CharacterDEF -= value;
+                battle.dataValues.CharacterHP -= value;
                 message="magic";
                 break;
             case 2:
@@ -111,7 +115,7 @@ class BattleService {
         // 4. result 
             // updated battle result
             // or end of battle(character loss)
-        if(battle.dataValues.CharacterDEF<=0){
+        if(battle.dataValues.CharacterHP<=0){
             return "you loss";
         }
         console.log(battle.dataValues.MonsterATK, battle.dataValues.CharacterDEF,value);
@@ -119,9 +123,9 @@ class BattleService {
         dto.dataValues.message=`${message}:${value}`;
         return dto;
     }
-    async calculateExp(req) {
 
-    }
+    async calculateExp(req) {}
+    
 }
 
 module.exports = BattleService;
