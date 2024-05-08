@@ -7,8 +7,10 @@ class BattleController extends BaseController{
     // --------------------------------------------/* GET: send to frontend*/-----------------------------------------------------------------------
     // get a list of skill id of a user from character table
     async getSkillSetById(req, res){
-        const uid=req.body.id;
-        const dtos = await this.#battleService.getSkillSetById(uid);
+        // console.log(req);
+        console.log(req);
+        const id=req.query.id;
+        const dtos = await this.#battleService.getSkillSetById(id);
         this.responseHandler(res, dtos);
     }
 
@@ -20,21 +22,21 @@ class BattleController extends BaseController{
 
     // get the info of item from item table
     async getItemInfoByIds(req, res){
-        const dtos = await this.#itemService.getItemById(req.body.id);
+        const dtos = await this.#itemService.getItemById(req.query.id);
         this.responseHandler(res, dtos);
     
     }
 
     // get the info of skill from skill book table
     async getSkillInfoById(req, res){
-        const id = req.body.skillid;
+        const id = req.query.skillid;
         const dtos = await this.#battleService.getSkillInfoById(id);
         this.responseHandler(res, dtos);    
     }
 
     // for testing
     async getBattleById(req, res){
-        const bid = req.body.id;
+        const bid = req.query.id;
         const dtos = await this.#battleService.getBattleById(bid);
         this.responseHandler(res, dtos);    
     }
@@ -49,7 +51,10 @@ class BattleController extends BaseController{
     
     // --------------------------------------------/* Post: create new things into backend*/-----------------------------------------------------------------------    
     async createBattle(req, res){
-        const dtos = await this.#battleService.createBattle(req);
+        console.log(req);
+        const cid = req.query.cid;
+        const mid = req.query.mid;
+        const dtos = await this.#battleService.createBattle(cid,mid);
         this.responseHandler(res, dtos);
     }
     // --------------------------------------------/* Put: update database*/-----------------------------------------------------------------------    

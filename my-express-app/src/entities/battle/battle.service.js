@@ -1,24 +1,30 @@
 const { PASSWORD } = require('../../database/db.config');
 const algo = require('./algo');
-const BattleRepository = require('./battle.repository');
 const MonsterRepository = require('../creature/monster/monster.repository');
 const CharacterRepository = require('../creature/character/character.repository');
-const { battle, character } = require('../../database/db');
+const BattleRepository = require('./battle.repository');
 
 class BattleService {
     #battleRepository = new BattleRepository();
     #monsterRepository = new MonsterRepository();
     #characterRepository= new CharacterRepository();
     #algo=new algo();
-
+    async getSkillSetById(id){
+        console.log(id);
+        const dto = await this.#battleRepository.getSkillSetById(id);
+        if(dto){
+            var parsedIds=dto.skillSet.split(",");
+        }else{
+            return "dto is null";
+        }
+        return parsedIds;
+    }
     async getSkillInfoById(id) {
         const dto = await this.#battleRepository.getSkillInfoById(id);
         return dto;
     }
-    async createBattle(req) {
-        const charactorId = req.body.charactorid;
-        const monsterId = req.body.monsterid;
-        const dto = await this.#battleRepository.createBattle(charactorId, monsterId);
+    async createBattle(cid,mid) {
+        const dto = await this.#battleRepository.createBattle(cid,mid);
         return dto;
     }
     async getBattleById(bid) {
@@ -125,7 +131,7 @@ class BattleService {
     }
 
     async calculateExp(req) {}
-    
+
 }
 
 module.exports = BattleService;

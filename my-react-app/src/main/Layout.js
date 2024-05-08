@@ -52,8 +52,10 @@ const Layout = () => {
       case "default":
         return <Backpack character={character}/> ;
       case "battle":
+        // return <Battle />;
         return <Battle />;
-      case "trade":
+      
+        case "trade":
         return <Trade />; 
       case "dialogue":
         return <Dialogue />;

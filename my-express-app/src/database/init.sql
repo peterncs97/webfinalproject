@@ -107,7 +107,7 @@ ON DUPLICATE KEY UPDATE
 INSERT INTO `combat_attributes`
   (`id`, `currhp`, `currmp`, `maxhp`, `maxmp`, `power`, `agile`, `luck`, `attack`, `defence`, `skillSet`, `creatureId`, `creatureType`, `createdAt`, `updatedAt`) 
 VALUES
-  (1, 100, 20, 100, 20, 10, 10, 10, 10, 10, '[1,2]', 1, 'character', NOW(), NOW())
+  (1, 100, 20, 100, 20, 10, 10, 10, 10, 10, '1,2', 1, 'character', NOW(), NOW())
 ON DUPLICATE KEY UPDATE 
   `currhp` = VALUES(`currhp`),
   `currmp` = VALUES(`currmp`),

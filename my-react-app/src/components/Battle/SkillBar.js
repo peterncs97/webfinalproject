@@ -7,7 +7,7 @@ const SkillBar = ({ skills, handleSkillUse, isCountDown }) => {
 
       switch (event.key) {
         case 'q':
-          handleSkillUse(0); break;
+          handleSkillUse(1); break;
         case 'w':
           handleSkillUse(1); break;
         case 'e':

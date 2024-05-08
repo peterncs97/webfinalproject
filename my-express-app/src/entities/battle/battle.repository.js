@@ -13,7 +13,10 @@ class BattleRepository{
     
     #characterRepository = new CharacterRepository();
     #monsterRepository= new MonsterRepository();
-    
+    async getSkillSetById(id){
+
+        return await CombatAttribute.findByPk(id);
+    }
     async getBattleById(bid){
         return await Battle.findByPk(bid);
     }
@@ -30,6 +33,7 @@ class BattleRepository{
         return await Battle.findByPk(battle.id);
     }
     async getSkillInfoById(id){
+        console.log(id);
         return await SkillBook.findByPk(id);
     }
     async updateCharacterHP(charactorId,HP){
@@ -45,24 +49,22 @@ class BattleRepository{
     }
     async createBattle(charactorId, monsterId){
         // get the charactor data and monster data repectively 
-        const charactorInfo=await this.#characterRepository.findCharacterById(charactorId);
-        const charAttr=charactorInfo.combat_attribute.dataValues;
-        const monsterInfo=CombatAttribute.findByPk(monsterId);
-        // const monsterInfo=monsterInfo.combat_attribute;
+        const charactorInfo=await CombatAttribute.findByPk(charactorId);
+        const monsterInfo=await CombatAttribute.findByPk(monsterId);
+        console.log("print: "+charactorInfo.currhp);
         
-        // console.log(charAttr.combat_attribute.dataValues);
         // create new battle row
         return await Battle.create(
             {
                 CharacterID:charactorId,
-                CharacterHP :charAttr.currhp,
-                CharacterMP:charAttr.currmp,
+                CharacterHP :charactorInfo.currhp,
+                CharacterMP:charactorInfo.currmp,
                 
-                CharacterATK:charAttr.attack,
-                CharacterDEF:charAttr.defence,
-                CharacterPower:charAttr.power,
-                CharacterLuck:charAttr.luck,
-                CharacterAgile:charAttr.agile,
+                CharacterATK:charactorInfo.attack,
+                CharacterDEF:charactorInfo.defence,
+                CharacterPower:charactorInfo.power,
+                CharacterLuck:charactorInfo.luck,
+                CharacterAgile:charactorInfo.agile,
                 CharacterStatusDuration:0,
       
                 MonsterID:monsterId,

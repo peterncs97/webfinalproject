@@ -9,9 +9,9 @@ class BattleRouter extends BaseRouter {
     }
     
     registerRoute(){
-        // --------------------------------------------/* GET: send to frontend*/-----------------------------------------------------------------------
+        // --------------------------------------------/* GET: send to frontend, use req.query instead of req.body */-----------------------------------------------------------------------
         // get available user skill list(from Charactor Table), backpack item list(from Backpack Table), information of item(from Item Table) 
-        this.router.get('/get-skill-set', (req, res, next) => this.#controller.getSkillById(req, res, next));
+        this.router.get('/get-skill-set', (req, res, next) => this.#controller.getSkillSetById(req, res, next));
         this.router.get('/get-backpack', (req, res, next) => this.#controller.getBackpackById(req, res, next));
         this.router.get('/get-item-info', (req, res, next) => this.#controller.getItemInfoByIds(req, res, next));
         
