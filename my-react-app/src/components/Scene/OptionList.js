@@ -1,56 +1,37 @@
 // Import packages
 import { useContext } from 'react';
 import axios from "axios";
-// Import api url from config.js
-import { api_url } from '../../config';
 
 // Import contexts from Layout.js
-import { StateContext, CurrSceneContext, PrevSceneContext } from '../../main/Layout';
+import { StateContext, CharacterContext } from '../../main/Layout';
 
 // Construct option list based on current scene
 // Include basic travel option, special scene options and return option
-const OptionList = ({ currScene, setCurrentScene, setOptionModalShow }) => {
+const OptionList = ({ currScene, setOptionModalShow }) => {
   const { setAction } = useContext(StateContext); // For controll state of the game
-  const { currSceneId, setCurrSceneId } = useContext(CurrSceneContext); // For updating current scene id
-  const { prevSceneId, setPrevSceneId } = useContext(PrevSceneContext); // For updating previous scene id
+  const { character, setCharacter } = useContext(CharacterContext); // For updating character data
 
   /* Basic travel to scene options */
-
-  // Set onClick function of places based on its scene type
-  const onClickFunction = (option) => {
-    // For 'location', 'rest', 'battleground', 'trade' scenes
-    // Simply update current scene id
-    if (['location', 'rest', 'battleground', 'trade'].includes(option.type))
-      return () => setCurrSceneId(option.id)
-    // For 'event' scenes, update prev and current scene id and set state to 'dialogue'
-    else if (option.type === 'event')
-      return () => {
-        setPrevSceneId(currSceneId);
-        setCurrSceneId(option.id);
-        setAction('dialogue');
-      }
+  const changeScene = (event) => {
+    const sceneId = parseInt(event.target.getAttribute('sceneID'));
+    axios.post(`/character/changescene`, { characterId: character.id, sceneId: sceneId })
+      .then((response) => {
+        setCharacter(response.data.data);
+      }).catch((error) => {
+        console.error('Error changing scene: ', error);
+      });
   }
 
-  // Map travel options to buttons
   const optionList =
     currScene.options
       ?.filter(option => option.type !== 'monster') // Filter out monster scene
       .map((option, index) => {
-        const onClick = onClickFunction(option);
         return (
-          <button type="button" key={index} onClick={onClick} className="list-group-item">{option.name}</button>
+          <button type="button" key={index} sceneID={option.id} onClick={changeScene} className="list-group-item">{option.name}</button>
         );
       });
-
+      
   /* Special scene options  */
-
-  // OnClick function for searching option in battleground scene
-  const search = () => {
-    axios.get(`${api_url}/scene/randchild/${currSceneId}`).then((response) => {
-      setCurrentScene(response.data.data);
-      setAction('battle')
-    });
-  }
 
   // OnClick function for rest option in rest scene
   const rest = () => {
@@ -59,7 +40,7 @@ const OptionList = ({ currScene, setCurrentScene, setOptionModalShow }) => {
 
   const extraOptions = [
     { types: ['rest'], name: '休息', onClick: rest },
-    { types: ['battleground', 'victory'], name: '索敵', onClick: search },
+    { types: ['battleground', 'victory'], name: '索敵', onClick: ()=> {} },
     { types: ['trade'], name: '交易', onClick: () => setAction('trade') },
   ];
 
@@ -76,7 +57,8 @@ const OptionList = ({ currScene, setCurrentScene, setOptionModalShow }) => {
   if (currScene.type !== "monster" && currScene.type !== 'event' && currScene.id !== 1)
     optionList.push(
       <button type="button" key={optionList.length} className="list-group-item"
-        onClick={() => { setAction('default'); setCurrSceneId((currScene.parentId !== 0) ? currScene.parentId : prevSceneId); }} >
+        sceneID={currScene.parentId}
+        onClick={(event) => { changeScene(event); setAction('default'); }} >
         返回
       </button>);
 

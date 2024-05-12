@@ -8,11 +8,11 @@ class SceneService {
         return dtos;
     }
 
-    async getSceneAndChildScenesById(req) {
-        const scenes = await this.#sceneRepository.findSceneAndChildScenesById(req.params.id);
+    async getSceneAndChildScenesById(sceneId) {
+        const scenes = await this.#sceneRepository.findSceneAndChildScenesById(sceneId);
 
-        var dto = scenes.find(scene => scene.id === parseInt(req.params.id));
-        const options = scenes.filter(scene => scene.id !== parseInt(req.params.id)).map(option => {
+        var dto = scenes.find(scene => scene.id === parseInt(sceneId));
+        const options = scenes.filter(scene => scene.id !== parseInt(sceneId)).map(option => {
             return {
                 id: option.id,
                 type: option.type,

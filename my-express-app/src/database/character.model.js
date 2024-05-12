@@ -9,8 +9,7 @@ module.exports = (sequelize, Sequelize) => {
       level: Sequelize.INTEGER,
       experience: Sequelize.INTEGER,
       money: Sequelize.INTEGER,
-      equipmentWeaponId: Sequelize.INTEGER,
-      equipmentBodyId: Sequelize.INTEGER,
+      currSceneId: Sequelize.INTEGER,
     },
     { sequelize, modelName: 'character' },
   );

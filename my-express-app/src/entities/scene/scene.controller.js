@@ -10,7 +10,7 @@ class SceneController extends BaseController{
     }
 
     async getSceneById(req, res){
-        const dtos = await this.#sceneService.getSceneAndChildScenesById(req);
+        const dtos = await this.#sceneService.getSceneAndChildScenesById(req.params.id);
         this.responseHandler(res, dtos);
     }
 

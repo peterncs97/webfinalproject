@@ -19,6 +19,7 @@ export const PrevSceneContext = createContext(null);
 export const CharacterContext = createContext(null);
 
 const Layout = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const { setIsAuthenticated, setUser } = useContext(AuthContext);
 
   // Conditionally rendering components based on states
@@ -38,11 +39,12 @@ const Layout = () => {
       axios.get(`/character/${user.character.id}`)
         .then((response) => {
           setCharacter(response.data.data);
+          setIsLoading(false);
         }).catch((error) => {
           console.error('Error fetching character data: ', error);
         });
     }
-  }, [setIsAuthenticated, setUser]);
+  }, []);
   
   function SubDisplay(props){
     const action=props.action;
@@ -51,7 +53,6 @@ const Layout = () => {
       case "default":
         return <Backpack character={character}/> ;
       case "battle":
-        // return <Battle />;
         return <Battle />;
       
         case "trade":
@@ -62,6 +63,9 @@ const Layout = () => {
         return null;
     };
   }
+
+  if (isLoading) return null;
+
   return (
     <StateContext.Provider value={{ action, setAction }}>
       <PrevSceneContext.Provider value={{ prevSceneId, setPrevSceneId }}>
@@ -77,7 +81,7 @@ const Layout = () => {
             {/* Main Display Area, for Scene */}
             <section className="bg-light">
               <div className="container px-4 py-2">
-                <Scene />
+                <Scene character={character} />
               </div>
             </section>
 

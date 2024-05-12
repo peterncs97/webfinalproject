@@ -63,8 +63,7 @@ class CharacterRepository{
                 level: 1,
                 experience: 0,
                 money: 500,
-                equipmentWeaponId: 1,
-                equipmentBodyId: 2,
+                currSceneId: 1,         
                 combat_attribute: {
                     currhp: 100,
                     currmp: 20,
@@ -75,7 +74,7 @@ class CharacterRepository{
                     luck: 10,
                     attack: 10,
                     defence: 10,
-                    skillSet: '[1,2]'
+                    skillSet: '1,2'
                 },
             },
             {
@@ -83,6 +82,10 @@ class CharacterRepository{
             }
         );
         return character;
+    }
+
+    async setCharacterScene(character, sceneId){
+        return await character.update({ currSceneId: sceneId });
     }
 
     async addOrUpdateCharacterItems(character, itemModels){

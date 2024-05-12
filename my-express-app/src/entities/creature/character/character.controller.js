@@ -14,6 +14,11 @@ class CharacterController extends BaseController{
         this.responseHandler(res, dtos);
     }
 
+    async changeCharacterScene(req, res){
+        const dtos = await this.#characterService.changeCharacterScene(req.body.characterId, req.body.sceneId);
+        this.responseHandler(res, dtos);
+    }
+
     async restCharacter(req, res){
         const dtos = await this.#characterService.restCharacter(req.body.characterId);
         this.responseHandler(res, dtos);

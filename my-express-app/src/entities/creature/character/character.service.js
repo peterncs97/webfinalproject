@@ -1,10 +1,12 @@
 const CharacterRepository = require('./character.repository');
 const ItemService = require('../../item/item.service');
-const { item } = require('../../../database/db');
+const SceneService = require('../../scene/scene.service');
 
 class CharacterService {
     #characterRepository = new CharacterRepository();
+    #sceneService = new SceneService();
     #itemService = new ItemService();
+
 
     async getCharacterById(id) {
         return await this.#characterRepository.findCharacterById(id);
@@ -26,6 +28,12 @@ class CharacterService {
         await this.#characterRepository.addOrUpdateCharacterItems(character, items);
 
         return await this.getCharacterById(character.id);
+    }
+
+    async changeCharacterScene(characterId, sceneId) {
+        const character = await this.getCharacterById(characterId);
+        await this.#characterRepository.setCharacterScene(character, sceneId);
+        return await this.getCharacterById(characterId);
     }
 
     async restCharacter(id) {
