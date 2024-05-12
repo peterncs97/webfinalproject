@@ -45,7 +45,7 @@ const Scene = ({ character }) => {
         </div>
         {/* Scene Options */}
         <div className='row'>
-          <OptionList currScene={currScene} setCurrentScene={setCurrentScene} setOptionModalShow={setOptionModalShow}/>   
+          <OptionList currScene={currScene} setOptionModalShow={setOptionModalShow}/>   
         </div>
       </div>
       <OptionModal

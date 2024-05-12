@@ -54,7 +54,7 @@ const OptionList = ({ currScene, setOptionModalShow }) => {
   });
 
   /* Default return option */
-  if (currScene.type !== "monster" && currScene.type !== 'event' && currScene.id !== 1)
+  if (currScene.id !== 1)
     optionList.push(
       <button type="button" key={optionList.length} className="list-group-item"
         sceneID={currScene.parentId}

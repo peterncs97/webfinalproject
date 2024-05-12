@@ -8,14 +8,11 @@ import Scene from "./Scene";
 import Backpack from "./Backpack";
 import Battle from "./Battle";
 import Trade from "./Trade";
-import Dialogue from "./Dialogue";
 import { AuthContext } from "../App";
 
 // Create contexts for states, current scene, previous scene, and character data
 // These contexts will be used to pass and alter data between components
 export const StateContext = createContext(null);
-export const CurrSceneContext = createContext(null);
-export const PrevSceneContext = createContext(null);
 export const CharacterContext = createContext(null);
 
 const Layout = () => {
@@ -42,22 +39,17 @@ const Layout = () => {
           console.error('Error fetching character data: ', error);
         });
     }
-  }, []);
-  
-  function SubDisplay(props){
-    const action=props.action;
-    const character=props.character;
-    switch(action){
+  }, [setUser, setIsAuthenticated]);
+
+  function SubDisplay({action, character}) {
+    switch (action) {
       case "default":
-        return <Backpack character={character}/> ;
+        return <Backpack character={character} />;
       case "battle":
         return <Battle />;
-      
-        case "trade":
-        return <Trade />; 
-      case "dialogue":
-        return <Dialogue />;
-      default: 
+      case "trade":
+        return <Trade />;
+      default:
         return null;
     };
   }
@@ -66,28 +58,28 @@ const Layout = () => {
 
   return (
     <StateContext.Provider value={{ action, setAction }}>
-          <CharacterContext.Provider value={{ character, setCharacter }}>
-            {/* Navbar */}
-            <header className="sticky-top bg-white">
-              <div className="container p-3">
-                <Navbar character={character}/>
-              </div>
-            </header>
-              
-            {/* Main Display Area, for Scene */}
-            <section className="bg-light">
-              <div className="container px-4 py-2">
-                <Scene character={character} />
-              </div>
-            </section>
+      <CharacterContext.Provider value={{ character, setCharacter }}>
+        {/* Navbar */}
+        <header className="sticky-top bg-white">
+          <div className="container p-3">
+            <Navbar character={character} />
+          </div>
+        </header>
 
-            {/* Sub Display Area, for Backpack, Battle, Trade or Dialogue*/}
-            <section>
-              <div className="container px-4 py-2 show-slow">
-                <SubDisplay action={action} character={character}/>
-              </div>
-            </section>
-          </CharacterContext.Provider>
+        {/* Main Display Area, for Scene */}
+        <section className="bg-light">
+          <div className="container px-4 py-2">
+            <Scene character={character} />
+          </div>
+        </section>
+
+        {/* Sub Display Area, for Backpack, Battle, Trade or Dialogue*/}
+        <section>
+          <div className="container px-4 py-2 show-slow">
+            <SubDisplay action={action} character={character} />
+          </div>
+        </section>
+      </CharacterContext.Provider>
     </StateContext.Provider>
   );
 };
