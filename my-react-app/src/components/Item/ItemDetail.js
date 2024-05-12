@@ -6,12 +6,11 @@ import axios from "axios";
 import { api_url } from '../../config';
 
 // Import contexts from Layout.js
-import { CharacterContext } from '../../main/Layout';
-import { StateContext } from '../../main/Layout';
+import { CharacterContext, ActionContext } from '../../main/Layout';
 
 const ItemDetail = ({ item }) => {
 	const { character, setCharacter } = useContext(CharacterContext);
-	const { state } = useContext(StateContext);
+	const { action } = useContext(ActionContext);
 	if (!item) return;
 	
 	const equip = () => {
@@ -50,7 +49,7 @@ const ItemDetail = ({ item }) => {
 	}
 
 	const option = 
-		(state === 'trade')
+		(action === 'trade')
 			? { name: '', onClick: () => { }} 
 			:	
 			(item.type !== 'equipment') 
@@ -91,7 +90,7 @@ const ItemDetail = ({ item }) => {
 				</table>
 			</div>
 			{
-				(state === 'default') ?
+				(action === 'default') ?
 				<div className="row">
 					<button className="btn btn-dark" type="button" onClick={option.onClick}>
 						{option.name}

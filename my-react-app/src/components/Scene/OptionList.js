@@ -1,19 +1,21 @@
 // Import packages
 import { useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Import contexts from Layout.js
-import { StateContext, CharacterContext } from '../../main/Layout';
+import { ActionContext, CharacterContext } from '../../main/Layout';
 
 // Construct option list based on current scene
 // Include basic travel option, special scene options and return option
 const OptionList = ({ currScene, setOptionModalShow }) => {
-  const { setAction } = useContext(StateContext); // For controll state of the game
+  const navigate = useNavigate();
+  const { setAction } = useContext(ActionContext); // For controll state of the game
   const { character, setCharacter } = useContext(CharacterContext); // For updating character data
 
   /* Basic travel to scene options */
   const changeScene = (event) => {
-    const sceneId = parseInt(event.target.getAttribute('sceneID'));
+    const sceneId = parseInt(event.target.getAttribute('sceneid'));
     axios.post(`/character/changescene`, { characterId: character.id, sceneId: sceneId })
       .then((response) => {
         setCharacter(response.data.data);
@@ -27,7 +29,7 @@ const OptionList = ({ currScene, setOptionModalShow }) => {
       ?.filter(option => option.type !== 'monster') // Filter out monster scene
       .map((option, index) => {
         return (
-          <button type="button" key={index} sceneID={option.id} onClick={changeScene} className="list-group-item">{option.name}</button>
+          <button type="button" key={index} sceneid={option.id} onClick={changeScene} className="list-group-item">{option.name}</button>
         );
       });
       
@@ -40,7 +42,7 @@ const OptionList = ({ currScene, setOptionModalShow }) => {
 
   const extraOptions = [
     { types: ['rest'], name: '休息', onClick: rest },
-    { types: ['battleground', 'victory'], name: '索敵', onClick: ()=> {} },
+    { types: ['battleground', 'victory'], name: '索敵', onClick: () => { navigate("/battle") } },
     { types: ['trade'], name: '交易', onClick: () => setAction('trade') },
   ];
 
@@ -57,7 +59,7 @@ const OptionList = ({ currScene, setOptionModalShow }) => {
   if (currScene.id !== 1)
     optionList.push(
       <button type="button" key={optionList.length} className="list-group-item"
-        sceneID={currScene.parentId}
+        sceneid={currScene.parentId}
         onClick={(event) => { changeScene(event); setAction('default'); }} >
         返回
       </button>);

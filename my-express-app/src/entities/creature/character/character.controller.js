@@ -23,21 +23,7 @@ class CharacterController extends BaseController{
         const dtos = await this.#characterService.restCharacter(req.body.characterId);
         this.responseHandler(res, dtos);
     }
-
-    async grantCharacterItems(req, res){
-        const dtos = await this.#characterService.grantCharacterItems(
-            req.body.characterId,
-            req.body.items);
-        this.responseHandler(res, dtos);
-    }
-
-    async removeCharacterItems(req, res){
-        const dtos = await this.#characterService.removeCharacterItems(
-            req.body.characterId,
-            req.body.items);
-        this.responseHandler(res, dtos);
-    }
-
+    
     async tradeCharacterItem(req, res){
         const dtos = await this.#characterService.tradeCharacterItem(
             req.body.characterId,

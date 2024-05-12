@@ -1,41 +1,47 @@
-const { PASSWORD } = require('../../database/db.config');
 const algo = require('./algo');
-const MonsterRepository = require('../creature/monster/monster.repository');
-const CharacterRepository = require('../creature/character/character.repository');
+const CharacterService = require('../creature/character/character.service');
+const MonsterService = require('../creature/monster/monster.service');
 const BattleRepository = require('./battle.repository');
-
 class BattleService {
     #battleRepository = new BattleRepository();
-    #monsterRepository = new MonsterRepository();
-    #characterRepository= new CharacterRepository();
+    #characterService = new CharacterService();
+    #monsterService = new MonsterService();
     #algo=new algo();
-    async getSkillSetById(id){
-        console.log(id);
-        const dto = await this.#battleRepository.getSkillSetById(id);
-        if(dto){
-            var parsedIds=dto.skillSet.split(",");
-        }else{
-            return "dto is null";
-        }
-        return parsedIds;
-    }
-    async getSkillInfoById(id) {
-        const dto = await this.#battleRepository.getSkillInfoById(id);
-        return dto;
-    }
-    async createBattle(cid,mid) {
-        const dto = await this.#battleRepository.createBattle(cid,mid);
-        return dto;
-    }
-    async getBattleById(bid) {
-        const dto = await this.#battleRepository.getBattleById(bid);
-        return dto;
+    
+    async getBattleById(battleId) {
+        const battle = await this.#battleRepository.getBattleById(battleId);
+        return battle;
     }
 
-    async setBattle(req) {
-        const dto = await this.#battleRepository.setBattle(req.body);
-        return dto;
+    async createBattle(characterId) {
+        const character = await this.#characterService.getCharacterById(characterId);
+        const characterAttr = await character.getCombat_attribute();
+
+        const characterEquipments = character.items.filter(item => item.item_ownership.equipped)
+        
+        var equipmentAttr;
+        if (characterEquipments.length > 0)
+            equipmentAttr = characterEquipments
+                .map(item => item.getDataValue('equipment_attribute').dataValues)
+            .reduce((acc, cur) => {
+                for (let key in cur)
+                    if (cur.hasOwnProperty(key) && key !== "bodypart")
+                        acc[key] = (acc[key] || 0) + cur[key];
+                return acc;
+            }, {});
+        else
+            equipmentAttr = { maxhp: 0, maxmp: 0, attack: 0, defence: 0, agile: 0, luck: 0, power: 0 };
+
+        const monster = await this.#monsterService.getRandMonsterBySceneId(character.currSceneId);
+        const monsterAttr = await monster.getCombat_attribute();
+
+        const skills = await this.#battleRepository.getSkillSetByIds(characterAttr.skillSet.split(","));
+
+        const battle = await this.#battleRepository.createBattle(character.id, monster.id, characterAttr, equipmentAttr, monsterAttr);
+
+        return { monster: monster, skills: skills, battle: battle};
     }
+
     // calculate the effectness of skill by the correctness of user input string and reaction time
     /***
     ** input: the user's keyboard result string, user's reaction time, skill id
@@ -45,93 +51,113 @@ class BattleService {
         3. use the correctness and the reaction time to calculate the effect of the skill 
     ** output: updated charactor and monster status of this turn
     ***/
-    async calculateSkill(bid, skillid, input, rt) {
-
-        // 1. get the skill info from DB
-        const skill = await this.#battleRepository.getSkillInfoById(skillid);
+    async updateBattle(bid, skillId, input, rt) {
         const battle = await this.#battleRepository.getBattleById(bid);
+        // Player Attack
+        // Calculate the correctness of user input with the skill code
+        const skill = await this.#battleRepository.getSkillInfoById(skillId);
+        const parsedCodes = skill.skillCode.split(';');
+        const correntNTimebonus = (this.#algo.correctness(input, parsedCodes) * this.#algo.timeBonus(rt, skill.timer,0.0005)*0.001);
+        const attrBouns = 1
+            + (skill.Power === 0 ? 0 : battle.CharacterPower / skill.Power)
+            + (skill.Luck === 0 ? 0 : battle.CharacterLuck / skill.Luck)
+            + (skill.Agile === 0 ? 0 : battle.CharacterAgile / skill.Agile);
+        var playerDamage = Math.floor((skill.ATK * attrBouns * correntNTimebonus) - battle.MonsterDEF);
+        if (playerDamage < 1) 
+            playerDamage = 0;
 
-        // 2. calculate the correctness of user input with the skill code
-        // parse skill code
-        // count correctness
-        
-        console.log("battle");
-        const parsedCodes = skill.dataValues.skillCode.split(';');
-        const bonus = (this.#algo.correctness(input, parsedCodes) * this.#algo.timeBonus(rt, skill.timer,0.0005)*0.001);
-        var value=0
-        // 3. use the correctness and the reaction time to calculate the effect of the skill 
-        switch (skill.dataValues.type) {
-            case "attack":
-                value=(skill.dataValues.ATK * bonus) - battle.dataValues.MonsterDEF;
-                value=value < 1 ? 0:value;
-                battle.dataValues.MonsterHP -= value;
-                break;
-            case "magic":
-                value=(skill.dataValues.ATK * bonus) - battle.dataValues.MonsterDEF*0.8;
-                value=value < 1 ? 0:value;
-                battle.dataValues.MonsterHP -= value;
-                break;
-            case "defense":
-                value=skill.dataValues.DEF * bonus;
-                battle.dataValues.CharactorDEF += value;
-                // TODO: not yet finish the mechenism of skill duration
-                battle.dataValues.CharacterStatusDuration=skill.dataValues.duration;
-                break;
-        }
+        await battle.increment('CharacterMP', { by: -skill.cost });
 
-        if(battle.dataValues.MonsterHP<=0){
-            const dto = await this.#monsterRepository.findMonsterById(battle.dataValues.monsterId);
-            await this.#battleRepository.updateCharacterHP(battle.dataValues.CharacterID,battle.dataValues.CharacterHP)
-            return "You won!";
-        }
-        const dto = await this.#battleRepository.setBattle(battle.dataValues);
-        dto.dataValues.message=`${skill.dataValues.name},${value}`;
-        return dto;
-    }
-    async monsterAttack(bid) {
-        // 1. get battle info 
-        // 2. get monster info
-        const battle = await this.#battleRepository.getBattleById(bid);
-        console.log(battle);
-        var message=""
-        var value=0;
-        // const monster = await this.#monsterRepository.findMonsterById(battle.dataValues.MonsterID);
+        if (battle.MonsterHP - playerDamage <= 0)
+            return await this.handleVictory(battle, playerDamage);
         
-        // 3. randomly use atk or def or magic
-        const choice=this.#algo.getRandomInt(3);
-        switch(choice){
-            case 0: 
-                value=battle.dataValues.MonsterATK - battle.dataValues.CharacterDEF;
-                value=value < 0 ? 1:value;
-                battle.dataValues.CharacterHP -= value;
-                message="attack";
-                break;
-            case 1: 
-                value=battle.dataValues.MonsterATK*1.2 - battle.dataValues.CharacterDEF;
-                value=value < 0 ? 1:value;
-                battle.dataValues.CharacterHP -= value;
-                message="magic";
-                break;
-            case 2:
-                value= 3 
-                battle.dataValues.MonsterDEF+= value;
-                message="defense";
-                break;
-        }
-        // 4. result 
-            // updated battle result
-            // or end of battle(character loss)
-        if(battle.dataValues.CharacterHP<=0){
-            return "you loss";
-        }
-        console.log(battle.dataValues.MonsterATK, battle.dataValues.CharacterDEF,value);
-        const dto = await this.#battleRepository.setBattle(battle.dataValues);
-        dto.dataValues.message=`${message}:${value}`;
-        return dto;
+        await battle.increment('MonsterHP', { by: -playerDamage });
+
+        // Monster Attack
+        var monsterDamage = (battle.MonsterATK - battle.CharacterDEF);
+        if (monsterDamage < 1) 
+            monsterDamage = 0;
+
+        if (battle.CharacterHP - monsterDamage <= 0)
+            return await this.handleDefeat(battle, playerDamage, monsterDamage);
+
+        await battle.increment('CharacterHP', { by: -monsterDamage });
+
+        await battle.reload()
+        return { battleStatus: "continue", battle: battle, playerDamage: playerDamage, monsterDamage: monsterDamage };
     }
 
-    async calculateExp(req) {}
+    async handleVictory(battle, playerDamage) {
+        const character = await this.#characterService.getCharacterById(battle.CharacterID);
+        const monster = await this.#monsterService.getMonsterById(battle.MonsterID);
 
+        await battle.reload();
+        await character.combat_attribute.update({ currhp: battle.CharacterHP, currmp: battle.CharacterMP});
+
+        var result = { money: monster.money, experience: monster.experience, isLevelUp: false, item: '' };
+        character.money += monster.money;
+        if (character.experience + monster.experience >= character.nextLevelExp) {
+            character.level += 1;
+            character.experience = 0;
+            character.nextLevelExp = Math.floor(character.nextLevelExp * 1.1);
+            result.attrAdjustment = await this.handleLevelUp(character);
+            result.isLevelUp = true;
+        } else {
+            character.experience += monster.experience;
+        }
+
+        await character.save();
+        if (monster.items !== null && monster.items.length > 0) {
+            const item = monster.items[Math.floor(Math.random() * monster.items.length)];
+            await this.#characterService.grantCharacterItem(character, item);
+            result.item = item.name;
+        }
+
+        const deletedBattle = await battle.destroy();
+        return { battleStatus: "win", battle: deletedBattle, playerDamage: playerDamage, result: result };
+    }
+
+    async handleLevelUp(character) {
+        const characterAttr = await character.getCombat_attribute();
+        const max = (character.level < 5) ? 5 : character.level;
+        const min = (character.level < 5) ? 1 : Math.floor(character.level/2);
+        
+        const attrAdjustment = [];
+        for (let i = 0; i < 7; i++) {
+            attrAdjustment.push(Math.floor(Math.random() * (max-min)+min));
+        }
+
+        characterAttr.maxhp += attrAdjustment[0];
+        characterAttr.maxmp += attrAdjustment[1];
+        characterAttr.power += attrAdjustment[2];
+        characterAttr.agile += attrAdjustment[3];
+        characterAttr.luck += attrAdjustment[4];
+        characterAttr.attack += attrAdjustment[5];
+        characterAttr.defence += attrAdjustment[6];
+
+        await characterAttr.save();
+        return attrAdjustment;
+    }
+
+    async handleDefeat(battle, playerDamage, monsterDamage) {
+        const character = await this.#characterService.getCharacterById(battle.CharacterID);
+        character.money = Math.floor(character.money / 2);
+        character.currSceneId = 1;
+        await character.save();
+        await character.combat_attribute.update({ currhp: 0, currmp: 0 });
+        
+        const deletedBattle = await battle.destroy();
+        deletedBattle.CharacterHP = 0;
+        deletedBattle.CharacterMP = 0;
+        return { battleStatus: "lose", battle: deletedBattle,playerDamage: playerDamage, monsterDamage: monsterDamage };
+    }
+
+    async escapeBattle(battleId){
+        const battle = await this.#battleRepository.getBattleById(battleId);
+        const character = await this.#characterService.getCharacterById(battle.CharacterID);
+        await character.combat_attribute.update({ currhp: battle.CharacterHP, currmp: battle.CharacterMP });
+        return await battle.destroy();
+    }
 }
 
 module.exports = BattleService;

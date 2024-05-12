@@ -1,23 +1,12 @@
 const CharacterRepository = require('./character.repository');
 const ItemService = require('../../item/item.service');
-const SceneService = require('../../scene/scene.service');
-
 class CharacterService {
     #characterRepository = new CharacterRepository();
-    #sceneService = new SceneService();
     #itemService = new ItemService();
 
 
     async getCharacterById(id) {
         return await this.#characterRepository.findCharacterById(id);
-    }
-
-    async getCharacterWithAttributeById(id) {
-        return await this.#characterRepository.findCharacterWithAttributeById(id);
-    }
-
-    async getCharacterWithItemsById(id) {
-        return await this.#characterRepository.findCharacterWithItemsById(id);
     }
 
     async createCharacter(name, profession) {
@@ -45,51 +34,22 @@ class CharacterService {
         return await this.getCharacterById(id);
     }
 
-    async grantCharacterItems(characterId, items) {
-        const character = await this.getCharacterWithItemsById(characterId);
-        const characterItems = character.items;
-        
-        items.sort((a, b) => a.id - b.id);
-        const itemIds = items.map(item => item.id);
-        const itemModels = await this.#itemService.getItemsByIds(itemIds);
-  
-        items.forEach((item, index) => {
-            var newQuantity = item.quantity;
-            const characterItem = characterItems.find(characterItem => characterItem.id === item.id);
-            if (characterItem)
-                newQuantity += characterItem.item_ownership.quantity;
-            
-            itemModels[index].item_ownership = {  quantity: newQuantity };
-        });
-        
-        await this.#characterRepository.addOrUpdateCharacterItems(character, itemModels);
-        return await this.getCharacterWithItemsById(characterId);
-    }
-
-    async removeCharacterItems(characterId, items) {
-        const character = await this.getCharacterWithItemsById(characterId);
+    async grantCharacterItem(character, item) {
         const characterItems = character.items;
 
-        const itemModels = []; 
-        items.forEach((item) => {
-            const characterItem = characterItems.find(characterItem => characterItem.id === item.id);
-            if (characterItem){
-                const newQuantity = characterItem.item_ownership.quantity - item.quantity;
-                if (newQuantity <= 0)
-                    this.#characterRepository.removeCharacterItem(character, characterItem);
-                else {
-                    characterItem.item_ownership = { quantity: newQuantity };
-                    itemModels.push(characterItem);
-                }
-            }
-        });
+        var newQuantity = 1;
+        const characterItem = characterItems.find(characterItem => characterItem.id === item.id);
+        if (characterItem)
+            newQuantity += characterItem.item_ownership.quantity;
 
-        await this.#characterRepository.addOrUpdateCharacterItems(character, itemModels);
-        return await this.getCharacterWithItemsById(characterId);
+        item.item_ownership = { quantity: newQuantity };
+        
+        await this.#characterRepository.addOrUpdateCharacterItems(character, [item]);
+        return;
     }
 
     async tradeCharacterItem(characterId, item, tradeAction) {
-        const character = await this.getCharacterWithItemsById(characterId);
+        const character = await this.getCharacterById(characterId);
         const itemModel = await this.#itemService.getItemById(item.id);
         // Calculate the money adjustment based on the trade action
         var moneyAdjustment = itemModel.price * item.quantity;

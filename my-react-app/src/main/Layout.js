@@ -6,13 +6,12 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import Scene from "./Scene";
 import Backpack from "./Backpack";
-import Battle from "./Battle";
 import Trade from "./Trade";
 import { AuthContext } from "../App";
 
 // Create contexts for states, current scene, previous scene, and character data
 // These contexts will be used to pass and alter data between components
-export const StateContext = createContext(null);
+export const ActionContext = createContext(null);
 export const CharacterContext = createContext(null);
 
 const Layout = () => {
@@ -45,8 +44,6 @@ const Layout = () => {
     switch (action) {
       case "default":
         return <Backpack character={character} />;
-      case "battle":
-        return <Battle />;
       case "trade":
         return <Trade />;
       default:
@@ -57,7 +54,7 @@ const Layout = () => {
   if (isLoading) return null;
 
   return (
-    <StateContext.Provider value={{ action, setAction }}>
+    <ActionContext.Provider value={{ action, setAction }}>
       <CharacterContext.Provider value={{ character, setCharacter }}>
         {/* Navbar */}
         <header className="sticky-top bg-white">
@@ -80,7 +77,7 @@ const Layout = () => {
           </div>
         </section>
       </CharacterContext.Provider>
-    </StateContext.Provider>
+    </ActionContext.Provider>
   );
 };
 

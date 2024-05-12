@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./main/Layout";
 import LoginRegister from "./main/LoginRegister";
+import Battle from "./main/Battle";
 
 export const AuthContext = createContext(null);
 
@@ -24,6 +25,8 @@ function App() {
           <Route path="/" element={<LoginRegister />}>
           </Route>
           <Route path="/main" element={<Layout />}>
+          </Route>
+          <Route path="/battle" element={<Battle />}>
           </Route>
         </Routes>
       </BrowserRouter>

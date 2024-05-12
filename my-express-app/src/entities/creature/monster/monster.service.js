@@ -10,6 +10,10 @@ class MonsterService {
         return monster;
     }
 
+    async getRandMonsterBySceneId(sceneId) {
+        return await this.#monsterRepository.findRandomMonsterBySceneId(sceneId);
+    }
+
     async createMonster(
         name, rarity, experience, money, imagePath ,imageDescription, 
         maxhp, maxmp, power, agile, luck, attack, defence, skillSet

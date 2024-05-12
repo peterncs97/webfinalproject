@@ -20,6 +20,16 @@ class MonsterRepository{
         });
     }
 
+    async findRandomMonsterBySceneId(sceneId){
+        return await Monster.findOne({
+            where: {
+                sceneId: sceneId
+            },
+            order: db.Sequelize.literal('rand()'),
+            limit: 1
+        });
+    }
+
     async createMonster(
         name, rarity, experience, money, imagePath, imageDescription, 
         maxhp, maxmp, power, agile, luck, attack, defence, skillSet

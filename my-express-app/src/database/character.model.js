@@ -8,6 +8,7 @@ module.exports = (sequelize, Sequelize) => {
       profession: Sequelize.STRING,
       level: Sequelize.INTEGER,
       experience: Sequelize.INTEGER,
+      nextLevelExp: Sequelize.INTEGER,
       money: Sequelize.INTEGER,
       currSceneId: Sequelize.INTEGER,
     },

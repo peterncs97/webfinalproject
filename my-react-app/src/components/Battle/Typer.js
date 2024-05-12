@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-const Typer = ({ skillCode, setCountDown }) => {
-  const [text, setText] = useState('');
-  
+const Typer = ({ text, setText, skillCode, setCountDown }) => {
   useEffect(() => {
     const handleKey = (e) => {
       e.preventDefault();

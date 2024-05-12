@@ -10,17 +10,9 @@ class BattleRouter extends BaseRouter {
     
     registerRoute(){
         // --------------------------------------------/* GET: send to frontend, use req.query instead of req.body */-----------------------------------------------------------------------
-        // get available user skill list(from Charactor Table), backpack item list(from Backpack Table), information of item(from Item Table) 
-        this.router.get('/get-skill-set', (req, res, next) => this.#controller.getSkillSetById(req, res, next));
-        this.router.get('/get-backpack', (req, res, next) => this.#controller.getBackpackById(req, res, next));
-        this.router.get('/get-item-info', (req, res, next) => this.#controller.getItemInfoByIds(req, res, next));
-        
         // get the status information of Creature Table (id)
         this.router.get('/get-battle', (req, res, next) => this.#controller.getBattleById(req, res, next));
         
-        // get skill information from SkillBook Table
-        this.router.get('/get-skill-info', (req, res, next) => this.#controller.getSkillInfoById(req, res, next));
-
 
         // --------------------------------------------/* Post: create new things into backend*/-----------------------------------------------------------------------
         // create a new row in Battling Table
@@ -31,7 +23,7 @@ class BattleRouter extends BaseRouter {
             2. init the data in Battling Table(all to zero)
         ** output:  battle id, charactor and monster status 
         ***/
-        this.router.post('/create-battle', (req, res, next) => this.#controller.createBattle(req, res, next)); 
+        this.router.post('/create', (req, res, next) => this.#controller.createBattle(req, res, next)); 
        
         // --------------------------------------------/* Put: update backend*/-----------------------------------------------------------------------
         // user attack monster: calculate the effectness of skill by the correctness of user input string and reaction time
@@ -49,37 +41,12 @@ class BattleRouter extends BaseRouter {
             3. use the correctness and the reaction time to calculate the effect of the skill 
         ** output: updated charactor and monster status of this turn
         ***/
-        this.router.post('/calculate-skill', (req, res, next) => this.#controller.calculateSkill(req, res, next)); 
-        this.router.post('/calculate-exp', (req, res, next) => this.#controller.calculateExp(req, res, next)); 
-        
-        // moster attack user: get the monster info and then radomly use skill
-        /***
-         ** input: battle id
-         ** 
-         ** output: 1. updated charactor and monster status of this turn/ 2. end of battle: monster info
-         ***/
-        this.router.post('/monster-attack', (req, res, next) => this.#controller.monsterAttack(req, res, next)); 
-        
-        // for testing
-        this.router.post('/set-battle', (req, res, next) => this.#controller.setBattle(req, res, next)); 
-        
-        
-        // TODO
-        /***
-        ** input: battle id, item id
-        ** manipulation: 
-            1. get the skill info from DB
-            2. calculate the correctness of user input with the skill code
-            3. use the correctness and the reaction time to calculate the effect of the skill 
-        ** output: updated charactor and monster status of this turn
-        ***/
-        this.router.post('/use-item', (req, res, next) => this.#controller.useItem(req, res, next)); 
-        
+        this.router.post('/update', (req, res, next) => this.#controller.updateBattle(req, res, next)); 
+  
         // ----------------------------------------------------/* Delete */---------------------------------------------------------------
         // used for: escape, endBattle
         // input: battle id
-        this.router.delete('/escape', (req, res, next) => this.#controller.escape(req, res, next));
-        this.router.delete('/delete', (req, res, next) => this.#controller.delete(req, res, next));
+        this.router.post('/escape', (req, res, next) => this.#controller.escape(req, res, next));
         
     }
 }

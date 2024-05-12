@@ -3,12 +3,15 @@ module.exports = (sequelize, Sequelize) => {
     "battle", 
     {
       id:{type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true},
-      
+
       CharacterID :{type: Sequelize.INTEGER, allowNull: false},
       
       CharacterHP :{type: Sequelize.INTEGER, defaultValue:0},
       CharacterMP:{type: Sequelize.INTEGER, defaultValue:0},
       
+      CharacterMAXHP:{type: Sequelize.INTEGER, defaultValue:0},
+      CharacterMAXMP:{type: Sequelize.INTEGER, defaultValue:0},
+
       CharacterATK:{type: Sequelize.INTEGER, defaultValue:0},
       CharacterDEF:{type: Sequelize.INTEGER, defaultValue:0},
       CharacterPower:{type: Sequelize.INTEGER, defaultValue:0},
@@ -22,6 +25,9 @@ module.exports = (sequelize, Sequelize) => {
       MonsterHP:{type: Sequelize.INTEGER, defaultValue:0},
       MonsterMP:{type: Sequelize.INTEGER, defaultValue:0},
       
+      MonsterMAXHP:{type: Sequelize.INTEGER, defaultValue:0},
+      MonsterMAXMP:{type: Sequelize.INTEGER, defaultValue:0},
+
       MonsterATK:{type: Sequelize.INTEGER, defaultValue:0},
       MonsterDEF:{type: Sequelize.INTEGER, defaultValue:0},
       MonsterPower:{type: Sequelize.INTEGER, defaultValue:0},

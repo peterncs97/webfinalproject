@@ -24,12 +24,9 @@ const Navbar = ({character}) => {
 	}
 
 	if (!character) return null;
-	const currhp = character.combat_attribute.currhp;
-	const currmp = character.combat_attribute.currmp;
-	const maxhp = character.combat_attribute.maxhp;
-	const maxmp = character.combat_attribute.maxmp;
+	const { currhp, currmp , maxhp, maxmp } = character.combat_attribute;
 	const exp = character.experience;
-	const nextLevelExp = 100; // TODO: get next level exp from backend
+	const nextLevelExp = character.nextLevelExp;
 	
 	return (
 		<div className="row align-items-center">

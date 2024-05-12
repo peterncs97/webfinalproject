@@ -33,9 +33,19 @@ class BattleRepository{
         return await Battle.findByPk(battle.id);
     }
     async getSkillInfoById(id){
-        console.log(id);
         return await SkillBook.findByPk(id);
     }
+
+    async getSkillSetByIds(ids){
+        return await SkillBook.findAll({
+            where:{
+                id:{
+                    [Op.in]:ids
+                }
+            }
+        });
+    }
+    
     async updateCharacterHP(charactorId,HP){
         await CombatAttribute.update(
             {currhp:HP},
@@ -47,36 +57,35 @@ class BattleRepository{
             }
         );
     }
-    async createBattle(charactorId, monsterId){
-        // get the charactor data and monster data repectively 
-        const charactorInfo=await CombatAttribute.findByPk(charactorId);
-        const monsterInfo=await CombatAttribute.findByPk(monsterId);
-        console.log("print: "+charactorInfo.currhp);
-        
+    async createBattle(characterId, monsterId, characterAttr, equipmentAttr, monsterAttr){
         // create new battle row
         return await Battle.create(
             {
-                CharacterID:charactorId,
-                CharacterHP :charactorInfo.currhp,
-                CharacterMP:charactorInfo.currmp,
-                
-                CharacterATK:charactorInfo.attack,
-                CharacterDEF:charactorInfo.defence,
-                CharacterPower:charactorInfo.power,
-                CharacterLuck:charactorInfo.luck,
-                CharacterAgile:charactorInfo.agile,
-                CharacterStatusDuration:0,
+                CharacterID: characterId,
+                CharacterHP: characterAttr.currhp,
+                CharacterMP: characterAttr.currmp,
+                CharacterMAXHP: characterAttr.maxhp + equipmentAttr.maxhp,
+                CharacterMAXMP: characterAttr.maxmp + equipmentAttr.maxmp,
+
+                CharacterATK: characterAttr.attack + equipmentAttr.attack,
+                CharacterDEF: characterAttr.defence + equipmentAttr.defence,
+                CharacterPower: characterAttr.power + equipmentAttr.power,
+                CharacterLuck: characterAttr.luck + equipmentAttr.luck,
+                CharacterAgile: characterAttr.agile + equipmentAttr.agile,
+                CharacterStatusDuration: 0,
       
                 MonsterID:monsterId,
+                MonsterHP:monsterAttr.currhp,
+                MonsterMP:monsterAttr.currmp,
+
+                MonsterMAXHP:monsterAttr.maxhp,
+                MonsterMAXMP:monsterAttr.maxmp,
                 
-                MonsterHP:monsterInfo.currhp,
-                MonsterMP:monsterInfo.currmp,
-                
-                MonsterATK:monsterInfo.attack,
-                MonsterDEF:monsterInfo.defence,
-                MonsterPower:monsterInfo.power,
-                MonsterLuck:monsterInfo.luck,
-                MonsterAgile:monsterInfo.agile,
+                MonsterATK:monsterAttr.attack,
+                MonsterDEF:monsterAttr.defence,
+                MonsterPower:monsterAttr.power,
+                MonsterLuck:monsterAttr.luck,
+                MonsterAgile:monsterAttr.agile,
                 
                 MonsterStatusDuration:0
             }

@@ -5,7 +5,7 @@ module.exports = (sequelize, Sequelize) => {
   Monster.init(
     {
       name: Sequelize.STRING,
-      rarity: Sequelize.STRING,
+      sceneId: Sequelize.STRING,
       experience: Sequelize.INTEGER,
       money: Sequelize.INTEGER,
       imagePath: Sequelize.STRING,

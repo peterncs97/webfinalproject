@@ -4,14 +4,8 @@ VALUES
   (1, 0,'location','起始之村','最初的起點。','Designed by photographeeasia / Freepik','images/village2.svg',NOW(),NOW()),
   (2, 1,'rest','旅館','這不就是Apple嗎，今天來要做甚麼？','Designed by rawpixel.com / Freepik','images/inn.svg',NOW(),NOW()),
   (3, 1,'trade','市集','這裡有各種武器和防具，你可以在這裡購買或賣出裝備。','Designed by designerhrenov Freepik','images/market.svg',NOW(),NOW()),
-  (4, 1,'location','公會','這裡可以存錢，你可以在這裡存取金錢。','Designed by macrovector_official / Freepik','images/guild.svg',NOW(),NOW()),
-  (5, 1,'location','教會','這裡是一個神聖的地方，你可以在這裡恢復生命值。','Designed by rawpixel.com / Freepik','images/church.svg',NOW(),NOW()),
-  (6, 1,'location','村長家','這裡是村長的家，你可以在這裡接受任務。','Designed by Freepik','images/elder.svg',NOW(),NOW()),
-  (7, 1,'battleground','大草原','這裡是一片廣闊的草原，你可以在這裡找到各種野生動物。','Designed by Freepik','images/plateau.svg',NOW(),NOW()),
-  (8, 7,'event','古樹','一位旅人在樹蔭下休息。','Designed by rawpixel.com ／ Freepik','images/oldtree.svg',NOW(),NOW()),
-  (101, 0,'victory','勝利','獲得831EXP、1199G、龍角！','Designed by b0red / pixabay','images/treasure.svg',NOW(),NOW()),
-  (201, 7,'monster','上古飛龍','這是一隻上古飛龍，它的攻擊力和防禦力都很高，要小心！','Designed by macrovector / Freepik','images/dragon.svg',NOW(),NOW()),
-  (202, 7,'monster','獨角獸','迷惑的看著你。','Designed by macrovector / Freepik','images/unicorn.svg',NOW(),NOW())
+  (101, 1,'battleground','大草原','這裡是一片廣闊的草原，你可以在這裡找到各種野生動物。','Designed by Freepik','images/plateau.svg',NOW(),NOW()),
+  (102, 101,'battleground','古樹','一位旅人在樹蔭下休息。','Designed by rawpixel.com ／ Freepik','images/oldtree.svg',NOW(),NOW())
 ON DUPLICATE KEY UPDATE 
   `parentId` = VALUES(`parentId`),
   `type` = VALUES(`type`),
@@ -19,6 +13,22 @@ ON DUPLICATE KEY UPDATE
   `description` = VALUES(`description`),
   `imageDescription` = VALUES(`imageDescription`),
   `imagePath` = VALUES(`imagePath`),
+  `updatedAt` = VALUES(`updatedAt`),
+  `createdAt` = VALUES(`createdAt`)
+;
+
+INSERT INTO
+  `monsters` (`id`,`sceneId`, `name`,`experience`,`money`, `imagePath`, `imageDescription`,`createdAt`,`updatedAt`)
+VALUES
+  (1, 101, '上古飛龍', 100, 100, 'images/dragon.svg', 'Designed by macrovector / Freepik', NOW(), NOW()),
+  (2, 101, '獨角獸', 50, 50, 'images/unicorn.svg', 'Designed by macrovector / Freepik', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `id` = VALUES(`id`),
+  `name` = VALUES(`name`),
+  `experience` = VALUES(`experience`),
+  `money` = VALUES(`money`),
+  `imagePath` = VALUES(`imagePath`),
+  `imageDescription` = VALUES(`imageDescription`),
   `updatedAt` = VALUES(`updatedAt`),
   `createdAt` = VALUES(`createdAt`)
 ;
@@ -46,8 +56,8 @@ INSERT INTO
 VALUES
   (1, 3, 'weapon', 0, 0, 0, 0, 0, 10, 0, NOW(), NOW()),
   (2, 4, 'weapon', 0, 0, 0, 0, 0, 20, 0, NOW(), NOW()),
-  (3, 5, 'body', 50, 0, 0, 0, 0, 0, 10, NOW(), NOW()),
-  (4, 6, 'body', 100, 0, 0, 0, 0, 0, 20, NOW(), NOW())
+  (3, 5, 'body', 0, 0, 0, 0, 0, 0, 10, NOW(), NOW()),
+  (4, 6, 'body', 0, 0, 0, 0, 0, 0, 20, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `id` = VALUES(`id`),
   `itemId` = VALUES(`itemId`),
@@ -87,9 +97,9 @@ ON DUPLICATE KEY UPDATE
 ;
 
 INSERT INTO
-  `characters` (`id`, `userId`, `currSceneId`, `name`, `profession`, `level`, `experience`, `money`, `createdAt`, `updatedAt`) 
+  `characters` (`id`, `userId`, `currSceneId`, `name`, `profession`, `level`, `experience`, `nextLevelExp`, `money`, `createdAt`, `updatedAt`) 
 VALUES 
-  (1, 1, 1, 'Apple', 'mage', 1, 0, 1000, NOW(), NOW())
+  (1, 1, 1, 'Apple', 'mage', 1, 0, 100, 500, NOW(), NOW())
 ON DUPLICATE KEY UPDATE 
   `id` = VALUES(`id`),
   `userId` = VALUES(`userId`),
@@ -98,6 +108,7 @@ ON DUPLICATE KEY UPDATE
   `profession` = VALUES(`profession`),
   `level` = VALUES(`level`),
   `experience` = VALUES(`experience`),
+  `nextLevelExp` = VALUES(`nextLevelExp`),
   `money` = VALUES(`money`),
   `updatedAt` = VALUES(`updatedAt`),
   `createdAt` = VALUES(`createdAt`)
@@ -106,7 +117,9 @@ ON DUPLICATE KEY UPDATE
 INSERT INTO `combat_attributes`
   (`id`, `currhp`, `currmp`, `maxhp`, `maxmp`, `power`, `agile`, `luck`, `attack`, `defence`, `skillSet`, `creatureId`, `creatureType`, `createdAt`, `updatedAt`) 
 VALUES
-  (1, 100, 20, 100, 20, 10, 10, 10, 10, 10, '1,2', 1, 'character', NOW(), NOW())
+  (1, 100, 50, 100, 50, 10, 10, 10, 10, 10, '1,2,3,4', 1, 'character', NOW(), NOW()),
+  (2, 100, 20, 100, 20, 10, 10, 10, 20, 10, '1,2', 1, 'monster', NOW(), NOW()),
+  (3, 100, 20, 100, 20, 10, 10, 10, 20, 10, '1,2', 2, 'monster', NOW(), NOW())
 ON DUPLICATE KEY UPDATE 
   `currhp` = VALUES(`currhp`),
   `currmp` = VALUES(`currmp`),
@@ -133,11 +146,12 @@ VALUES
   (4, 4, 1, 'merchant', 0, false, NOW(), NOW()),
   (5, 5, 1, 'merchant', 0, false, NOW(), NOW()),
   (6, 6, 1, 'merchant', 0, false, NOW(), NOW()),
-  (7, 1, 1, 'character', '10', false, NOW(), NOW()),
-  (8, 2, 1, 'character', '10', false, NOW(), NOW()),
-  (9, 3, 1, 'character', '1', true, NOW(), NOW()),
-  (10, 5, 1, 'character', '1', true, NOW(), NOW()),
-  (11, 4, 1, 'character', '1', false, NOW(), NOW())
+  (7, 1, 1, 'monster', 0, false, NOW(), NOW()),
+  (8, 2, 1, 'monster', 0, false, NOW(), NOW()),
+  (9, 1, 2, 'monster', 0, false, NOW(), NOW()),
+  (10, 2, 2, 'monster', 0, false, NOW(), NOW()),
+  (11, 1, 1, 'character', 10, false, NOW(), NOW()),
+  (12, 2, 1, 'character', 10, false, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `id` = VALUES(`id`),
   `itemId` = VALUES(`itemId`),
@@ -148,12 +162,14 @@ ON DUPLICATE KEY UPDATE
   `updatedAt` = VALUES(`updatedAt`),
   `createdAt` = VALUES(`createdAt`)
 ;
+
 INSERT INTO `skillbooks`
-  (`id`,`name`, `type`, `description`, `skillCode`, `specialCode`,`timer`,`duration`,`ATK`,`DEF`,`Power`,`Luck`,`Agile`, `createdAt`,`updatedAt`)
+  (`id`,`name`, `type`, `description`, `skillCode`, `specialCode`,`timer`,`duration`,`cost`, `ATK`,`DEF`,`Power`,`Luck`,`Agile`, `createdAt`,`updatedAt`)
 VALUES
-  (1, "normal attack", "attack", 'kick, puch and slap!', "kick" ,"combine",5000,  0,10,0,0,0,0, NOW(), NOW()),
-  (2, "normal defense", "defense", 'protect yourself!', "defense", "repeat",5000, 3,0,10,0,0,-10, NOW(), NOW()),
-  (3, "fire ball",  "magic", 'what else should i explain?', "fireBall","none",3000, 1,15,0,0,10,0, NOW(), NOW())
+  (1, "普攻", "attack", 'kick, puch and slap!', "Strike" ,"combine",5000, 0, 0, 5, 0,0,0,0, NOW(), NOW()),
+  (2, "力劈", "attack", 'protect yourself!', "Hack and slash", "repeat",3000, 0, 10, 10,0,10,0,0, NOW(), NOW()),
+  (3, "突刺", "attack", 'protect yourself!', "Swift Thrust", "repeat",3000, 0, 10, 10,0,0,0,10, NOW(), NOW()),
+  (4, "全力一擊", "attack", 'protect yourself!', "FULL POWER", "repeat",3000, 0, 20,20,0,0,10,0, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `name` = VALUES(`name`),
   `type` = VALUES(`type`),
@@ -161,6 +177,7 @@ ON DUPLICATE KEY UPDATE
   `skillCode` = VALUES(`skillCode`),
   `specialCode` = VALUES(`specialCode`),
   `duration` = VALUES(`duration`),
+  `cost` = VALUES(`cost`),
   `ATK` = VALUES(`ATK`),
   `DEF` = VALUES(`DEF`),
   `Power` = VALUES(`Power`),

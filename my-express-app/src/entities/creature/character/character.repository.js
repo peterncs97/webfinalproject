@@ -62,19 +62,20 @@ class CharacterRepository{
                 profession: profession,
                 level: 1,
                 experience: 0,
+                nextLevelExp: 100,
                 money: 500,
                 currSceneId: 1,         
                 combat_attribute: {
                     currhp: 100,
-                    currmp: 20,
+                    currmp: 50,
                     maxhp: 100,
-                    maxmp: 20,
+                    maxmp: 50,
                     power: 10,
                     agile: 10,
                     luck: 10,
                     attack: 10,
                     defence: 10,
-                    skillSet: '1,2'
+                    skillSet: '1,2,3,4'
                 },
             },
             {
