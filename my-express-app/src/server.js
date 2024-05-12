@@ -30,14 +30,21 @@ app.use(cors());
 app.use(helmet());
 
 // DB Connection
+const fileToQueries = (path) => {
+    var sql_string = fs.readFileSync(path, 'utf8');
+    sql_string = sql_string.replace(/\r?\n|\r/g, " ");
+    const queries = sql_string.split(';');
+    return queries.filter(query => query);
+}
+
 db.sequelize.sync({ alter: true })
     .then(() => {
         console.log("Synced db.");
         // Initialize the database
-        // var sql_string = fs.readFileSync('./src/database/init.sql', 'utf8');
-        // sql_string = sql_string.replace(/\r?\n|\r/g, " ");
-        // const queries = sql_string.split(';');
-        // queries.filter(query => query).forEach(query => db.sequelize.query(query));
+        fileToQueries('./src/database/init.sql')
+        .forEach(async query => 
+            await db.sequelize.query(query)
+        );
     })
     .catch((err) => {
         console.log("Failed to sync db: " + err.message);

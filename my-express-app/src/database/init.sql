@@ -51,27 +51,6 @@ ON DUPLICATE KEY UPDATE
   `createdAt` = VALUES(`createdAt`)
 ;
 
-INSERT INTO
-  `equipment_attributes` (`id`, `itemId`, `bodypart`, `maxhp`, `maxmp`,`power`,`agile`,`luck`,`attack`,`defence`,`createdAt`,`updatedAt`)
-VALUES
-  (1, 3, 'weapon', 0, 0, 0, 0, 0, 10, 0, NOW(), NOW()),
-  (2, 4, 'weapon', 0, 0, 0, 0, 0, 20, 0, NOW(), NOW()),
-  (3, 5, 'body', 0, 0, 0, 0, 0, 0, 10, NOW(), NOW()),
-  (4, 6, 'body', 0, 0, 0, 0, 0, 0, 20, NOW(), NOW())
-ON DUPLICATE KEY UPDATE
-  `id` = VALUES(`id`),
-  `itemId` = VALUES(`itemId`),
-  `bodypart` = VALUES(`bodypart`),
-  `maxhp` = VALUES(`maxhp`),
-  `maxmp` = VALUES(`maxmp`),
-  `power` = VALUES(`power`),
-  `agile` = VALUES(`agile`),
-  `luck` = VALUES(`luck`),
-  `attack` = VALUES(`attack`),
-  `defence` = VALUES(`defence`),
-  `updatedAt` = VALUES(`updatedAt`),
-  `createdAt` = VALUES(`createdAt`)
-;
 
 INSERT INTO
   `merchants` (`id`,`name`, `sceneId`, `createdAt`,`updatedAt`)
@@ -185,4 +164,26 @@ ON DUPLICATE KEY UPDATE
   `Agile` = VALUES(`Agile`),
   `timer` = VALUES(`timer`),
   `updatedAt` = VALUES(`updatedAt`)
+;
+
+INSERT INTO
+  `equipment_attributes` (`id`, `itemId`, `bodypart`, `maxhp`, `maxmp`,`power`,`agile`,`luck`,`attack`,`defence`,`createdAt`,`updatedAt`)
+VALUES
+  (1, 3, 'weapon', 0, 0, 0, 0, 0, 10, 0, NOW(), NOW()),
+  (2, 4, 'weapon', 0, 0, 0, 0, 0, 20, 0, NOW(), NOW()),
+  (3, 5, 'body', 0, 0, 0, 0, 0, 0, 10, NOW(), NOW()),
+  (4, 6, 'body', 0, 0, 0, 0, 0, 0, 20, NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `id` = VALUES(`id`),
+  `itemId` = VALUES(`itemId`),
+  `bodypart` = VALUES(`bodypart`),
+  `maxhp` = VALUES(`maxhp`),
+  `maxmp` = VALUES(`maxmp`),
+  `power` = VALUES(`power`),
+  `agile` = VALUES(`agile`),
+  `luck` = VALUES(`luck`),
+  `attack` = VALUES(`attack`),
+  `defence` = VALUES(`defence`),
+  `updatedAt` = VALUES(`updatedAt`),
+  `createdAt` = VALUES(`createdAt`)
 ;
