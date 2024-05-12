@@ -7,7 +7,7 @@ const SkillBar = ({ skills, handleSkillUse, isCountDown }) => {
 
       switch (event.key) {
         case 'q':
-          handleSkillUse(0); break;
+          handleSkillUse(1); break;
         case 'w':
           handleSkillUse(1); break;
         case 'e':
@@ -27,6 +27,8 @@ const SkillBar = ({ skills, handleSkillUse, isCountDown }) => {
   const skillShortcuts = ['q', 'w', 'e', 'r'];
   const skillButtons = skills.map((skill, index) => {
     return (
+      // get the users skill set
+      
       <button key={index} type="button" className="btn btn-outline-primary btn-lg" onClick={() => handleSkillUse(index)}>
         {skill.name} <span className="badge bg-primary">{skillShortcuts[index].toUpperCase()}</span>
       </button>

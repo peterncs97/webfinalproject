@@ -8,12 +8,15 @@ const helmet = require('helmet');
 const db = require("./database/db");
 const fs = require('fs');
 
+// require Routers
+// const commentRouter = require('./entities/comment/comment.router');
 const sceneRouter = require('./entities/scene/scene.router');
 const characterRouter = require('./entities/creature/character/character.router');
 const monsterRouter = require('./entities/creature/monster/monster.router');
 const itemRouter = require('./entities/item/item.router');
 const merchantRouter = require('./entities/merchant/merchant.router');
 const userRouter = require('./entities/user/user.router');
+const battleRouter = require('./entities/battle/battle.router');
 
 const app = express();
 
@@ -40,14 +43,14 @@ db.sequelize.sync({ alter: true })
         console.log("Failed to sync db: " + err.message);
     });
 
-// Routes
+// Use Router
+// app.use('/comment', commentRouter);
 app.use('/scene', sceneRouter);
 app.use('/character', characterRouter);
 app.use('/monster', monsterRouter);
 app.use('/item', itemRouter);
 app.use('/merchant', merchantRouter);
-app.use('/user', userRouter);
-
+app.use('/battle',battleRouter);
 // Guard routes
 app.use(function (req, res, next) {
     next(createError(404));
