@@ -25,8 +25,6 @@ const Layout = () => {
   // Conditionally rendering components based on states
   // states: default, battle, trade, dialogue
   const [action, setAction] = useState("default");
-  const [prevSceneId, setPrevSceneId] = useState(1); // Previous scene ID
-  const [currSceneId, setCurrSceneId] = useState(1); // Current scene ID
   const [character, setCharacter] = useState(null); // Character data
 
   // Persist user data on refresh and fetch character data on initial render
@@ -68,8 +66,6 @@ const Layout = () => {
 
   return (
     <StateContext.Provider value={{ action, setAction }}>
-      <PrevSceneContext.Provider value={{ prevSceneId, setPrevSceneId }}>
-        <CurrSceneContext.Provider value={{ currSceneId, setCurrSceneId }}>
           <CharacterContext.Provider value={{ character, setCharacter }}>
             {/* Navbar */}
             <header className="sticky-top bg-white">
@@ -92,8 +88,6 @@ const Layout = () => {
               </div>
             </section>
           </CharacterContext.Provider>
-        </CurrSceneContext.Provider>
-      </PrevSceneContext.Provider>
     </StateContext.Provider>
   );
 };

@@ -1,7 +1,6 @@
 // Import Packages
 import { useState, useEffect, useContext } from 'react';
 import axios from "axios";
-import { api_url } from "../config";
 
 // Import Custom Components
 import ItemDetail from '../components/Item/ItemDetail';
@@ -9,11 +8,9 @@ import ItemContainer from '../components/Item/ItemContainer';
 import SplitModal from '../components/Trade/SplitModal';
 
 // Import Contexts set up in Layout.js
-import { CurrSceneContext } from './Layout';
 import { CharacterContext } from './Layout';
 
 const Trade = () => {
-	const { currSceneId } = useContext(CurrSceneContext);
 	const { character, setCharacter } = useContext(CharacterContext);
 
 	const [merchantItemList, setMerchantItemList] = useState([]); // Item list to be displayed at the merchant box
@@ -31,11 +28,11 @@ const Trade = () => {
 			// Hide equipped items with quantity 1
 			character?.items.filter(item => !(item.item_ownership.equipped && item.item_ownership.quantity === 1))
 		);
-		axios.get(`${api_url}/merchant/getBySceneId/${currSceneId}`)
+		axios.get(`/merchant/getBySceneId/${character.currSceneId}`)
 		.then((response) => {
 			setMerchantItemList(response.data.data.items);
 		});
-	}, [character.items, currSceneId]);
+	}, [character.items, character.currSceneId]);
 
 	// When mouse hovers on an item, set up current item and show its detail
 	const showItemInfo = (event) => {
