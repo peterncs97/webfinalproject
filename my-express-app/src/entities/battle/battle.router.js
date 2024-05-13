@@ -11,8 +11,6 @@ class BattleRouter extends BaseRouter {
     registerRoute(){
         // --------------------------------------------/* GET: send to frontend, use req.query instead of req.body */-----------------------------------------------------------------------
         // get the status information of Creature Table (id)
-        this.router.get('/get-battle', (req, res, next) => this.#controller.getBattleById(req, res, next));
-        
 
         // --------------------------------------------/* Post: create new things into backend*/-----------------------------------------------------------------------
         // create a new row in Battling Table
@@ -23,7 +21,7 @@ class BattleRouter extends BaseRouter {
             2. init the data in Battling Table(all to zero)
         ** output:  battle id, charactor and monster status 
         ***/
-        this.router.post('/create', (req, res, next) => this.#controller.createBattle(req, res, next)); 
+        this.router.post('/retrieveOrCreate', (req, res, next) => this.#controller.retrieveOrCreate(req, res, next)); 
        
         // --------------------------------------------/* Put: update backend*/-----------------------------------------------------------------------
         // user attack monster: calculate the effectness of skill by the correctness of user input string and reaction time

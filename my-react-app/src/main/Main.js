@@ -30,15 +30,21 @@ const Layout = () => {
       navigate("/");
       return;
     }
-
     const user = JSON.parse(localStorage.getItem("user"));
+
     axios.get(`/character/${user.character.id}`)
       .then((response) => {
         setCharacter(response.data.data);
+        const isInBattle = response.data.data.isInBattle;
+        if (isInBattle) {
+          navigate("/battle");
+          return;
+        }
         setIsLoading(false);
       }).catch((error) => {
         console.error('Error fetching character data: ', error);
       });
+      
   }, [navigate]);
 
   function SubDisplay({action, character}) {

@@ -64,7 +64,8 @@ class CharacterRepository{
                 experience: 0,
                 nextLevelExp: 100,
                 money: 500,
-                currSceneId: 1,         
+                currSceneId: 1,
+                isInBattle: false,      
                 combat_attribute: {
                     currhp: 100,
                     currmp: 50,

@@ -76,9 +76,9 @@ ON DUPLICATE KEY UPDATE
 ;
 
 INSERT INTO
-  `characters` (`id`, `userId`, `currSceneId`, `name`, `profession`, `level`, `experience`, `nextLevelExp`, `money`, `createdAt`, `updatedAt`) 
+  `characters` (`id`, `userId`, `currSceneId`, `name`, `profession`, `level`, `experience`, `nextLevelExp`, `money`, `isInBattle`, `createdAt`, `updatedAt`) 
 VALUES 
-  (1, 1, 1, 'Apple', 'mage', 1, 0, 100, 500, NOW(), NOW())
+  (1, 1, 1, 'Apple', 'mage', 1, 0, 100, 500, false, NOW(), NOW())
 ON DUPLICATE KEY UPDATE 
   `id` = VALUES(`id`),
   `userId` = VALUES(`userId`),
@@ -89,6 +89,7 @@ ON DUPLICATE KEY UPDATE
   `experience` = VALUES(`experience`),
   `nextLevelExp` = VALUES(`nextLevelExp`),
   `money` = VALUES(`money`),
+  `isInBattle` = VALUES(`isInBattle`),
   `updatedAt` = VALUES(`updatedAt`),
   `createdAt` = VALUES(`createdAt`)
 ;

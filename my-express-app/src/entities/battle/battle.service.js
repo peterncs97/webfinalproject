@@ -7,39 +7,42 @@ class BattleService {
     #characterService = new CharacterService();
     #monsterService = new MonsterService();
     #algo=new algo();
-    
-    async getBattleById(battleId) {
-        const battle = await this.#battleRepository.getBattleById(battleId);
-        return battle;
+
+    async retrieveOrCreateBattle(characterId) {
+        const character = await this.#characterService.getCharacterById(characterId);     
+        const characterAttr = await character.getCombat_attribute();
+        const skills = await this.#battleRepository.getSkillSetByIds(characterAttr.skillSet.split(","));
+        const monster = await this.#monsterService.getRandMonsterBySceneId(character.currSceneId);
+
+        let battle;
+        if (character.isInBattle) {
+            battle = await this.#battleRepository.getBattleByCharacterId(characterId);
+        } else {
+            const characterEquipments = character.items.filter(item => item.item_ownership.equipped)
+            const equipmentAttr = this.calculateEquimentAttr(characterEquipments);
+            const monsterAttr = await monster.getCombat_attribute();
+
+            battle = await this.#battleRepository.createBattle(character.id, monster.id, characterAttr, equipmentAttr, monsterAttr);
+            await character.update({ isInBattle: true });
+        }
+        
+        return { monster: monster, skills: skills, battle: battle};
     }
 
-    async createBattle(characterId) {
-        const character = await this.#characterService.getCharacterById(characterId);
-        const characterAttr = await character.getCombat_attribute();
-
-        const characterEquipments = character.items.filter(item => item.item_ownership.equipped)
-        
+    calculateEquimentAttr(characterEquipments) {
         var equipmentAttr;
         if (characterEquipments.length > 0)
             equipmentAttr = characterEquipments
                 .map(item => item.getDataValue('equipment_attribute').dataValues)
-            .reduce((acc, cur) => {
-                for (let key in cur)
-                    if (cur.hasOwnProperty(key) && key !== "bodypart")
-                        acc[key] = (acc[key] || 0) + cur[key];
-                return acc;
-            }, {});
+                .reduce((acc, cur) => {
+                    for (let key in cur)
+                        if (cur.hasOwnProperty(key) && key !== "bodypart")
+                            acc[key] = (acc[key] || 0) + cur[key];
+                    return acc;
+                }, {});
         else
             equipmentAttr = { maxhp: 0, maxmp: 0, attack: 0, defence: 0, agile: 0, luck: 0, power: 0 };
-
-        const monster = await this.#monsterService.getRandMonsterBySceneId(character.currSceneId);
-        const monsterAttr = await monster.getCombat_attribute();
-
-        const skills = await this.#battleRepository.getSkillSetByIds(characterAttr.skillSet.split(","));
-
-        const battle = await this.#battleRepository.createBattle(character.id, monster.id, characterAttr, equipmentAttr, monsterAttr);
-
-        return { monster: monster, skills: skills, battle: battle};
+        return equipmentAttr;
     }
 
     // calculate the effectness of skill by the correctness of user input string and reaction time
@@ -105,7 +108,7 @@ class BattleService {
         } else {
             character.experience += monster.experience;
         }
-
+        character.isInBattle = false;
         await character.save();
         if (monster.items !== null && monster.items.length > 0) {
             const item = monster.items[Math.floor(Math.random() * monster.items.length)];
@@ -143,6 +146,8 @@ class BattleService {
         const character = await this.#characterService.getCharacterById(battle.CharacterID);
         character.money = Math.floor(character.money / 2);
         character.currSceneId = 1;
+        character.isInBattle = false;
+
         await character.save();
         await character.combat_attribute.update({ currhp: 0, currmp: 0 });
         
@@ -155,6 +160,7 @@ class BattleService {
     async escapeBattle(battleId){
         const battle = await this.#battleRepository.getBattleById(battleId);
         const character = await this.#characterService.getCharacterById(battle.CharacterID);
+        await character.update({ isInBattle: false });
         await character.combat_attribute.update({ currhp: battle.CharacterHP, currmp: battle.CharacterMP });
         return await battle.destroy();
     }

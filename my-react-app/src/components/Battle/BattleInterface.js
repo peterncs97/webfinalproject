@@ -17,7 +17,7 @@ const AlwaysScrollToBottom = () => {
 const BattleInterface = ({ battle, monster, skills, battleStatus, setBattleStatus, setBattle, setResult }) => {
 	const navigate = useNavigate();
 	
-	const [battleLog, setBattleLog] = useState([{ subject: 'monster', message: `${monster.name}出現了！`, type: 'danger' }]); // Initial battle log
+	const [battleLog, setBattleLog] = useState([]); // Initial battle log
 	const [skill, setSkill] = useState(null); // Skill Bar
 	const [text, setText] = useState(''); // User Skill Code Input in typer
 	

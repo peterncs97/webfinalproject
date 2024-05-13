@@ -11,6 +11,7 @@ module.exports = (sequelize, Sequelize) => {
       nextLevelExp: Sequelize.INTEGER,
       money: Sequelize.INTEGER,
       currSceneId: Sequelize.INTEGER,
+      isInBattle: Sequelize.BOOLEAN,
     },
     { sequelize, modelName: 'character' },
   );

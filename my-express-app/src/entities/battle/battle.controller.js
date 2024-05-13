@@ -4,14 +4,8 @@ const ItemService=require('../item/item.service');
 class BattleController extends BaseController{    
     #battleService = new BattleService();
 
-    async getBattleById(req, res){
-        const bid = req.query.id;
-        const dtos = await this.#battleService.getBattleById(bid);
-        this.responseHandler(res, dtos);    
-    }
-
-    async createBattle(req, res){
-        const dtos = await this.#battleService.createBattle(req.body.characterId);
+    async retrieveOrCreate(req, res){
+        const dtos = await this.#battleService.retrieveOrCreateBattle(req.body.characterId);
         this.responseHandler(res, dtos);
     }
 

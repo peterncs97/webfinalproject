@@ -25,14 +25,17 @@ const Battle = () => {
       return;
     } 
     
+    const setup = ({ monster, skills, battle }) => {
+      setMonster(monster);
+      setSkills(skills);
+      setBattle(battle);
+      setIsLoading(false);
+    }
+
     const user = JSON.parse(localStorage.getItem("user"));
-    axios.post(`/battle/create`, { characterId: user.character.id })
+    axios.post(`/battle/retrieveOrCreate`, { characterId: user.character.id })
       .then((response) => {
-        const { monster, skills, battle } = response.data.data;
-        setMonster(monster);
-        setSkills(skills);
-        setBattle(battle);
-        setIsLoading(false);
+        setup(response.data.data);
       }).catch((error) => {
         console.error(error);
       });
