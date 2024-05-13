@@ -35,7 +35,7 @@ const BattleInterface = ({ battle, monster, skills, battleStatus, setBattleStatu
 			// count down is over
 			updateBattle();
 		}
-	}, [countDown, skill]);
+	}, [isCountDown, countDown]);
 
 	const updateBattle = () => {
 		axios.post(`/battle/update`, { battleId: battle.id, skillId: skill.id, userInput: text, remainingTime: countDown })
