@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 const BattleResult = ({ battleStatus, result }) => {
   const navigate = useNavigate();
   
-  const attrAdj = result.attrAdjustment;
-  console.log(result.attrAdjustment);
-  console.log(attrAdj);
-
+  const attrAdj = battleStatus === 'win' ? result.attrAdjustment : null;
   const title = battleStatus === 'win' ? '勝利' : '失敗';
   const imgSrc = battleStatus === 'win' ? '/images/treasure.svg' : '/images/skull.svg';
   const imgAlt = battleStatus === 'win' ? 'victory' : 'defeat';
@@ -32,6 +29,11 @@ const BattleResult = ({ battleStatus, result }) => {
         </div>
         <div>
           <ul className="list-group list-group-horizontal justify-content-center">
+            {(battleStatus === 'win') && 
+              <button type="button" className="list-group-item" onClick={() => { window.location.reload() }} >
+                繼續索敵
+              </button>
+            }
             <button type="button" className="list-group-item" onClick={() => navigate("/main")} >
               返回
             </button>
