@@ -9,7 +9,6 @@ const db = require("./database/db");
 const fs = require('fs');
 
 // require Routers
-// const commentRouter = require('./entities/comment/comment.router');
 const sceneRouter = require('./entities/scene/scene.router');
 const characterRouter = require('./entities/creature/character/character.router');
 const monsterRouter = require('./entities/creature/monster/monster.router');
@@ -17,6 +16,8 @@ const itemRouter = require('./entities/item/item.router');
 const merchantRouter = require('./entities/merchant/merchant.router');
 const userRouter = require('./entities/user/user.router');
 const battleRouter = require('./entities/battle/battle.router');
+// Bear Token validation
+const { validateToken } = require('./auth/auth');
 
 const app = express();
 
@@ -52,12 +53,12 @@ db.sequelize.sync({ alter: true })
 
 // Use Router
 app.use('/user', userRouter);
-app.use('/scene', sceneRouter);
-app.use('/character', characterRouter);
-app.use('/monster', monsterRouter);
-app.use('/item', itemRouter);
-app.use('/merchant', merchantRouter);
-app.use('/battle',battleRouter);
+app.use('/scene', validateToken, sceneRouter);
+app.use('/character', validateToken, characterRouter);
+app.use('/monster', validateToken, monsterRouter);
+app.use('/item', validateToken, itemRouter);
+app.use('/merchant', validateToken, merchantRouter);
+app.use('/battle', validateToken, battleRouter);
 
 // Guard routes
 app.use(function (req, res, next) {
