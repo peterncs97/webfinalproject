@@ -1,11 +1,8 @@
-import { useContext, useEffect } from 'react';
-import { AuthContext } from '../../App';
+import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
 const Navbar = ({character}) => {
 	const navigate = useNavigate();
-
-	const { setIsAuthenticated, setUser } = useContext(AuthContext);
 
 	useEffect(() => {
 		const token = localStorage.getItem("Authorization");
@@ -16,8 +13,6 @@ const Navbar = ({character}) => {
 
 
 	const logout = () => {
-		setIsAuthenticated(false);
-		setUser(null);
 		localStorage.removeItem("Authorization");
 		localStorage.removeItem("user");
 		navigate("/");

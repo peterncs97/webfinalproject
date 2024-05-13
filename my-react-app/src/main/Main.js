@@ -1,5 +1,6 @@
 // Import packages
-import { useState, useEffect, useContext, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Import custom components
@@ -7,7 +8,6 @@ import Navbar from "../components/Main/Navbar";
 import Scene from "../components/Main/Scene";
 import Backpack from "../components/Main/Backpack";
 import Trade from "../components/Main/Trade";
-import { AuthContext } from "../App";
 
 // Create contexts for states, current scene, previous scene, and character data
 // These contexts will be used to pass and alter data between components
@@ -15,8 +15,8 @@ export const ActionContext = createContext(null);
 export const CharacterContext = createContext(null);
 
 const Layout = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const { setIsAuthenticated, setUser } = useContext(AuthContext);
 
   // Conditionally rendering components based on states
   // states: default, battle, trade, dialogue
@@ -26,19 +26,20 @@ const Layout = () => {
   // Persist user data on refresh and fetch character data on initial render
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
-    if (token) {
-      setIsAuthenticated(true);
-      const user = JSON.parse(localStorage.getItem("user"));
-      setUser(user);
-      axios.get(`/character/${user.character.id}`)
-        .then((response) => {
-          setCharacter(response.data.data);
-          setIsLoading(false);
-        }).catch((error) => {
-          console.error('Error fetching character data: ', error);
-        });
+    if (!token) {
+      navigate("/");
+      return;
     }
-  }, [setUser, setIsAuthenticated]);
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    axios.get(`/character/${user.character.id}`)
+      .then((response) => {
+        setCharacter(response.data.data);
+        setIsLoading(false);
+      }).catch((error) => {
+        console.error('Error fetching character data: ', error);
+      });
+  }, [navigate]);
 
   function SubDisplay({action, character}) {
     switch (action) {

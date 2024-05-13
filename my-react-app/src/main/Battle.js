@@ -1,5 +1,6 @@
 // Import packages
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Import custom components
@@ -8,6 +9,7 @@ import Monster from "../components/Battle/Monster";
 import BattleResult from "../components/Battle/BattleResult";
 
 const Battle = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
   const [battleStatus, setBattleStatus] = useState('continue');
@@ -17,6 +19,12 @@ const Battle = () => {
   const [result, setResult] = useState(null);
 
   useEffect(() => {
+    const token = localStorage.getItem("Authorization");
+    if (!token){
+      navigate("/");
+      return;
+    } 
+    
     const user = JSON.parse(localStorage.getItem("user"));
     axios.post(`/battle/create`, { characterId: user.character.id })
       .then((response) => {
@@ -28,7 +36,7 @@ const Battle = () => {
       }).catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [navigate]);
 
   if (isLoading) return null;
 
