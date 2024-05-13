@@ -1,8 +1,19 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const BattleResult = ({ battleStatus, result }) => {
   const navigate = useNavigate();
-  
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === 'z'){
+        event.preventDefault();
+        window.location.reload();
+      }
+    };
+    window.addEventListener('keypress', handleKeyPress);
+    return () => window.removeEventListener('keypress', handleKeyPress);
+  }, []);
+
   const attrAdj = battleStatus === 'win' ? result.attrAdjustment : null;
   const title = battleStatus === 'win' ? '勝利' : '失敗';
   const imgSrc = battleStatus === 'win' ? '/images/treasure.svg' : '/images/skull.svg';
@@ -12,6 +23,7 @@ const BattleResult = ({ battleStatus, result }) => {
   const lvlupMessage = (battleStatus === 'win' && result.isLevelUp) ? 
     `等級提升！ HP+${attrAdj[0]}，MP+${attrAdj[1]}，PWR+${attrAdj[2]}，AGI+${attrAdj[3]}，LCK+${attrAdj[4]}，ATK+${attrAdj[5]}，DEF+${attrAdj[6]}` 
     : '';
+
   return (
     <div className="show-fadein">
       <div className='row justify-content-center py-2 border border-3 bg-light'>
@@ -31,7 +43,7 @@ const BattleResult = ({ battleStatus, result }) => {
           <ul className="list-group list-group-horizontal justify-content-center">
             {(battleStatus === 'win') && 
               <button type="button" className="list-group-item" onClick={() => { window.location.reload() }} >
-                繼續索敵
+                繼續索敵 <span className="badge bg-dark">Z</span>
               </button>
             }
             <button type="button" className="list-group-item" onClick={() => navigate("/main")} >
