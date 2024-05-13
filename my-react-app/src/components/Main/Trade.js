@@ -3,12 +3,12 @@ import { useState, useEffect, useContext } from 'react';
 import axios from "axios";
 
 // Import Custom Components
-import ItemDetail from '../components/Item/ItemDetail';
-import ItemContainer from '../components/Item/ItemContainer';
-import SplitModal from '../components/Trade/SplitModal';
+import ItemDetail from './Item/ItemDetail';
+import ItemContainer from './Item/ItemContainer';
+import SplitModal from './Trade/SplitModal';
 
 // Import Contexts set up in Layout.js
-import { CharacterContext } from './Layout';
+import { CharacterContext } from '../../main/Main';
 
 const Trade = () => {
 	const { character, setCharacter } = useContext(CharacterContext);

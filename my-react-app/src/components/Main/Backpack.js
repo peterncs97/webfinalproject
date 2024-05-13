@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import CharacterInfo from "../components/CharacterInfo";
-import ItemDetail from '../components/Item/ItemDetail';
-import ItemContainer from '../components/Item/ItemContainer';
+import CharacterInfo from "./Backpack/CharacterInfo";
+import ItemDetail from './Item/ItemDetail';
+import ItemContainer from './Item/ItemContainer';
 
 const Backpack = ({ character }) => {
 	const [currentItem, setCurrentItem] = useState(null);

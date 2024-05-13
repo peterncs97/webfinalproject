@@ -4,11 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import axios from "axios";
 
-// Import api url from config.js
-import { api_url } from '../../config';
-
 // Import contexts from Layout.js
-import { CharacterContext } from '../../main/Layout';
+import { CharacterContext } from '../../../main/Main';
 
 const OptionModal = (props) => {
   const { character, setCharacter } = useContext(CharacterContext);
@@ -21,7 +18,7 @@ const OptionModal = (props) => {
   }, [character]);
 
   const handleConfirm = () => {
-    axios.post(`${api_url}/character/rest`, {
+    axios.post(`/character/rest`, {
       characterId: character.id,
     }).then((response) => {
       setCharacter(response.data.data);

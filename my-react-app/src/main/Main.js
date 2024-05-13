@@ -3,10 +3,10 @@ import { useState, useEffect, useContext, createContext } from "react";
 import axios from "axios";
 
 // Import custom components
-import Navbar from "./Navbar";
-import Scene from "./Scene";
-import Backpack from "./Backpack";
-import Trade from "./Trade";
+import Navbar from "../components/Main/Navbar";
+import Scene from "../components/Main/Scene";
+import Backpack from "../components/Main/Backpack";
+import Trade from "../components/Main/Trade";
 import { AuthContext } from "../App";
 
 // Create contexts for states, current scene, previous scene, and character data

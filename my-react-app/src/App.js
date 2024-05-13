@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./main/Layout";
+import Layout from "./main/Main";
 import LoginRegister from "./main/LoginRegister";
 import Battle from "./main/Battle";
 

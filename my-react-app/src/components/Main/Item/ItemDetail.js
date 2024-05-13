@@ -2,11 +2,8 @@
 import { useContext } from 'react';
 import axios from "axios";
 
-// Import api url from config.js
-import { api_url } from '../../config';
-
 // Import contexts from Layout.js
-import { CharacterContext, ActionContext } from '../../main/Layout';
+import { CharacterContext, ActionContext } from '../../../main/Main';
 
 const ItemDetail = ({ item }) => {
 	const { character, setCharacter } = useContext(CharacterContext);
@@ -14,7 +11,7 @@ const ItemDetail = ({ item }) => {
 	if (!item) return;
 	
 	const equip = () => {
-		axios.post(`${api_url}/character/equip`, {
+		axios.post(`/character/equip`, {
 			characterId: character.id,
 			itemId: item.id,
 		}).then((response) => {
@@ -25,7 +22,7 @@ const ItemDetail = ({ item }) => {
 	}
 
 	const unequip = () => {
-		axios.post(`${api_url}/character/unequip`, {
+		axios.post(`/character/unequip`, {
 			characterId: character.id,
 			itemId: item.id,
 		}).then((response) => {

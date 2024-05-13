@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext } from 'react';
 
 // Import contexts from Layout.js
-import { CharacterContext } from '../main/Layout';
+import { CharacterContext } from '../../../main/Main';
 
 const CharacterInfo = ({ setCurrentItem }) => {
 	const { character } = useContext(CharacterContext);

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import axios from "axios";
-import { api_url } from "../../config";
 
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -27,7 +26,7 @@ const SplitModal = (props) => {
 
   // When trade button is clicked, settle the trade
   const handleTrade = () => {
-    axios.post(`${api_url}/character/trade`, {
+    axios.post(`/character/trade`, {
       characterId: characterid,
       item: { id: item.id, quantity: quantity }, // Set the item as an object with its id and the quantity from slider
       tradeAction: (belongto === 'character') ? 'sell' : 'buy' // 'sell' if the item belongs to the character, 'buy' otherwise

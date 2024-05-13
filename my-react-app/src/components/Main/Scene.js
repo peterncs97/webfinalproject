@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import axios from "axios";
 // Import custom components
-import OptionList from '../components/Scene/OptionList';
-import OptionModal from '../components/Scene/OptionModal';
+import OptionList from './Scene/OptionList';
+import OptionModal from './Scene/OptionModal';
 
 const Scene = ({ character }) => {
   const [isLoading, setIsLoading] = useState(true);

@@ -26,7 +26,7 @@ const Battle = () => {
         setBattle(battle);
         setIsLoading(false);
       }).catch((error) => {
-        console.error('Error fetching character data: ', error);
+        console.error(error);
       });
   }, []);
 

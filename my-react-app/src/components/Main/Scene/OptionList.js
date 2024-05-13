@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Import contexts from Layout.js
-import { ActionContext, CharacterContext } from '../../main/Layout';
+import { ActionContext, CharacterContext } from '../../../main/Main';
 
 // Construct option list based on current scene
 // Include basic travel option, special scene options and return option
