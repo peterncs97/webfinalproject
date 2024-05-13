@@ -1,6 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 const SkillBar = ({ skills, handleSkillUse, handleEscape, isCountDown, battleStatus, currmp }) => { 
+  const keyATarget = useRef(null);
+
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (battleStatus !== 'continue' || isCountDown) return;
@@ -27,15 +31,32 @@ const SkillBar = ({ skills, handleSkillUse, handleEscape, isCountDown, battleSta
     return () => window.removeEventListener('keypress', handleKeyPress);
   }, [handleSkillUse, handleEscape, isCountDown]);
   
+  const SkillToolTip = ({ id, children, skill }) => (
+    <OverlayTrigger 
+      placement="bottom" 
+      overlay={
+        <Tooltip id={id}>
+          <div className='p-1'>
+            {skill.description}<br />
+            魔力消耗：{skill.cost}
+          </div>
+        </Tooltip>
+      }
+    >
+      {children}
+    </OverlayTrigger>
+  );
+
   const skillShortcuts = ['q', 'w', 'e', 'r'];
   const skillsWithMana = skills.slice(1);
   const skillButtons = skillsWithMana.map((skill, index) => {
     return (
       // get the users skill set
-      
-      <button key={index} type="button" className="btn btn-outline-primary btn-lg" onClick={() => handleSkillUse(index + 1)} disabled={battleStatus !== 'continue' || skill.cost > currmp}>
-        {skill.name} <span className="badge bg-primary">{skillShortcuts[index].toUpperCase()}</span>
-      </button>
+      <SkillToolTip skill={skill} id={`t-${index+2}`}>
+        <button key={index} type="button" className="btn btn-outline-primary btn-lg" onClick={() => handleSkillUse(index + 1)} disabled={battleStatus !== 'continue' || skill.cost > currmp}>
+          {skill.name} <span className="badge bg-primary">{skillShortcuts[index].toUpperCase()}</span>
+        </button>
+      </SkillToolTip>
     );
   });
 
@@ -43,10 +64,13 @@ const SkillBar = ({ skills, handleSkillUse, handleEscape, isCountDown, battleSta
     <div className='row p-3'>
       <div className="btn-toolbar justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
         <div className="btn-group me-2" role="group" aria-label="Third group">
-          <button type="button" className="btn btn-outline-dark btn-lg"
-            onClick={() => handleSkillUse(0)} disabled={battleStatus !== 'continue'}
-          >普攻 <span className="badge bg-dark">A</span>
-          </button>
+          <SkillToolTip skill={skills[0]} id="t-1">
+            <button type="button" className="btn btn-outline-dark btn-lg"
+              ref={keyATarget} onClick={() => handleSkillUse(0)} disabled={battleStatus !== 'continue'}
+            >
+              普攻 <span className="badge bg-dark">A</span>
+            </button>
+          </SkillToolTip>
         </div>
         
         <div className="btn-group me-2" role="group" aria-label="First group">

@@ -145,10 +145,10 @@ ON DUPLICATE KEY UPDATE
 INSERT INTO `skillbooks`
   (`id`,`name`, `type`, `description`, `skillCode`, `specialCode`,`timer`,`duration`,`cost`, `ATK`,`DEF`,`Power`,`Luck`,`Agile`, `createdAt`,`updatedAt`)
 VALUES
-  (1, "普攻", "attack", 'kick, puch and slap!', "Strike" ,"combine",5000, 0, 0, 5, 0,0,0,0, NOW(), NOW()),
-  (2, "力劈", "attack", 'protect yourself!', "Hack and slash", "repeat",3000, 0, 10, 10,0,10,0,0, NOW(), NOW()),
-  (3, "突刺", "attack", 'protect yourself!', "Swift Thrust", "repeat",3000, 0, 10, 10,0,0,0,10, NOW(), NOW()),
-  (4, "全力一擊", "attack", 'protect yourself!', "FULL POWER", "repeat",3000, 0, 20,20,0,0,10,0, NOW(), NOW())
+  (1, "普攻", "attack", '無消耗、無加成', "Strike" ,"combine",5000, 0, 0, 5, 0,0,0,0, NOW(), NOW()),
+  (2, "力劈", "attack", '力量加成', "Hack and slash", "repeat",3000, 0, 10, 10,0,10,0,0, NOW(), NOW()),
+  (3, "突刺", "attack", '敏捷加成', "Swift Thrust", "repeat",3000, 0, 10, 10,0,0,0,10, NOW(), NOW()),
+  (4, "全力一擊", "attack", '運氣加成', "FULL POWER", "repeat",3000, 0, 20,20,0,0,10,0, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `name` = VALUES(`name`),
   `type` = VALUES(`type`),
