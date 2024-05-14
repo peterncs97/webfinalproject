@@ -38,6 +38,9 @@ const Battle = () => {
         setup(response.data.data);
       }).catch((error) => {
         console.error(error);
+        localStorage.removeItem("Authorization");
+        localStorage.removeItem("user");
+        navigate("/");
       });
   }, [navigate]);
 

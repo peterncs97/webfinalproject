@@ -43,6 +43,9 @@ const Layout = () => {
         setIsLoading(false);
       }).catch((error) => {
         console.error('Error fetching character data: ', error);
+        localStorage.removeItem("Authorization");
+        localStorage.removeItem("user");
+        navigate("/");
       });
       
   }, [navigate]);
