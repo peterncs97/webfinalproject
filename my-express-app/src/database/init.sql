@@ -2,10 +2,11 @@ INSERT INTO
   `scenes` (`id`,`parentId`,`type`,`name`,`description`,`imageDescription`,`imagePath`,`createdAt`,`updatedAt`) 
 VALUES 
   (1, 0,'location','起始之村','最初的起點。','Designed by photographeeasia / Freepik','images/village2.svg',NOW(),NOW()),
-  (2, 1,'rest','旅館','這不就是Apple嗎，今天來要做甚麼？','Designed by rawpixel.com / Freepik','images/inn.svg',NOW(),NOW()),
-  (3, 1,'trade','市集','這裡有各種武器和防具，你可以在這裡購買或賣出裝備。','Designed by designerhrenov Freepik','images/market.svg',NOW(),NOW()),
-  (101, 1,'battleground','大草原','這裡是一片廣闊的草原，你可以在這裡找到各種野生動物。','Designed by Freepik','images/plateau.svg',NOW(),NOW()),
-  (102, 101,'battleground','古樹','一位旅人在樹蔭下休息。','Designed by rawpixel.com ／ Freepik','images/oldtree.svg',NOW(),NOW())
+  (2, 1,'rest','旅館','來，給你最好的房間！','Designed by rawpixel.com / Freepik','images/inn.svg',NOW(),NOW()),
+  (3, 1,'trade','市集','今天來要買甚麼？','Designed by designerhrenov Freepik','images/market.svg',NOW(),NOW()),
+  (101, 1,'battleground','大草原','廣闊的草原。','Designed by Freepik','images/plateau.svg',NOW(),NOW()),
+  (102, 101, 'battleground', '禮拜堂', '草原上神秘的一角。', 'Designed by Freepik', 'images/church.svg', NOW(), NOW()),
+  (103, 101, 'battleground', '寧靜海岸', '通往未知的大陸', 'Designed by Freepik', 'images/lighthouse.svg', NOW(), NOW())
 ON DUPLICATE KEY UPDATE 
   `parentId` = VALUES(`parentId`),
   `type` = VALUES(`type`),
@@ -20,8 +21,12 @@ ON DUPLICATE KEY UPDATE
 INSERT INTO
   `monsters` (`id`,`sceneId`, `name`,`experience`,`money`, `imagePath`, `imageDescription`,`createdAt`,`updatedAt`)
 VALUES
-  (1, 101, '上古飛龍', 100, 100, 'images/dragon.svg', 'Designed by macrovector / Freepik', NOW(), NOW()),
-  (2, 101, '獨角獸', 50, 50, 'images/unicorn.svg', 'Designed by macrovector / Freepik', NOW(), NOW())
+  (1, 101, '飛龍', 50, 50, 'images/dragon.svg', 'Designed by macrovector / Freepik', NOW(), NOW()),
+  (2, 101, '獨角獸', 50, 50, 'images/unicorn.svg', 'Designed by macrovector / Freepik', NOW(), NOW()),
+  (3, 102, '天使', 60, 60, 'images/angel.svg', 'Designed by macrovector / Freepik', NOW(), NOW()),
+  (4, 102, '獅鷲', 60, 60, 'images/griffin.svg', 'Designed by macrovector / Freepik', NOW(), NOW()),
+  (5, 103, '人魚', 70, 70, 'images/mermaid.svg', 'Designed by macrovector / Freepik', NOW(), NOW()),
+  (6, 103, '鳥妖', 70, 70, 'images/birdman.svg', 'Designed by macrovector / Freepik', NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `id` = VALUES(`id`),
   `name` = VALUES(`name`),
@@ -99,8 +104,12 @@ INSERT INTO `combat_attributes`
   (`id`, `currhp`, `currmp`, `maxhp`, `maxmp`, `power`, `agile`, `luck`, `attack`, `defence`, `skillSet`, `creatureId`, `creatureType`, `createdAt`, `updatedAt`) 
 VALUES
   (1, 100, 50, 100, 50, 10, 10, 10, 10, 10, '1,2,3,4', 1, 'character', NOW(), NOW()),
-  (2, 100, 20, 100, 20, 10, 10, 10, 20, 10, '1,2', 1, 'monster', NOW(), NOW()),
-  (3, 100, 20, 100, 20, 10, 10, 10, 20, 10, '1,2', 2, 'monster', NOW(), NOW())
+  (2, 100, 20, 110, 20, 10, 10, 10, 20, 10, '1,2', 1, 'monster', NOW(), NOW()),
+  (3, 120, 20, 120, 20, 10, 10, 10, 25, 15, '1,2', 2, 'monster', NOW(), NOW()),
+  (4, 140, 20, 140, 20, 10, 10, 10, 40, 15, '1,2', 3, 'monster', NOW(), NOW()),
+  (5, 150, 20, 150, 20, 10, 10, 10, 45, 20, '1,2', 4, 'monster', NOW(), NOW()),
+  (6, 160, 20, 160, 20, 10, 10, 10, 50, 20, '1,2', 5, 'monster', NOW(), NOW()),
+  (7, 170, 20, 170, 20, 10, 10, 10, 55, 25, '1,2', 6, 'monster', NOW(), NOW())
 ON DUPLICATE KEY UPDATE 
   `currhp` = VALUES(`currhp`),
   `currmp` = VALUES(`currmp`),
@@ -129,11 +138,21 @@ VALUES
   (6, 6, 1, 'merchant', 0, false, NOW(), NOW()),
   (7, 7, 1, 'merchant', 0, false, NOW(), NOW()),
   (8, 1, 1, 'monster', 0, false, NOW(), NOW()),
-  (0, 2, 1, 'monster', 0, false, NOW(), NOW()),
+  (9, 2, 1, 'monster', 0, false, NOW(), NOW()),
   (10, 1, 2, 'monster', 0, false, NOW(), NOW()),
   (11, 2, 2, 'monster', 0, false, NOW(), NOW()),
-  (12, 1, 1, 'character', 10, false, NOW(), NOW()),
-  (13, 2, 1, 'character', 10, false, NOW(), NOW())
+  (12, 4, 3, 'monster', 0, false, NOW(), NOW()),
+  (13, 6, 3, 'monster', 0, false, NOW(), NOW()),
+  (14, 4, 4, 'monster', 0, false, NOW(), NOW()),
+  (15, 6, 4, 'monster', 0, false, NOW(), NOW()),
+  (16, 3, 5, 'monster', 0, false, NOW(), NOW()),
+  (17, 5, 5, 'monster', 0, false, NOW(), NOW()),
+  (18, 7, 5, 'monster', 0, false, NOW(), NOW()),
+  (19, 3, 6, 'monster', 0, false, NOW(), NOW()),
+  (20, 5, 6, 'monster', 0, false, NOW(), NOW()),
+  (21, 7, 6, 'monster', 0, false, NOW(), NOW()),
+  (22, 1, 1, 'character', 10, false, NOW(), NOW()),
+  (23, 2, 1, 'character', 10, false, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `id` = VALUES(`id`),
   `itemId` = VALUES(`itemId`),
