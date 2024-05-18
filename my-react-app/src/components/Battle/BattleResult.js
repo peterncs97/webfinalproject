@@ -19,7 +19,7 @@ const BattleResult = ({ battleStatus, result }) => {
   const imgSrc = battleStatus === 'win' ? '/images/treasure.svg' : '/images/skull.svg';
   const imgAlt = battleStatus === 'win' ? 'victory' : 'defeat';
   const imgCredit = battleStatus === 'win' ? 'Designed by b0red / pixabay' : 'Image by Rochak Shukla on Freepik';
-  const message = battleStatus === 'win' ? `獲得${(result.item) ? result.item + '，' : '' }${result.money}金幣，${result.experience}經驗值！` : '失去一半金錢。。。';
+  const message = battleStatus === 'win' ? `獲得${(result.item) ? result.item + '，' : ''}${result.money}金幣，${result.experience}經驗值！` : '失去一半金錢、回到起始之村。。。';
   const lvlupMessage = (battleStatus === 'win' && result.isLevelUp) ? 
     `等級提升！ HP+${attrAdj[0]}，MP+${attrAdj[1]}，PWR+${attrAdj[2]}，AGI+${attrAdj[3]}，LCK+${attrAdj[4]}，ATK+${attrAdj[5]}，DEF+${attrAdj[6]}` 
     : '';
