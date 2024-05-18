@@ -10,15 +10,15 @@ const SkillBar = ({ skills, handleSkillUse, handleEscape, isCountDown, battleSta
       if (battleStatus !== 'continue' || isCountDown) return;
 
       switch (event.key) {
-        case 'a':
+        case '1':
           handleSkillUse(0); break;
-        case 'q':
+        case '2':
           handleSkillUse(1); break;
-        case 'w':
+        case '3':
           handleSkillUse(2); break;
-        case 'e':
+        case '4':
           handleSkillUse(3); break;
-        case 'r':
+        case '5':
           handleSkillUse(4); break;
         case '=':
           handleEscape(); break;
@@ -47,7 +47,7 @@ const SkillBar = ({ skills, handleSkillUse, handleEscape, isCountDown, battleSta
     </OverlayTrigger>
   );
 
-  const skillShortcuts = ['q', 'w', 'e', 'r'];
+  const skillShortcuts = ['2', '3', '4', '5'];
   const skillsWithMana = skills.slice(1);
   const skillButtons = skillsWithMana.map((skill, index) => {
     return (
@@ -68,7 +68,7 @@ const SkillBar = ({ skills, handleSkillUse, handleEscape, isCountDown, battleSta
             <button type="button" className="btn btn-outline-dark btn-lg"
               ref={keyATarget} onClick={() => handleSkillUse(0)} disabled={battleStatus !== 'continue'}
             >
-              普攻 <span className="badge bg-dark">A</span>
+              普攻 <span className="badge bg-dark">1</span>
             </button>
           </SkillToolTip>
         </div>
