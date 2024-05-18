@@ -36,12 +36,13 @@ ON DUPLICATE KEY UPDATE
 INSERT INTO
   `items` (`id`,`name`,`type`,`price`,`description`,`createdAt`,`updatedAt`)
 VALUES
-  (1, '生命藥水', 'consumable', 50, '回復生命', NOW(), NOW()),
-  (2, '魔力藥水', 'consumable', 50, '回復魔力', NOW(), NOW()),
-  (3, '銅劍', 'equipment', 100, '攻擊力+10', NOW(), NOW()),
-  (4, '鐵劍', 'equipment', 200, '攻擊力+20', NOW(), NOW()),
-  (5, '皮甲', 'equipment', 100, '防禦力+10', NOW(), NOW()),
-  (6, '鐵甲', 'equipment', 200, '防禦力+20', NOW(), NOW())
+  (1, '生命藥水', 'consumable', 50, '回復100生命', NOW(), NOW()),
+  (2, '魔力藥水', 'consumable', 50, '回復50魔力', NOW(), NOW()),
+  (3, '不可思義之翼', 'consumable', 50, '瞬間移動到起始之村', NOW(), NOW()),
+  (4, '銅劍', 'equipment', 100, '攻擊力+10', NOW(), NOW()),
+  (5, '鐵劍', 'equipment', 200, '攻擊力+20', NOW(), NOW()),
+  (6, '皮甲', 'equipment', 100, '防禦力+10', NOW(), NOW()),
+  (7, '鐵甲', 'equipment', 200, '防禦力+20', NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `name` = VALUES(`name`),
   `type` = VALUES(`type`),
@@ -126,12 +127,13 @@ VALUES
   (4, 4, 1, 'merchant', 0, false, NOW(), NOW()),
   (5, 5, 1, 'merchant', 0, false, NOW(), NOW()),
   (6, 6, 1, 'merchant', 0, false, NOW(), NOW()),
-  (7, 1, 1, 'monster', 0, false, NOW(), NOW()),
-  (8, 2, 1, 'monster', 0, false, NOW(), NOW()),
-  (9, 1, 2, 'monster', 0, false, NOW(), NOW()),
-  (10, 2, 2, 'monster', 0, false, NOW(), NOW()),
-  (11, 1, 1, 'character', 10, false, NOW(), NOW()),
-  (12, 2, 1, 'character', 10, false, NOW(), NOW())
+  (7, 7, 1, 'merchant', 0, false, NOW(), NOW()),
+  (8, 1, 1, 'monster', 0, false, NOW(), NOW()),
+  (0, 2, 1, 'monster', 0, false, NOW(), NOW()),
+  (10, 1, 2, 'monster', 0, false, NOW(), NOW()),
+  (11, 2, 2, 'monster', 0, false, NOW(), NOW()),
+  (12, 1, 1, 'character', 10, false, NOW(), NOW()),
+  (13, 2, 1, 'character', 10, false, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `id` = VALUES(`id`),
   `itemId` = VALUES(`itemId`),
@@ -170,10 +172,10 @@ ON DUPLICATE KEY UPDATE
 INSERT INTO
   `equipment_attributes` (`id`, `itemId`, `bodypart`, `maxhp`, `maxmp`,`power`,`agile`,`luck`,`attack`,`defence`,`createdAt`,`updatedAt`)
 VALUES
-  (1, 3, 'weapon', 0, 0, 0, 0, 0, 10, 0, NOW(), NOW()),
-  (2, 4, 'weapon', 0, 0, 0, 0, 0, 20, 0, NOW(), NOW()),
-  (3, 5, 'body', 0, 0, 0, 0, 0, 0, 10, NOW(), NOW()),
-  (4, 6, 'body', 0, 0, 0, 0, 0, 0, 20, NOW(), NOW())
+  (1, 4, 'weapon', 0, 0, 0, 0, 0, 10, 0, NOW(), NOW()),
+  (2, 5, 'weapon', 0, 0, 0, 0, 0, 20, 0, NOW(), NOW()),
+  (3, 6, 'body', 0, 0, 0, 0, 0, 0, 10, NOW(), NOW()),
+  (4, 7, 'body', 0, 0, 0, 0, 0, 0, 20, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `id` = VALUES(`id`),
   `itemId` = VALUES(`itemId`),

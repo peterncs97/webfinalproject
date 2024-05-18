@@ -112,6 +112,46 @@ class CharacterService {
         await this.#characterRepository.addOrUpdateCharacterItems(character, [itemToUnequip]);
         return await this.getCharacterById(characterId);
     }
+
+    async useCharacterItem(characterId, itemId) {
+        const character = await this.getCharacterById(characterId);
+        const itemToUse = character.items.find(characterItem => characterItem.id === itemId);
+
+        if (itemId === 1) {
+            const attr = await character.getCombat_attribute();
+            const maxhp = attr.maxhp;
+            var hp = attr.currhp;
+            
+            hp += 100;
+            if (hp > maxhp)
+                hp = maxhp;
+            await this.#characterRepository.setCharacterHpMp(character, hp, attr.currmp);
+        }
+        else if (itemId === 2) {
+            const attr = await character.getCombat_attribute();
+            const maxmp = attr.maxmp;
+            var mp = attr.currmp;
+            
+            mp += 50;
+            if (mp > maxmp)
+                mp = maxmp;
+            await this.#characterRepository.setCharacterHpMp(character, attr.currhp, mp);
+        }
+        else if (itemId === 3) {
+            await this.#characterRepository.setCharacterScene(character, 1);
+        }
+
+        const quantity = itemToUse.item_ownership.quantity - 1;
+
+        if (quantity <= 0)
+            await this.#characterRepository.removeCharacterItem(character, characterItem);
+        else {
+            itemToUse.item_ownership = { quantity: quantity };
+            await this.#characterRepository.addOrUpdateCharacterItems(character, [itemToUse]);
+        }
+
+        return await this.getCharacterById(characterId);
+    }
 }
 
 module.exports = CharacterService;

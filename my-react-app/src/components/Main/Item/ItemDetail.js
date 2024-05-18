@@ -32,7 +32,17 @@ const ItemDetail = ({ item }) => {
 		});
 	}
 
-	
+	const useItem = () => {
+		axios.post(`/character/useitem`, {
+			characterId: character.id,
+			itemId: item.id,
+		}).then((response) => {
+			setCharacter(response.data.data)
+		}).catch((err) => {
+			console.log(err);
+		});
+	}
+
 	var bodypartName;
 	switch(item?.equipment_attribute?.bodypart){
 		case 'weapon':
@@ -50,7 +60,7 @@ const ItemDetail = ({ item }) => {
 			? { name: '', onClick: () => { }} 
 			:	
 			(item.type !== 'equipment') 
-				? { name: '使用', onClick: () => { }}
+				? { name: '使用', onClick: useItem }
 				:
 				(!item.item_ownership.equipped) 
 					? { name: '裝備', onClick: equip } 

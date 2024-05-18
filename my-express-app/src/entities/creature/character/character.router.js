@@ -16,6 +16,7 @@ class CharacterRouter extends BaseRouter {
         this.router.post('/equip', (req, res, next) => this.#controller.equipCharacterItem(req, res, next));
         this.router.post('/unequip', (req, res, next) => this.#controller.unequipCharacterItem(req, res, next));
         this.router.post('/rest', (req, res, next) => this.#controller.restCharacter(req, res, next));
+        this.router.post('/useitem', (req, res, next) => this.#controller.useCharacterItem(req, res, next));
     }
 }
 

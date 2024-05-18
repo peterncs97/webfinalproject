@@ -47,6 +47,14 @@ class CharacterController extends BaseController{
         );
         this.responseHandler(res, dtos);
     }
+
+    async useCharacterItem(req, res){
+        const dtos = await this.#characterService.useCharacterItem(
+            req.body.characterId,
+            req.body.itemId
+        );
+        this.responseHandler(res, dtos);
+    }
 }
 
 module.exports = CharacterController;
