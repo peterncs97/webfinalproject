@@ -13,36 +13,12 @@ const OptionList = ({ currScene, setOptionModalShow }) => {
   const { setAction } = useContext(ActionContext); // For controll state of the game
   const { character, setCharacter } = useContext(CharacterContext); // For updating character data
 
-  /* Basic travel to scene options */
-  const changeScene = (event) => {
-    const sceneId = parseInt(event.target.getAttribute('sceneid'));
-    axios.post(`/character/changescene`, { characterId: character.id, sceneId: sceneId })
-      .then((response) => {
-        setCharacter(response.data.data);
-      }).catch((error) => {
-        console.error('Error changing scene: ', error);
-      });
-  }
+  const optionList = [];
 
-  const optionList =
-    currScene.options
-      ?.filter(option => option.type !== 'monster') // Filter out monster scene
-      .map((option, index) => {
-        return (
-          <button type="button" key={index} sceneid={option.id} onClick={changeScene} className="list-group-item">{option.name}</button>
-        );
-      });
-      
   /* Special scene options  */
-
-  // OnClick function for rest option in rest scene
-  const rest = () => {
-    setOptionModalShow(true);
-  }
-
   const extraOptions = [
-    { types: ['rest'], name: '休息', onClick: rest },
-    { types: ['battleground', 'victory'], name: '索敵', onClick: () => { navigate("/battle") } },
+    { types: ['rest'], name: '休息', onClick: () => { setOptionModalShow(true) } },
+    { types: ['battleground'], name: '索敵', onClick: () => { navigate("/battle") } },
     { types: ['trade'], name: '交易', onClick: () => setAction('trade') },
   ];
 
@@ -54,6 +30,25 @@ const OptionList = ({ currScene, setOptionModalShow }) => {
           {option.name}
         </button>);
   });
+
+  /* Basic travel to scene options */
+  const changeScene = (event) => {
+    const sceneId = parseInt(event.target.getAttribute('sceneid'));
+    axios.post(`/character/changescene`, { characterId: character.id, sceneId: sceneId })
+      .then((response) => {
+        setCharacter(response.data.data);
+      }).catch((error) => {
+        console.error('Error changing scene: ', error);
+      });
+  }
+
+  currScene.options
+    ?.filter(option => option.type !== 'monster') // Filter out monster scene
+    .forEach((option, index) => {
+      optionList.push(
+        <button type="button" key={index} sceneid={option.id} onClick={changeScene} className="list-group-item">{option.name}</button>
+      );
+    });
 
   /* Default return option */
   if (currScene.id !== 1)
