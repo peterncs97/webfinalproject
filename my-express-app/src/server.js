@@ -42,10 +42,10 @@ db.sequelize.sync({ alter: true })
     .then(() => {
         console.log("Synced db.");
         // Initialize the database
-        fileToQueries('./src/database/init.sql')
-        .forEach(async query => 
-            await db.sequelize.query(query)
-        );
+        // fileToQueries('./src/database/init.sql')
+        // .forEach(async query => 
+        //     await db.sequelize.query(query)
+        // );
     })
     .catch((err) => {
         console.log("Failed to sync db: " + err.message);
