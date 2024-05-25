@@ -78,7 +78,7 @@ const BattleInterface = ({ battle, monster, skills, battleStatus, setBattleStatu
 	}
 
 	const handleSkillUse = (id) => {
-		if (skills[id].cost < battle.CharacterMP) {
+		if (skills[id].cost <= battle.CharacterMP) {
 			setSkill(skills[id])
 			setIsCountDown(true);
 			setCountDown(skills[id].timer/1000);
