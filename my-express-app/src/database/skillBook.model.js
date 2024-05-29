@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-    const SkillBook = sequelize.define(
-    "skillBook", 
+  const SkillBook = sequelize.define(
+    "SkillBook", 
     {
       id:{type: Sequelize.INTEGER, primaryKey: true},
       name:{type: Sequelize.STRING},
@@ -16,8 +16,11 @@ module.exports = (sequelize, Sequelize) => {
       Power:{type: Sequelize.INTEGER, defaultValue:0},
       Luck:{type: Sequelize.INTEGER, defaultValue:0},
       Agile:{type: Sequelize.INTEGER, defaultValue:0}
-    });
-  
-    return SkillBook;
-  };
+    },
+    {
+      tableName: 'skillBooks',
+    }
+  );
+  return SkillBook;
+};
   
