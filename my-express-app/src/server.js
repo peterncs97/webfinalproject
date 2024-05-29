@@ -39,13 +39,18 @@ const fileToQueries = (path) => {
 }
 
 db.sequelize.sync({ alter: true })
-    .then(() => {
+    .then(async () => {
         console.log("Synced db.");
-        // Initialize the database
-        // fileToQueries('./src/database/init.sql')
-        // .forEach(async query => 
-        //     await db.sequelize.query(query)
-        // );
+        const queries = fileToQueries('./src/database/init.sql');
+        for (const query of queries) {
+            try {
+                await db.sequelize.query(query);
+                console.log(`Executed query: ${query}`);
+            } catch (error) {
+                console.error(`Error executing query: ${query}`, error);
+            }
+        }
+        console.log("Database initialization complete.");
     })
     .catch((err) => {
         console.log("Failed to sync db: " + err.message);
