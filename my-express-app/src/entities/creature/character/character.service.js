@@ -144,7 +144,7 @@ class CharacterService {
         const quantity = itemToUse.item_ownership.quantity - 1;
 
         if (quantity <= 0)
-            await this.#characterRepository.removeCharacterItem(character, characterItem);
+            await this.#characterRepository.removeCharacterItem(character, itemToUse);
         else {
             itemToUse.item_ownership = { quantity: quantity };
             await this.#characterRepository.addOrUpdateCharacterItems(character, [itemToUse]);
