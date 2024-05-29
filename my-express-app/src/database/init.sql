@@ -164,7 +164,7 @@ ON DUPLICATE KEY UPDATE
   `createdAt` = VALUES(`createdAt`)
 ;
 
-INSERT INTO `skillbooks`
+INSERT INTO `skillBooks`
   (`id`,`name`, `type`, `description`, `skillCode`, `specialCode`,`timer`,`duration`,`cost`, `ATK`,`DEF`,`Power`,`Luck`,`Agile`, `createdAt`,`updatedAt`)
 VALUES
   (1, "普攻", "attack", '無消耗、無加成', "Strike" ,"combine",5000, 0, 0, 5, 0,0,0,0, NOW(), NOW()),
