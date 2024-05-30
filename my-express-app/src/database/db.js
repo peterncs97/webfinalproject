@@ -5,6 +5,8 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
     dialectOptions: {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci',
         dateStrings: true,
         typeCast: function (field, next) { // for reading from database
             if (field.type === 'DATETIME') {
